@@ -574,7 +574,12 @@ forbidden_parallel_sources.each do |path|
   validation.check(!path.exist?, "#{validation.relative(path)}: parallel rule sources are not allowed")
 end
 
-ROOT.glob("**/*.{md,yml,yaml}").reject { |path| path.to_s.include?("/.git/") }.each do |path|
+# Skip version-control, dependency, and build output trees. These may exist
+# locally (for example when the showcase site has installed its dependencies)
+# but are never part of the repository's authored, committed content.
+IGNORED_TREE = ["/.git/", "/node_modules/", "/dist/", "/.astro/"].freeze
+
+ROOT.glob("**/*.{md,yml,yaml}").reject { |path| IGNORED_TREE.any? { |segment| path.to_s.include?(segment) } }.each do |path|
   text = path.read
   validation.check(!text.match?(/\b(?:TODO|TBD|will be implemented|placeholder)\b/i), "#{validation.relative(path)}: unresolved scaffold marker")
   local_markdown_links(text).each do |target|
@@ -585,7 +590,7 @@ ROOT.glob("**/*.{md,yml,yaml}").reject { |path| path.to_s.include?("/.git/") }.e
   end
 end
 
-ROOT.glob("**/*.{yml,yaml}").reject { |path| path.to_s.include?("/.git/") }.each do |path|
+ROOT.glob("**/*.{yml,yaml}").reject { |path| IGNORED_TREE.any? { |segment| path.to_s.include?(segment) } }.each do |path|
   begin
     YAML.safe_load(path.read, permitted_classes: [], aliases: false)
   rescue Psych::Exception => e

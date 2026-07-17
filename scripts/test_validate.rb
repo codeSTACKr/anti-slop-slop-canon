@@ -9,13 +9,30 @@ require "tmpdir"
 
 SOURCE_ROOT = Pathname(__dir__).parent
 
+# Version-control, dependency, and build output trees are never authored
+# repository content, so the fixture copy skips them. Copying them would also
+# be slow enough to stall the suite once the showcase site installs its
+# dependencies under site/node_modules.
+IGNORED_BASENAMES = %w[.git node_modules dist .astro].freeze
+
+def copy_authored_tree(source, destination)
+  return if IGNORED_BASENAMES.include?(source.basename.to_s)
+
+  if source.directory?
+    destination.mkpath
+    source.children.each { |child| copy_authored_tree(child, destination / child.basename) }
+  else
+    FileUtils.cp(source, destination)
+  end
+end
+
 class ValidateScriptTest < Minitest::Test
   def with_repository
     Dir.mktmpdir("anti-slop-validation-") do |directory|
       root = Pathname(directory) / "repo"
       root.mkpath
-      SOURCE_ROOT.children.reject { |path| path.basename.to_s == ".git" }.each do |path|
-        FileUtils.cp_r(path, root / path.basename)
+      SOURCE_ROOT.children.each do |path|
+        copy_authored_tree(path, root / path.basename)
       end
       yield root
     end
