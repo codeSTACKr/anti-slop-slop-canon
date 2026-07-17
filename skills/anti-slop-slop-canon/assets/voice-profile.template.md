@@ -3,7 +3,7 @@ bundle_kind: profile
 schema_version: "1.0.0"
 content_version: "0.0.0"
 scope: project
-defaults_version: "0.0.0"
+defaults_version: "0.1.0"
 ---
 
 # Voice profile

@@ -1,6 +1,6 @@
 # Evaluations
 
-Phase 1 fixtures define quality before the default canon is written. They are task specifications, not generated answers and not additional writing-rule sources.
+Fixtures define observable quality for the default canon. They are task specifications, not generated answers and not additional writing-rule sources.
 
 ## Fixture format
 
@@ -26,6 +26,23 @@ Use exactly these level-two sections in order:
 Allowed categories are `ai_like`, `good_prose`, `personalized_voice`, `spoken_output`, `exemptions`, and `onboarding`. Allowed operations are `compose`, `rewrite`, `audit`, and `onboarding`. Allowed modes are `written`, `spoken`, `mixed`, and `onboarding`.
 
 Write observable expectations without inventing a final rewrite. Assertions should protect meaning, factual details, required routing, exemptions, or onboarding state. A later phase may add approved outputs and human scores without changing the source fixture.
+
+## Default-canon coverage
+
+Phase 2 maps each portable rule family to representative fixtures:
+
+| Family | Fixtures |
+| --- | --- |
+| Confidence and directness | `warranted-uncertainty-control`, `plain-language-maintenance-note` |
+| Plain language and vocabulary | `plain-language-maintenance-note` |
+| Restraint and light humor | `already-good-field-note`, `dry-humor-control` |
+| Punctuation and three-part padding | `punctuation-and-three-part-padding` |
+| Banned framing and transitions | `ai-like-product-update`, `formulaic-community-update` |
+| Rhythm and sentence shape | `repetitive-rhythm-report`, `already-good-field-note` |
+| Spoken delivery | `spoken-service-delay`, `spoken-cadence-control` |
+| Fixed-content exemptions | `exempt-fixed-content` |
+
+The good-prose controls use `expected_mutation: false` to make unnecessary polishing an observable failure.
 
 ## Token-count method
 

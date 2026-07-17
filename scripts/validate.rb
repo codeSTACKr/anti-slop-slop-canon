@@ -145,7 +145,7 @@ end
 
 validation.check(bundle_data.dig("defaults", "schema_version") == bundle_data.dig("profile", "schema_version"), "defaults and profile template must use the same schema_version")
 validation.check(bundle_data.dig("profile", "defaults_version") == bundle_data.dig("defaults", "content_version"), "profile defaults_version must match defaults content_version")
-validation.check(bundle_data.dig("defaults", "schema_version") != bundle_data.dig("defaults", "content_version"), "Phase 1 schema and default content versions must demonstrate independent lifecycles")
+validation.check(bundle_data.dig("defaults", "schema_version") != bundle_data.dig("defaults", "content_version"), "schema and default content versions must demonstrate independent lifecycles")
 schema_doc_version = SCHEMA_DOC.read[/^Schema version: `([^`]+)`$/, 1]
 validation.check(schema_doc_version == bundle_data.dig("defaults", "schema_version"), "skills/anti-slop-slop-canon/references/profile-schema.md: declared schema version must match the bundles")
 
@@ -182,7 +182,7 @@ allowed_runtime_files = [
   "references/profile-schema.md"
 ].freeze
 actual_runtime_files = SKILL_DIR.glob("**/*", File::FNM_DOTMATCH).select(&:file?).map { |path| path.relative_path_from(SKILL_DIR).to_s }.sort
-validation.check(actual_runtime_files == allowed_runtime_files.sort, "skills/anti-slop-slop-canon: unexpected runtime file; keep the Phase 1 skill Markdown-only except agents/openai.yaml")
+validation.check(actual_runtime_files == allowed_runtime_files.sort, "skills/anti-slop-slop-canon: unexpected runtime file; keep the skill Markdown-only except agents/openai.yaml")
 
 forbidden_parallel_sources = [ROOT / "AGENTS.md", ROOT / ".cursorrules"]
 forbidden_parallel_sources.each do |path|
