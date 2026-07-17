@@ -1,4 +1,4 @@
 interface:
   display_name: "Anti-Slop Slop Canon"
   short_description: "Write and edit in a clear personal voice"
-  default_prompt: "Use $anti-slop-slop-canon to write or revise this text in my active voice."
+  default_prompt: "Use $anti-slop-slop-canon to write or revise in my active voice, or help me set up that voice."

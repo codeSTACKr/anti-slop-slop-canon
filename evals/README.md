@@ -60,11 +60,15 @@ Phase 3 fixtures make the runtime contract observable without adding a second ru
 
 The repository validator requires all seven fixtures and checks their operation, mode, mutation, task facts, protected literals, expected routing, and assertion semantics in their proper sections. Mutation tests weaken representative contracts and must make validation fail. Host evaluation remains responsible for judging generated content.
 
+## Onboarding coverage
+
+Phase 4 adds semantic fixtures for first-use choice, one short sample, strong evidence, sparse and contradictory evidence, complete preview before save, defaults and defer state, sample non-retention, optional helper approval, complete profile precedence and scope, and personalized realtime generation. Validation checks each fixture's metadata and decisive contract text in the correct section. Mutation tests prove that approval, precedence, retention, helper, profile-section, realtime-policy, and budget regressions fail.
+
 ## Token-count method
 
 Context budgets use a repository-stable token proxy because host agents and models tokenize Markdown differently. `scripts/validate.rb` counts each Unicode word, number, contraction, or non-whitespace punctuation mark as one lexical unit, then adds a 25 percent safety margin and rounds up.
 
-Count the complete `SKILL.md`, including frontmatter, against a strict limit below 600 proxy tokens. Count each complete style bundle, including frontmatter, against a strict limit below 1,500 proxy tokens. The validator prints raw lexical units and guarded counts for review.
+Count the complete `SKILL.md`, including frontmatter, against a strict limit below 600 proxy tokens. Count each complete style bundle, including frontmatter, against a strict limit below 1,500 proxy tokens. Count default and personalized realtime modules within the inclusive 250 to 400 guarded-unit range. The validator prints raw lexical units and guarded counts for review.
 
 This proxy is the deterministic CI gate. Before a release, maintainers should also spot-check the same files with the tokenizers used by supported hosts and record material differences. A host-specific count may tighten a file but may not waive the repository gate.
 

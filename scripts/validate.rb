@@ -12,6 +12,8 @@ SKILL = SKILL_DIR / "SKILL.md"
 OPENAI_YAML = SKILL_DIR / "agents/openai.yaml"
 SCHEMA_DOC = SKILL_DIR / "references/profile-schema.md"
 OPERATIONS = SKILL_DIR / "references/operations.md"
+ONBOARDING = SKILL_DIR / "references/onboarding.md"
+REALTIME_PROMPT = SKILL_DIR / "assets/realtime-voice-prompt.md"
 FIXTURE_DIR = ROOT / "evals/fixtures"
 
 REQUIRED_BUNDLE_SECTIONS = [
@@ -93,6 +95,65 @@ PHASE_3_FIXTURE_CONTRACTS = {
   }
 }.freeze
 
+PHASE_4_FIXTURE_CONTRACTS = {
+  "phase-4-first-use-choice" => {
+    metadata: ["onboarding", "onboarding", false],
+    Context: ["neither `voice-profile.md` nor `settings.md`", "Global state may exist but is out of scope"],
+    "Expected behavior": ["ask exactly one choice", "personalize now, use defaults, or defer", "Do not inspect global state"],
+    Assertions: ["Present all three choices and no onboarding questionnaire", "Do not claim any profile, prompt, or settings write"]
+  },
+  "phase-4-one-short-sample" => {
+    metadata: ["onboarding", "onboarding", false],
+    Context: ["one 74-word plain-text note"],
+    "Expected behavior": ["Accept the sample", "low confidence", "option to proceed now"],
+    Assertions: ["Do not impose a minimum sample count or word count", "Keep confidence and measurements out of the proposed profile"]
+  },
+  "phase-4-strong-evidence" => {
+    metadata: ["onboarding", "onboarding", false],
+    Context: ["four representative samples", "agree across them"],
+    "Expected behavior": ["Shorten the interview", "proceed directly to a complete preview"],
+    Assertions: ["Do not run a fixed questionnaire", "Separate channel formatting and subject matter"]
+  },
+  "phase-4-sparse-contradictory-evidence" => {
+    metadata: ["onboarding", "onboarding", false],
+    Context: ["quoted passage accounts for most of the casual wording"],
+    "Expected behavior": ["Exclude the quotation", "ask one focused question", "explicit casual preference"],
+    Assertions: ["Do not silently average", "Do not treat quoted or borrowed language as a stable trait"]
+  },
+  "phase-4-preview-before-save" => {
+    metadata: ["onboarding", "onboarding", false],
+    "Expected behavior": ["complete proposed profile", "complete personalized realtime module", "one short written example", "one short spoken example", "approve, revise one trait, or continue the interview"],
+    Assertions: ["Require explicit approval", "Do not write `voice-profile.md`, `realtime-voice-prompt.md`, or `settings.md` during preview", "new complete preview"]
+  },
+  "phase-4-defaults-defer" => {
+    metadata: ["onboarding", "onboarding", true],
+    "Expected behavior": ["`setup: defaults`", "`setup: deferred`", "bundled defaults"],
+    Assertions: ["Create no profile or personalized realtime prompt", "Write nowhere above", "Do not implement reminder cooldown, refresh, keep, or later lifecycle fields"]
+  },
+  "phase-4-sample-non-retention" => {
+    metadata: ["onboarding", "onboarding", true],
+    Context: ["pasted text", "local Markdown file", "URL", "temporary transcript"],
+    "Expected behavior": ["Leave the user's local original in place", "retain only the approved profile, approved realtime prompt, and minimal settings"],
+    Assertions: ["Retain no pasted text, URL, download, transcript, source list, extraction note, confidence data, measurement, or onboarding analysis", "exact three-file allowlist"]
+  },
+  "phase-4-optional-helper-approval" => {
+    metadata: ["onboarding", "onboarding", false],
+    Context: ["`yt-dlp` is not available", "usable pasted sample"],
+    "Expected behavior": ["Use host-native access first", "proceed without it", "explicit approval before installation"],
+    Assertions: ["Do not install `yt-dlp`", "Do not block onboarding", "Ask no helper-install question when the source can be read natively"]
+  },
+  "phase-4-profile-compilation" => {
+    metadata: ["onboarding", "onboarding", true],
+    "Expected behavior": ["schema `1.0.0`", "content version `1.0.0`", "scope `project`", "defaults version `0.1.0`", "all ten required sections in exact order", "invariants, explicit answers, consistent traits, then defaults"],
+    Assertions: ["replace conflicting default preferences", "complete written and spoken guidance", "below 1,500 guarded units", "never load it alongside defaults"]
+  },
+  "phase-4-personalized-realtime" => {
+    metadata: ["realtime", "spoken", true],
+    "Expected behavior": ["bundled default realtime style", "approved spoken traits", "persist both consistently in global state"],
+    Assertions: ["plain speakable output", "concise pronounceable sentences", "no Markdown or visual notation", "first-listen clarity", "between 250 and 400 guarded units", "Define no jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration"]
+  }
+}.freeze
+
 class Validation
   attr_reader :errors
 
@@ -160,22 +221,25 @@ validation.check(!skill_meta["description"].to_s.match?(/[<>]/), "skills/anti-sl
 end
 
 router_requirements = {
-  "project state path" => "<project-root>/.anti-slop-slop-canon/voice-profile.md",
-  "global state path" => "~/.config/anti-slop-slop-canon/voice-profile.md",
+  "project state path" => "<project-root>/.anti-slop-slop-canon/",
+  "global state path" => "~/.config/anti-slop-slop-canon/",
   "project isolation" => "never inspect or fall back to global state",
-  "ambiguous written routing" => "Otherwise choose written without asking",
+  "ambiguous written routing" => "Otherwise use written without asking",
   "single profile bundle" => "Load it alone",
   "single defaults bundle" => "load [references/defaults.md](references/defaults.md) alone",
-  "profile schema compatibility" => "uses schema `1.0.0`",
-  "profile scope match" => "matches active scope",
-  "profile required sections" => "retains all required sections",
-  "profile actionable content" => "has actionable rules",
+  "profile schema compatibility" => "schema `1.0.0`",
+  "profile scope match" => "active scope",
+  "profile required sections" => "every required section",
+  "profile actionable content" => "actionable rules",
   "exact quotation exemption" => "exact quotations",
   "code exemption" => "code",
   "structured data exemption" => "structured data",
   "legal exemption" => "legally fixed wording",
-  "silent second pass" => "Run a silent second pass",
-  "clean output" => "Return clean content",
+  "silent second pass" => "Silently check meaning, exemptions, mode, and rules",
+  "clean output" => "Return clean compose or rewrite output",
+  "first-use state gate" => "When profile and `settings.md` are absent",
+  "conditional onboarding" => "otherwise do not",
+  "onboarding routing" => "explicit onboarding, setup, or voice learning",
   "audit routing" => "audit",
   "profile routing" => "profile",
   "realtime routing" => "realtime"
@@ -196,14 +260,57 @@ operation_requirements = {
   "ambiguous written routing" => "Default every ambiguous case to written without asking",
   "single bundle" => "Never supplement a profile with defaults",
   "clean compose output" => "Return only ready-to-use content unless an explanation was requested",
-  "meaningful second pass" => "Preserve requested meaning, facts, uncertainty, intent, and format"
+  "meaningful second pass" => "Preserve requested meaning, facts, uncertainty, intent, format, and protected bytes"
 }.freeze
 operation_requirements.each do |label, text|
   validation.check(operations_text.include?(text), "skills/anti-slop-slop-canon/references/operations.md: missing #{label} contract")
 end
-validation.check(operations_text.include?("Do not synthesize or persist a replacement in Phase 3"), "skills/anti-slop-slop-canon/references/operations.md: realtime later-phase boundary is required")
-validation.check(operations_text.include?("implement persistence or recompilation in Phase 3"), "skills/anti-slop-slop-canon/references/operations.md: profile later-phase boundary is required")
-validation.check(operations_text.include?("Do not present them as available actions"), "skills/anti-slop-slop-canon/references/operations.md: later profile actions must not be claimed in Phase 3")
+validation.check(operations_text.include?("Do not load defaults, persist a choice, refresh, merge, or offer keep/later behavior"), "skills/anti-slop-slop-canon/references/operations.md: Phase 5 lifecycle boundary is required")
+validation.check(operations_text.include?("Generate a personalized module only as part of approved onboarding"), "skills/anti-slop-slop-canon/references/operations.md: personalized realtime generation boundary is required")
+
+onboarding_text = ONBOARDING.read
+onboarding_requirements = {
+  "one-question interview" => "Ask one question per turn",
+  "exact first-use choice" => "personalize now, use defaults, or defer",
+  "minimal defaults state" => "`setup: defaults`",
+  "minimal defer state" => "`setup: deferred`",
+  "no Phase 5 lifecycle" => "Do not implement reminders, cooldowns, refresh, keep, or later lifecycle behavior",
+  "explicit rerun" => "Explicit onboarding may start or rerun at any time",
+  "early samples" => "Next ask for representative material early",
+  "guaranteed inputs" => "pasted text, Markdown, and plain-text or local text files",
+  "short sample" => "One short sample is enough",
+  "host-native rich sources" => "host-native file reading or browsing",
+  "optional helpers" => "`yt-dlp` or `pdftotext`",
+  "helper approval" => "explicit approval before any installation",
+  "no provenance checks" => "without authorship, ownership, identity, or provenance checks",
+  "third-party abstraction" => "abstract traits",
+  "ephemeral analysis" => "all working analysis ephemeral",
+  "trait separation" => "subject matter, channel formatting, quotations, borrowed language, and one-off quirks",
+  "strong evidence" => "Strong consistent evidence shortens the interview",
+  "contradiction resolution" => "Never average, choose a side, or suppress the conflict silently",
+  "profile versions" => "initial profile content version `1.0.0`",
+  "rerun content version" => "increment the existing profile content version",
+  "active scope metadata" => "active scope `global` or `project`",
+  "profile precedence" => "Non-overridable product invariants from the router",
+  "invariants remain outside profile" => "Product invariants constrain compilation but stay in the router",
+  "profile replaces defaults" => "replace defaults at runtime, not supplement them",
+  "profile budget" => "below 1,500 guarded units",
+  "personalized realtime policy boundary" => "Never define jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration",
+  "complete preview" => "The complete proposed `voice-profile.md`",
+  "realtime preview" => "The complete proposed `realtime-voice-prompt.md`",
+  "written preview" => "One short written example",
+  "spoken preview" => "One short spoken example",
+  "approval paths" => "approve, revise one trait, or continue the interview",
+  "approval gate" => "Approval must be explicit",
+  "scope-safe writes" => "Never write above project scope or into the installed skill directory",
+  "atomic pair write" => "atomically where the host supports it",
+  "consistent pair write" => "otherwise as one consistent approval action",
+  "exact retained state" => "only `voice-profile.md`, `realtime-voice-prompt.md`, and minimal `settings.md`",
+  "non-retention" => "Never copy or retain raw samples, pasted text, URLs, downloads, transcripts, source lists, extraction notes, confidence data, measurements, or onboarding analysis"
+}.freeze
+onboarding_requirements.each do |label, text|
+  validation.check(onboarding_text.include?(text), "skills/anti-slop-slop-canon/references/onboarding.md: missing #{label} contract")
+end
 
 begin
   openai_meta = YAML.safe_load(OPENAI_YAML.read, permitted_classes: [], aliases: false)
@@ -238,14 +345,18 @@ bundle_data = {}
     validation.check(meta["scope"] == "bundled", "#{validation.relative(path)}: defaults scope must be bundled")
   end
   validation.check(headings(text) == REQUIRED_BUNDLE_SECTIONS, "#{validation.relative(path)}: required bundle sections are missing, duplicated, or out of order")
+  REQUIRED_BUNDLE_SECTIONS.each do |section|
+    validation.check(!section_bodies(text).fetch(section, "").empty?, "#{validation.relative(path)}: #{section} must contain guidance")
+  end
 end
 
 validation.check(bundle_data.dig("defaults", "schema_version") == bundle_data.dig("profile", "schema_version"), "defaults and profile template must use the same schema_version")
 validation.check(bundle_data.dig("profile", "defaults_version") == bundle_data.dig("defaults", "content_version"), "profile defaults_version must match defaults content_version")
+validation.check(bundle_data.dig("profile", "content_version") == "1.0.0", "profile template content_version must be the Phase 4 initial profile version 1.0.0")
 validation.check(bundle_data.dig("defaults", "schema_version") != bundle_data.dig("defaults", "content_version"), "schema and default content versions must demonstrate independent lifecycles")
 schema_doc_version = SCHEMA_DOC.read[/^Schema version: `([^`]+)`$/, 1]
 validation.check(schema_doc_version == bundle_data.dig("defaults", "schema_version"), "skills/anti-slop-slop-canon/references/profile-schema.md: declared schema version must match the bundles")
-router_default_version = skill_text[/^Use current default content version `([^`]+)`\.$/, 1]
+router_default_version = skill_text[/^Use default content version `([^`]+)`\.$/, 1]
 validation.check(router_default_version == bundle_data.dig("defaults", "content_version"), "skills/anti-slop-slop-canon/SKILL.md: current default content version must match defaults.md")
 
 fixture_paths = FIXTURE_DIR.glob("*.md").sort
@@ -293,6 +404,24 @@ PHASE_3_FIXTURE_CONTRACTS.each do |id, contract|
   end
 end
 
+PHASE_4_FIXTURE_CONTRACTS.each do |id, contract|
+  record = fixture_records[id]
+  validation.check(!record.nil?, "evals/fixtures: missing Phase 4 fixture #{id}")
+  next unless record
+
+  meta, text = record
+  operation, mode, mutation = contract.fetch(:metadata)
+  validation.check(meta["operation"] == operation, "evals/fixtures/#{id}.md: operation must be #{operation}")
+  validation.check(meta["mode"] == mode, "evals/fixtures/#{id}.md: mode must be #{mode}")
+  validation.check(meta["expected_mutation"] == mutation, "evals/fixtures/#{id}.md: expected_mutation must be #{mutation}")
+  sections = section_bodies(text)
+  contract.reject { |key, _value| key == :metadata }.each do |section, snippets|
+    snippets.each do |snippet|
+      validation.check(sections.fetch(section.to_s, "").include?(snippet), "evals/fixtures/#{id}.md: #{section} must preserve Phase 4 contract #{snippet.inspect}")
+    end
+  end
+end
+
 fixed_record = fixture_records["exempt-fixed-content"]
 validation.check(!fixed_record.nil?, "evals/fixtures: missing foundational protected-content fixture exempt-fixed-content")
 if fixed_record
@@ -313,13 +442,41 @@ end
 allowed_runtime_files = [
   "SKILL.md",
   "agents/openai.yaml",
+  "assets/realtime-voice-prompt.md",
   "assets/voice-profile.template.md",
   "references/defaults.md",
+  "references/onboarding.md",
   "references/operations.md",
   "references/profile-schema.md"
 ].freeze
 actual_runtime_files = SKILL_DIR.glob("**/*", File::FNM_DOTMATCH).select(&:file?).map { |path| path.relative_path_from(SKILL_DIR).to_s }.sort
 validation.check(actual_runtime_files == allowed_runtime_files.sort, "skills/anti-slop-slop-canon: unexpected runtime file; keep the skill Markdown-only except agents/openai.yaml")
+
+realtime_text = REALTIME_PROMPT.read
+required_realtime_style = [
+  "plain, conversational language",
+  "no Markdown",
+  "concise, pronounceable sentences",
+  "first hearing",
+  "Repeat a key noun",
+  "Read the response aloud"
+].freeze
+required_realtime_style.each do |text|
+  validation.check(realtime_text.include?(text), "skills/anti-slop-slop-canon/assets/realtime-voice-prompt.md: missing realtime style contract #{text.inspect}")
+end
+forbidden_realtime_policy = {
+  "job" => /\bjobs?\b|\broles?\b|\bresponsibilit(?:y|ies)\b/i,
+  "tool" => /\btools?\b|\bAPIs?\b|\bfunction calls?\b|\bbrowsers?\b|\bdatabases?\b/i,
+  "safety policy" => /\bsafety\b|\bpolic(?:y|ies)\b|\brefus(?:e|es|al)\b|\bdisallow(?:s|ed)?\b/i,
+  "facts" => /\bfacts?\b|\bfactual(?:ly)?\b|\bknowledge\b|\btruth(?:ful|fully)?\b/i,
+  "conversation flow" => /\bconversation flow\b|\bfollow-up questions?\b|\bturn-taking\b|\bgreet(?:ing|s)?\b/i,
+  "handoff" => /\bhandoffs?\b|\btransfer(?:s|red|ring)?\b|\bescalat(?:e|es|ed|ing|ion)\b/i,
+  "interruption logic" => /\binterrupt(?:ion|ions|ed|ing)?\b|\bbarge-in\b/i,
+  "orchestration" => /\borchestrat(?:e|es|ed|ing|ion)\b|\bdelegat(?:e|es|ed|ing|ion)\b/i
+}.freeze
+forbidden_realtime_policy.each do |label, pattern|
+  validation.check(!realtime_text.match?(pattern), "skills/anti-slop-slop-canon/assets/realtime-voice-prompt.md: realtime module must not define #{label}")
+end
 
 forbidden_parallel_sources = [ROOT / "AGENTS.md", ROOT / ".cursorrules"]
 forbidden_parallel_sources.each do |path|
@@ -353,6 +510,11 @@ budgets.each do |path, limit|
   puts format("budget %-68s raw=%4d guarded=%4d limit=<%d", validation.relative(path), raw, guarded, limit)
   validation.check(guarded < limit, "#{validation.relative(path)}: guarded context count #{guarded} must be below #{limit}")
 end
+
+realtime_raw = lexical_units(realtime_text)
+realtime_guarded = guarded_tokens(realtime_text)
+puts format("budget %-68s raw=%4d guarded=%4d range=250...400", validation.relative(REALTIME_PROMPT), realtime_raw, realtime_guarded)
+validation.check((250..400).cover?(realtime_guarded), "skills/anti-slop-slop-canon/assets/realtime-voice-prompt.md: guarded context count #{realtime_guarded} must be between 250 and 400")
 
 if validation.errors.empty?
   puts "PASS: repository contracts, fixtures, links, runtime contents, and context budgets"

@@ -1,5 +1,7 @@
 # Realtime voice prompt
 
-No bundled or generated realtime prompt ships yet. Phase 3 can return an existing active-scope `realtime-voice-prompt.md` unchanged. A later generated prompt will be a compact style-only module derived from the active profile. It must not define tools, safety, facts, jobs, handoffs, or orchestration.
+The skill ships a prebuilt default realtime module at `skills/anti-slop-slop-canon/assets/realtime-voice-prompt.md`. An explicit realtime request returns the active-scope personalized module when one exists, otherwise the bundled default.
 
-Prompt generation and persistence belong to Phases 4 and 5. Phase 3 does not synthesize or save a replacement when the file is missing.
+Approved onboarding creates a personalized module at the same time as the voice profile. It retains plain speakable output, concise pronounceable sentences, no Markdown or visual notation, and first-listen clarity while applying approved spoken traits. Both default and personalized modules target 250 to 400 guarded units.
+
+Realtime modules contain output style only. They never define jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration. Standalone regeneration after direct profile edits remains part of the later profile lifecycle.

@@ -35,7 +35,9 @@ class ValidateScriptTest < Minitest::Test
 
   def test_missing_required_fixture_category_fails
     with_repository do |root|
-      FileUtils.rm(root / "evals/fixtures/onboarding-conflicting-evidence.md")
+      (root / "evals/fixtures").glob("*.md").each do |fixture|
+        FileUtils.rm(fixture) if fixture.read.include?("category: onboarding")
+      end
       _stdout, stderr, status = run_validator(root)
       refute status.success?
       assert_includes stderr, "missing categories onboarding"
@@ -71,6 +73,16 @@ class ValidateScriptTest < Minitest::Test
     end
   end
 
+  def test_profile_template_budget_overrun_fails
+    with_repository do |root|
+      profile = root / "skills/anti-slop-slop-canon/assets/voice-profile.template.md"
+      profile.write(profile.read + (" profile" * 1_200))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "must be below 1500"
+    end
+  end
+
   def test_router_default_version_drift_fails
     with_repository do |root|
       skill = root / "skills/anti-slop-slop-canon/SKILL.md"
@@ -94,7 +106,7 @@ class ValidateScriptTest < Minitest::Test
   def test_profile_scope_validation_removal_fails
     with_repository do |root|
       skill = root / "skills/anti-slop-slop-canon/SKILL.md"
-      skill.write(skill.read.sub("matches active scope", "declares a scope"))
+      skill.write(skill.read.sub("active scope, every required section", "declared scope, every required section"))
       _stdout, stderr, status = run_validator(root)
       refute status.success?
       assert_includes stderr, "missing profile scope match contract"
@@ -142,10 +154,179 @@ class ValidateScriptTest < Minitest::Test
   def test_claiming_later_profile_actions_fails
     with_repository do |root|
       operations = root / "skills/anti-slop-slop-canon/references/operations.md"
-      operations.write(operations.read.sub("Do not present them as available actions", "Offer them as available actions"))
+      operations.write(operations.read.sub("Do not load defaults, persist a choice, refresh, merge, or offer keep/later behavior", "Offer refresh, keep, and later choices"))
       _stdout, stderr, status = run_validator(root)
       refute status.success?
-      assert_includes stderr, "later profile actions must not be claimed in Phase 3"
+      assert_includes stderr, "Phase 5 lifecycle boundary is required"
+    end
+  end
+
+  def test_missing_phase_4_fixture_fails
+    with_repository do |root|
+      FileUtils.rm(root / "evals/fixtures/phase-4-preview-before-save.md")
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing Phase 4 fixture phase-4-preview-before-save"
+    end
+  end
+
+  def test_first_use_choice_weakening_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("personalize now, use defaults, or defer", "choose a setup path"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing exact first-use choice contract"
+    end
+  end
+
+  def test_batch_question_onboarding_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("Ask one question per turn", "Ask all useful questions together"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing one-question interview contract"
+    end
+  end
+
+  def test_preview_approval_gate_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("Approval must be explicit", "Assume approval when the preview is shown"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing approval gate contract"
+    end
+  end
+
+  def test_profile_precedence_weakening_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("Non-overridable product invariants from the router", "Use whichever rules seem strongest"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing profile precedence contract"
+    end
+  end
+
+  def test_copying_invariants_into_profile_contract_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("Product invariants constrain compilation but stay in the router", "Copy product invariants into every profile"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing invariants remain outside profile contract"
+    end
+  end
+
+  def test_rerun_profile_version_contract_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("increment the existing profile content version", "keep the prior content version"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing rerun content version contract"
+    end
+  end
+
+  def test_sample_retention_contract_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("Never copy or retain raw samples, pasted text, URLs, downloads, transcripts, source lists, extraction notes, confidence data, measurements, or onboarding analysis", "Retain useful source material"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing non-retention contract"
+    end
+  end
+
+  def test_scope_safe_write_contract_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("Never write above project scope or into the installed skill directory", "Write to any convenient configuration directory"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing scope-safe writes contract"
+    end
+  end
+
+  def test_atomic_pair_write_contract_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("atomically where the host supports it", "one file at a time"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing atomic pair write contract"
+    end
+  end
+
+  def test_state_allowlist_contract_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("only `voice-profile.md`, `realtime-voice-prompt.md`, and minimal `settings.md`", "the generated state files"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing exact retained state contract"
+    end
+  end
+
+  def test_helper_approval_contract_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("explicit approval before any installation", "install a useful helper"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing helper approval contract"
+    end
+  end
+
+  def test_profile_template_empty_section_fails
+    with_repository do |root|
+      profile = root / "skills/anti-slop-slop-canon/assets/voice-profile.template.md"
+      profile.write(profile.read.sub("\n[Give complete instructions for written composition and revision.]\n", "\n"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Written guidance must contain guidance"
+    end
+  end
+
+  def test_realtime_policy_content_fails
+    with_repository do |root|
+      prompt = root / "skills/anti-slop-slop-canon/assets/realtime-voice-prompt.md"
+      prompt.write(prompt.read + "\nUse tools when needed.\n")
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "realtime module must not define tool"
+    end
+  end
+
+  def test_realtime_policy_synonym_fails
+    with_repository do |root|
+      prompt = root / "skills/anti-slop-slop-canon/assets/realtime-voice-prompt.md"
+      prompt.write(prompt.read + "\nTransfer the caller when escalation is needed.\n")
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "realtime module must not define handoff"
+    end
+  end
+
+  def test_realtime_budget_overrun_fails
+    with_repository do |root|
+      prompt = root / "skills/anti-slop-slop-canon/assets/realtime-voice-prompt.md"
+      prompt.write(prompt.read + (" voice" * 120))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "must be between 250 and 400"
+    end
+  end
+
+  def test_weakening_realtime_fixture_policy_boundary_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/phase-4-personalized-realtime.md"
+      fixture.write(fixture.read.sub("Define no jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration", "Keep the module useful"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Assertions must preserve Phase 4 contract"
     end
   end
 

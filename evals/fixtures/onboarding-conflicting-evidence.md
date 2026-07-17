@@ -10,7 +10,7 @@ expected_mutation: false
 
 ## Context
 
-A user chooses personalization and supplies two short samples. One is terse and informal. The other is polished and formal. The user says they want future writing to feel relaxed but does not explain which sample is representative.
+A user explicitly reruns onboarding and supplies two short samples. One is terse and informal. The other is polished and formal. The user says they want future writing to feel relaxed but does not explain which sample is representative.
 
 ## Input
 
@@ -18,7 +18,7 @@ Begin onboarding and prepare a personal profile for this user.
 
 ## Expected behavior
 
-Ask one focused question at a time. Surface the conflict instead of silently averaging it or choosing a sample. Allow the user to proceed with low confidence. Preview a complete profile plus one written and one spoken example before any persistent write.
+Preserve current state while asking one focused question at a time. Surface the conflict instead of silently averaging it or choosing a sample. Allow the user to proceed with low confidence. Preview a complete profile, complete realtime module, one written example, and one spoken example before any persistent write.
 
 ## Assertions
 
@@ -26,4 +26,4 @@ Ask one focused question at a time. Surface the conflict instead of silently ave
 - Do not save either source sample, its URL, a transcript, or analysis by default.
 - Do not write a profile before explicit approval.
 - Keep confidence and evidence notes outside the runtime profile.
-- Respect a request to stop, use defaults, or defer.
+- Preserve the prior profile and prompt unless the user explicitly approves the replacement.
