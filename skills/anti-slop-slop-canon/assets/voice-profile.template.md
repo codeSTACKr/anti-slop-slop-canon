@@ -8,7 +8,7 @@ defaults_version: "0.1.0"
 
 # Voice profile
 
-> Schema example only. It contains no personal writing rules. Profile compilation and persistence are outside Phase 1.
+> Schema example only. It contains no personal writing rules. Profile compilation and persistence belong to Phases 4 and 5.
 
 ## Voice summary
 

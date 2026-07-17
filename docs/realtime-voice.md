@@ -1,5 +1,5 @@
 # Realtime voice prompt
 
-No realtime prompt ships in Phase 1. The later prompt is a compact style-only module derived from the active profile. It must not define tools, safety, facts, jobs, handoffs, or orchestration.
+No bundled or generated realtime prompt ships yet. Phase 3 can return an existing active-scope `realtime-voice-prompt.md` unchanged. A later generated prompt will be a compact style-only module derived from the active profile. It must not define tools, safety, facts, jobs, handoffs, or orchestration.
 
-The prompt asset and generation workflow belong to later implementation phases so this contract preview cannot be mistaken for usable voice-agent behavior.
+Prompt generation and persistence belong to Phases 4 and 5. Phase 3 does not synthesize or save a replacement when the file is missing.

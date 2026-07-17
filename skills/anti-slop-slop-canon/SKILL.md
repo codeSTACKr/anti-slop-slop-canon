@@ -1,6 +1,6 @@
 ---
 name: anti-slop-slop-canon
-description: Compose, rewrite, edit, or audit mutable natural-language text in a clear personal voice without recognizable AI-writing habits. Use for writing and revising prose, messages, documents, scripts, narration, prepared speech, and voice-agent text, including requests to inspect a voice profile or obtain a realtime style prompt.
+description: Compose, rewrite, edit, or audit mutable natural-language text in a clear personal voice without recognizable AI-writing habits. Use for prose, messages, documents, scripts, narration, prepared speech, and voice-agent text, plus profile inspection and realtime style-prompt requests.
 ---
 
 # Anti-Slop Slop Canon
@@ -10,7 +10,7 @@ Use current default content version `0.1.0`.
 ## Resolve one bundle
 
 - Prefer a project copy inside its project. Resolve only `<project-root>/.anti-slop-slop-canon/voice-profile.md`; never inspect or fall back to global state. Otherwise resolve only `~/.config/anti-slop-slop-canon/voice-profile.md`.
-- Validate profiles with [references/profile-schema.md](references/profile-schema.md). Load a valid profile alone. Otherwise load [references/defaults.md](references/defaults.md) alone. After the task, report an invalid present profile and offer a previewed repair.
+- Validate with [references/profile-schema.md](references/profile-schema.md). A valid profile uses schema `1.0.0`, matches active scope, retains all required sections, and has actionable rules. Load it alone. Otherwise load [references/defaults.md](references/defaults.md) alone. Afterward, report an invalid profile and offer a previewed repair.
 - Compare a profile's `defaults_version` with `0.1.0`. Complete the task with that profile, then report a non-blocking mismatch. Never load defaults for a mismatch.
 
 ## Protect intent

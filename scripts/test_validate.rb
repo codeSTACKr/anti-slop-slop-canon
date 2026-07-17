@@ -91,12 +91,31 @@ class ValidateScriptTest < Minitest::Test
     end
   end
 
+  def test_profile_scope_validation_removal_fails
+    with_repository do |root|
+      skill = root / "skills/anti-slop-slop-canon/SKILL.md"
+      skill.write(skill.read.sub("matches active scope", "declares a scope"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing profile scope match contract"
+    end
+  end
+
   def test_missing_phase_3_fixture_fails
     with_repository do |root|
       FileUtils.rm(root / "evals/fixtures/phase-3-audit-routing.md")
       _stdout, stderr, status = run_validator(root)
       refute status.success?
       assert_includes stderr, "missing Phase 3 fixture phase-3-audit-routing"
+    end
+  end
+
+  def test_missing_foundational_legal_exemption_fixture_fails
+    with_repository do |root|
+      FileUtils.rm(root / "evals/fixtures/exempt-fixed-content.md")
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing foundational protected-content fixture exempt-fixed-content"
     end
   end
 
@@ -107,6 +126,46 @@ class ValidateScriptTest < Minitest::Test
       _stdout, stderr, status = run_validator(root)
       refute status.success?
       assert_includes stderr, "missing Realtime workflow"
+    end
+  end
+
+  def test_weakening_all_code_forms_contract_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("code in any form", "fenced code"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing all code forms contract"
+    end
+  end
+
+  def test_claiming_later_profile_actions_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("Do not present them as available actions", "Offer them as available actions"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "later profile actions must not be claimed in Phase 3"
+    end
+  end
+
+  def test_weakening_exact_quote_fixture_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/phase-3-exact-quote-exemption.md"
+      fixture.write(fixture.read.sub("preserve the quotation byte for byte", "preserve the quotation's meaning"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Expected behavior must preserve Phase 3 contract"
+    end
+  end
+
+  def test_moving_fixture_assertion_to_wrong_section_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/phase-3-compose-routing.md"
+      fixture.write(fixture.read.sub("- Do not invent a time, cause, safety claim, or apology.\n", "").sub("## Expected behavior\n", "## Expected behavior\n\nDo not invent a time, cause, safety claim, or apology.\n"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Assertions must preserve Phase 3 contract"
     end
   end
 end

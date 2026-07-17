@@ -58,7 +58,7 @@ Phase 3 fixtures make the runtime contract observable without adding a second ru
 | Code exemption | `phase-3-code-exemption` |
 | Structured-data exemption | `phase-3-structured-data-exemption` |
 
-The repository validator requires all seven fixtures and checks their operation, mode, mutation, and key assertion language. Host evaluation remains responsible for judging generated content.
+The repository validator requires all seven fixtures and checks their operation, mode, mutation, task facts, protected literals, expected routing, and assertion semantics in their proper sections. Mutation tests weaken representative contracts and must make validation fail. Host evaluation remains responsible for judging generated content.
 
 ## Token-count method
 
@@ -76,4 +76,4 @@ Run all repository contract checks with:
 ruby scripts/validate.rb
 ```
 
-The official Skill Creator `quick_validate.py` remains the preferred frontmatter check when its PyYAML dependency is already available. Do not install dependencies merely to run it. The repository validator uses Ruby's built-in Psych YAML parser and reproduces its Phase 1 naming, required-field, and frontmatter checks as the documented fallback.
+The official Skill Creator `quick_validate.py` remains the preferred frontmatter check when its PyYAML dependency is already available. Do not install dependencies merely to run it. The repository validator uses Ruby's built-in Psych YAML parser and reproduces its naming, required-field, and frontmatter checks as the documented fallback.

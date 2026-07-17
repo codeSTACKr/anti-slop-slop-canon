@@ -54,7 +54,7 @@ Limit Phase 3 profile handling to runtime inspection and routing.
 - Report whether the active bundle is a valid project profile, a valid global profile, or bundled defaults.
 - Report the selected state path, scope, schema version, content version, and `defaults_version` when present.
 - If a profile is unusable, keep defaults selected for the current task, explain the defect after the task, and offer a previewed repair. Never overwrite or silently repair the file.
-- If a profile's `defaults_version` differs from the router's current default version, keep the profile selected and report the mismatch after the current task. Report it at most once per current defaults version when the session shows a prior notice. Offer refresh, keep, or later as choices, but do not implement persistence or recompilation in Phase 3.
+- If a profile's `defaults_version` differs from the router's current default version, keep the profile selected and report the mismatch after the current task. Report it at most once per current defaults version when the session shows a prior notice. Explain that refresh, keep, and later persistence belong to the later profile lifecycle. Do not present them as available actions or implement persistence or recompilation in Phase 3.
 - Route setup, onboarding, learning from samples, profile creation, refresh, and persistent edits to the later profile workflow. Do not improvise those artifacts or retain source material.
 
 ## Realtime

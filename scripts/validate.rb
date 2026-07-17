@@ -48,13 +48,49 @@ ALLOWED_MODES = %w[written spoken mixed onboarding].freeze
 SEMVER = /\A(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\z/
 
 PHASE_3_FIXTURE_CONTRACTS = {
-  "phase-3-compose-routing" => ["compose", "written", true, ["without asking", "clean prose"]],
-  "phase-3-rewrite-routing" => ["rewrite", "written", true, ["silent second pass", "only clean revised prose"]],
-  "phase-3-audit-routing" => ["audit", "written", false, ["without editing", "active rules"]],
-  "phase-3-spoken-routing" => ["compose", "spoken", true, ["without asking", "first-listen"]],
-  "phase-3-exact-quote-exemption" => ["rewrite", "written", true, ["quotation byte for byte"]],
-  "phase-3-code-exemption" => ["rewrite", "written", true, ["code block byte for byte"]],
-  "phase-3-structured-data-exemption" => ["rewrite", "written", true, ["structured-data spans byte for byte"]]
+  "phase-3-compose-routing" => {
+    metadata: ["compose", "written", true],
+    Context: ["without an explicit operation name"],
+    Input: ["west elevator reopens Tuesday", "door sensor is replaced", "east elevator remains available"],
+    "Expected behavior": ["select written mode without asking", "run the silent second pass", "return clean prose"],
+    Assertions: ["Preserve Tuesday, the door sensor, and the east elevator's availability", "Do not invent a time, cause, safety claim, or apology", "Return no operation label, explanation, checklist, or diff"]
+  },
+  "phase-3-rewrite-routing" => {
+    metadata: ["rewrite", "written", true],
+    Input: ["Room 12 reopens at 2 PM after the window repair!"],
+    "Expected behavior": ["smallest useful edit", "run the silent second pass", "return only clean revised prose"],
+    Assertions: ["Preserve Room 12, 2 PM, and the window repair", "Remove unsupported enthusiasm and the exclamation point", "Return no preamble, reasoning, rule mapping, or diff"]
+  },
+  "phase-3-audit-routing" => {
+    metadata: ["audit", "written", false],
+    Input: ["Audit this without rewriting", "Here's the thing: this revolutionary update changes everything!"],
+    "Expected behavior": ["report concrete findings without supplying corrected prose"],
+    Assertions: ["canned phrase, unsupported hype, mid-sentence colon, and exclamation point", "Map findings to active rules", "Do not rewrite or silently replace the input"]
+  },
+  "phase-3-spoken-routing" => {
+    metadata: ["compose", "spoken", true],
+    Input: ["narration for a training video", "red switch stops the conveyor", "green switch restarts it after the guard is closed"],
+    "Expected behavior": ["explicit narration context without asking", "pronounceable, first-listen delivery"],
+    Assertions: ["Preserve the switch colors, actions, and closed-guard condition", "Use no Markdown, emojis, visual-only notation, or stage directions", "Do not treat the ambiguous word `write` as evidence for written mode"]
+  },
+  "phase-3-exact-quote-exemption" => {
+    metadata: ["rewrite", "written", true],
+    Input: ["Quote: “Here's the thing: it was fast—really fast!”"],
+    "Expected behavior": ["preserve the quotation byte for byte"],
+    Assertions: ["Preserve `“Here's the thing: it was fast—really fast!”` exactly", "Do not report protected punctuation or wording as a violation", "unchanged quote unless a diff is requested"]
+  },
+  "phase-3-code-exemption" => {
+    metadata: ["rewrite", "written", true],
+    Input: ["const message = \"Ready: yes!\";", "const range = \"1–3\";"],
+    "Expected behavior": ["preserving the entire fenced code block byte for byte"],
+    Assertions: ["Preserve both code lines, punctuation, quotes, and indentation exactly", "Do not apply prose punctuation bans inside code", "minimal edit"]
+  },
+  "phase-3-structured-data-exemption" => {
+    metadata: ["rewrite", "written", true],
+    Input: ["status: \"ready!\"", "range: \"1–3\"", '`{"label":"Ready: yes!","enabled":true}`'],
+    "Expected behavior": ["preserve both structured-data spans byte for byte"],
+    Assertions: ["Preserve the YAML and inline JSON exactly", "Do not apply prose rules to keys, values, punctuation, or delimiters", "Return no explanation or diff unless requested"]
+  }
 }.freeze
 
 class Validation
@@ -128,8 +164,12 @@ router_requirements = {
   "global state path" => "~/.config/anti-slop-slop-canon/voice-profile.md",
   "project isolation" => "never inspect or fall back to global state",
   "ambiguous written routing" => "Otherwise choose written without asking",
-  "single profile bundle" => "Load a valid profile alone",
+  "single profile bundle" => "Load it alone",
   "single defaults bundle" => "load [references/defaults.md](references/defaults.md) alone",
+  "profile schema compatibility" => "uses schema `1.0.0`",
+  "profile scope match" => "matches active scope",
+  "profile required sections" => "retains all required sections",
+  "profile actionable content" => "has actionable rules",
   "exact quotation exemption" => "exact quotations",
   "code exemption" => "code",
   "structured data exemption" => "structured data",
@@ -149,8 +189,21 @@ required_operation_headings = %w[Compose Rewrite Audit Profile Realtime]
 required_operation_headings.each do |heading|
   validation.check(headings(operations_text).include?(heading), "skills/anti-slop-slop-canon/references/operations.md: missing #{heading} workflow")
 end
+operation_requirements = {
+  "all code forms" => "code in any form",
+  "protected bytes" => "legally fixed wording byte for byte",
+  "meaning preservation" => "Preserve meaning, factual detail, uncertainty",
+  "ambiguous written routing" => "Default every ambiguous case to written without asking",
+  "single bundle" => "Never supplement a profile with defaults",
+  "clean compose output" => "Return only ready-to-use content unless an explanation was requested",
+  "meaningful second pass" => "Preserve requested meaning, facts, uncertainty, intent, and format"
+}.freeze
+operation_requirements.each do |label, text|
+  validation.check(operations_text.include?(text), "skills/anti-slop-slop-canon/references/operations.md: missing #{label} contract")
+end
 validation.check(operations_text.include?("Do not synthesize or persist a replacement in Phase 3"), "skills/anti-slop-slop-canon/references/operations.md: realtime later-phase boundary is required")
-validation.check(operations_text.include?("do not implement persistence or recompilation in Phase 3"), "skills/anti-slop-slop-canon/references/operations.md: profile later-phase boundary is required")
+validation.check(operations_text.include?("implement persistence or recompilation in Phase 3"), "skills/anti-slop-slop-canon/references/operations.md: profile later-phase boundary is required")
+validation.check(operations_text.include?("Do not present them as available actions"), "skills/anti-slop-slop-canon/references/operations.md: later profile actions must not be claimed in Phase 3")
 
 begin
   openai_meta = YAML.safe_load(OPENAI_YAML.read, permitted_classes: [], aliases: false)
@@ -222,18 +275,39 @@ end
 missing_categories = REQUIRED_CATEGORIES - seen_categories
 validation.check(missing_categories.empty?, "evals/fixtures: missing categories #{missing_categories.join(', ')}")
 
-PHASE_3_FIXTURE_CONTRACTS.each do |id, (operation, mode, mutation, snippets)|
+PHASE_3_FIXTURE_CONTRACTS.each do |id, contract|
   record = fixture_records[id]
   validation.check(!record.nil?, "evals/fixtures: missing Phase 3 fixture #{id}")
   next unless record
 
   meta, text = record
+  operation, mode, mutation = contract.fetch(:metadata)
   validation.check(meta["operation"] == operation, "evals/fixtures/#{id}.md: operation must be #{operation}")
   validation.check(meta["mode"] == mode, "evals/fixtures/#{id}.md: mode must be #{mode}")
   validation.check(meta["expected_mutation"] == mutation, "evals/fixtures/#{id}.md: expected_mutation must be #{mutation}")
-  snippets.each do |snippet|
-    validation.check(text.include?(snippet), "evals/fixtures/#{id}.md: missing Phase 3 assertion language #{snippet.inspect}")
+  sections = section_bodies(text)
+  contract.reject { |key, _value| key == :metadata }.each do |section, snippets|
+    snippets.each do |snippet|
+      validation.check(sections.fetch(section.to_s, "").include?(snippet), "evals/fixtures/#{id}.md: #{section} must preserve Phase 3 contract #{snippet.inspect}")
+    end
   end
+end
+
+fixed_record = fixture_records["exempt-fixed-content"]
+validation.check(!fixed_record.nil?, "evals/fixtures: missing foundational protected-content fixture exempt-fixed-content")
+if fixed_record
+  _meta, fixed_text = fixed_record
+  fixed_sections = section_bodies(fixed_text)
+  [
+    'Quote: “Move fast; keep the receipt — every time!”',
+    'Code: `const label = "Ready: yes!";`',
+    'Data: `{"status":"ready!","range":"1–3"}`',
+    "Legal: Copyright (c) 2026 Example Co. All rights reserved."
+  ].each do |protected_literal|
+    validation.check(fixed_sections.fetch("Input", "").include?(protected_literal), "evals/fixtures/exempt-fixed-content.md: Input must preserve protected literal #{protected_literal.inspect}")
+  end
+  validation.check(fixed_sections.fetch("Expected behavior", "").include?("Preserve protected spans byte for byte"), "evals/fixtures/exempt-fixed-content.md: expected behavior must require byte-for-byte preservation")
+  validation.check(fixed_sections.fetch("Assertions", "").include?("Preserve the quote, code, JSON, and legal line exactly"), "evals/fixtures/exempt-fixed-content.md: assertions must cover every protected form")
 end
 
 allowed_runtime_files = [

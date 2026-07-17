@@ -4,6 +4,7 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+- Record the independent Phase 3 contract review, clarify profile validity and later-phase boundaries, strengthen semantic fixture validation, and update stale phase copy.
 - Add the Phase 3 canonical router and detailed compose, rewrite, audit, profile, and realtime operation workflows.
 - Enforce project-isolated profile resolution, written-by-default mode inference, protected-content exemptions, clean output, version mismatch notices, and a silent second pass.
 - Add Phase 3 routing and exemption fixtures plus mechanical router, operation, and default-version contracts.

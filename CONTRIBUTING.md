@@ -1,6 +1,6 @@
 # Contributing
 
-The project is pre-release. Issue reports and focused pull requests are welcome once the first implementation lands.
+The project is pre-release. Issue reports and focused pull requests are welcome.
 
 ## Writing-rule changes
 
