@@ -23,6 +23,7 @@ Persist the same notice version with `defaults_notice_state: later` and `default
 ## Assertions
 
 - Do not notify before 2026-07-31 or during the current task.
-- On or after 2026-07-31, notify once after the current task and advance the date by exactly 14 calendar days.
+- On or after 2026-07-31, notify once after the current task and set the next date exactly 14 calendar days after the local date when that reminder is shown.
+- If the reminder is shown after an overdue deadline, do not advance from the old deadline or leave the next date in the past.
 - Do not notify more than once in a cooldown window.
 - Do not regenerate either generated file, load defaults, or leave project scope.

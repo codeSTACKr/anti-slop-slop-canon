@@ -26,4 +26,5 @@ Start a separate complete recompilation after the prior writing task. Treat curr
 - Increment profile content version, set `defaults_version: "0.2.0"`, preserve project scope, all ten sections, and both context budgets.
 - Require explicit approval, then stage and validate both files before rollback-protected pair replacement.
 - On cancellation or failure, preserve the prior profile and prompt as the active pair.
+- On cancellation, failure, or an interrupted stale refresh, restore the notice to `shown`, remove any reminder date, and do not display a duplicate notice.
 - Clear lifecycle notice keys only after approved replacement makes profile metadata current.

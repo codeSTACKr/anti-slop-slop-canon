@@ -177,7 +177,7 @@ PHASE_5_FIXTURE_CONTRACTS = {
     metadata: ["profile", "onboarding", true],
     Context: ["current project profile includes direct edits", "current defaults are `0.2.0`"],
     "Expected behavior": ["separate complete recompilation after the prior writing task", "direct edits, as approved preferences over the new defaults", "complete replacement profile", "complete realtime module", "one written example", "one spoken example", "before any replacement"],
-    Assertions: ["Do not automatically merge, patch, overwrite, or activate", "Increment profile content version", 'defaults_version: "0.2.0"', "all ten sections", "both context budgets", "Require explicit approval", "stage and validate both files before rollback-protected pair replacement", "On cancellation or failure, preserve the prior profile and prompt", "Clear lifecycle notice keys only after approved replacement"]
+    Assertions: ["Do not automatically merge, patch, overwrite, or activate", "Increment profile content version", 'defaults_version: "0.2.0"', "all ten sections", "both context budgets", "Require explicit approval", "stage and validate both files before rollback-protected pair replacement", "On cancellation or failure, preserve the prior profile and prompt", "interrupted stale refresh", "restore the notice to `shown`", "remove any reminder date", "do not display a duplicate notice", "Clear lifecycle notice keys only after approved replacement"]
   },
   "phase-5-keep-choice" => {
     metadata: ["profile", "onboarding", true],
@@ -188,7 +188,7 @@ PHASE_5_FIXTURE_CONTRACTS = {
     metadata: ["profile", "onboarding", true],
     Context: ["local date is 2026-07-17", "shown mismatch notice"],
     "Expected behavior": ["defaults_notice_state: later", 'defaults_remind_after: "2026-07-31"', "exactly 14 local calendar days"],
-    Assertions: ["Do not notify before 2026-07-31", "notify once after the current task", "advance the date by exactly 14 calendar days", "Do not notify more than once in a cooldown window", "Do not regenerate either generated file, load defaults, or leave project scope"]
+    Assertions: ["Do not notify before 2026-07-31", "notify once after the current task", "exactly 14 calendar days after the local date when that reminder is shown", "do not advance from the old deadline or leave the next date in the past", "Do not notify more than once in a cooldown window", "Do not regenerate either generated file, load defaults, or leave project scope"]
   },
   "phase-5-explicit-realtime-regeneration" => {
     metadata: ["realtime", "spoken", true],
@@ -312,7 +312,8 @@ end
 profile_lifecycle_requirements = {
   "already-loaded mismatch detection" => "Use only metadata already loaded from the router and winning profile",
   "post-task notice" => "Complete the current writing task with the profile alone",
-  "single notice" => "has not been noticed, kept, or deferred past today",
+  "single notice" => "`shown`, `refresh`, and `keep` suppress another notice",
+  "interrupted refresh recovery" => "recover its transient `refresh` state to `shown` without another notice",
   "shown-state ordering" => "only after showing it",
   "minimal settings keys" => "defaults_notice_version`, `defaults_notice_state`, and, only for `later`, `defaults_remind_after`",
   "settings state allowlist" => "Accept only `shown`, `refresh`, `keep`, or `later`",
@@ -322,9 +323,11 @@ profile_lifecycle_requirements = {
   "no automatic refresh" => "Never merge or write automatically",
   "refresh approval" => "Require explicit approval",
   "refresh pair validation" => "Stage and validate the pair before rollback-protected replacement",
+  "failed refresh state recovery" => "restore `defaults_notice_state: shown` for that version",
   "permanent keep" => "Never notify for that defaults version again",
   "deterministic later" => "exactly 14 calendar days after the choice",
-  "later repeat cadence" => "advance the date by another 14 calendar days",
+  "later repeat cadence" => "exactly 14 calendar days after the local date when the reminder was shown",
+  "overdue reminder recovery" => "Do not advance from an overdue date",
   "lifecycle scope isolation" => "A project copy reads and writes project state only",
   "no mismatch regeneration" => "never regenerates either generated file"
 }.freeze

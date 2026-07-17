@@ -171,6 +171,16 @@ class ValidateScriptTest < Minitest::Test
     end
   end
 
+  def test_interrupted_refresh_state_recovery_removal_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("recover its transient `refresh` state to `shown` without another notice", "leave the refresh state unchanged"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing interrupted refresh recovery contract"
+    end
+  end
+
   def test_automatic_refresh_merge_fails
     with_repository do |root|
       operations = root / "skills/anti-slop-slop-canon/references/operations.md"
@@ -208,6 +218,16 @@ class ValidateScriptTest < Minitest::Test
       _stdout, stderr, status = run_validator(root)
       refute status.success?
       assert_includes stderr, "missing deterministic later contract"
+    end
+  end
+
+  def test_overdue_later_deadline_mutation_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("Do not advance from an overdue date", "Advance from the prior deadline even when it stays in the past"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing overdue reminder recovery contract"
     end
   end
 

@@ -4,6 +4,7 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+- Record the independent Phase 5 lifecycle review and recover interrupted refresh state and overdue reminder cadence without changing frozen style contracts.
 - Add Phase 5 read-only profile inspection, stable direct edits, explicit re-onboarding, metadata-only mismatch detection, and post-task update notices.
 - Add minimal refresh, keep, and later settings with complete preview-and-approve refreshes, permanent per-version keep suppression, and a deterministic repeating 14-day cooldown.
 - Add explicit previewed realtime prompt regeneration while preventing mismatch notices, direct edits, and ordinary tasks from regenerating state.

@@ -16,6 +16,6 @@ defaults_notice_state: later
 defaults_remind_after: "2026-07-31"
 ```
 
-`keep` suppresses that defaults version permanently. `later` uses local calendar dates and a 14-day cooldown. Each reminder advances the date by another 14 days, so it appears at most once per cooldown window and only after a completed task. A newer mismatch version starts a separate notice state.
+`keep` suppresses that defaults version permanently. `later` uses local calendar dates and a 14-day cooldown. After a due reminder, the next date is 14 days after the day the reminder was shown, not 14 days after an overdue deadline. This prevents repeated reminders on successive tasks. A newer mismatch version starts a separate notice state.
 
-`refresh` is a complete recompilation, not an automatic merge. It treats the current profile, including direct edits, as approved preferences over new defaults, previews the complete profile and realtime module with written and spoken examples, and writes only after explicit approval. Failed or cancelled refreshes leave the prior pair active. Project and global lifecycle state never mix.
+`refresh` is a complete recompilation, not an automatic merge. It treats the current profile, including direct edits, as approved preferences over new defaults, previews the complete profile and realtime module with written and spoken examples, and writes only after explicit approval. Failed, cancelled, or interrupted refreshes leave the prior pair active and recover the notice to `shown` without displaying it again. An explicit refresh remains available. Project and global lifecycle state never mix.
