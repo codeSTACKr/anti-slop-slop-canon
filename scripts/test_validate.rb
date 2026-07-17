@@ -70,4 +70,43 @@ class ValidateScriptTest < Minitest::Test
       assert_includes stderr, "must be below 600"
     end
   end
+
+  def test_router_default_version_drift_fails
+    with_repository do |root|
+      skill = root / "skills/anti-slop-slop-canon/SKILL.md"
+      skill.write(skill.read.sub('default content version `0.1.0`', 'default content version `0.2.0`'))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "current default content version must match defaults.md"
+    end
+  end
+
+  def test_project_isolation_contract_removal_fails
+    with_repository do |root|
+      skill = root / "skills/anti-slop-slop-canon/SKILL.md"
+      skill.write(skill.read.sub("never inspect or fall back to global state", "prefer project state"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing project isolation contract"
+    end
+  end
+
+  def test_missing_phase_3_fixture_fails
+    with_repository do |root|
+      FileUtils.rm(root / "evals/fixtures/phase-3-audit-routing.md")
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing Phase 3 fixture phase-3-audit-routing"
+    end
+  end
+
+  def test_missing_operations_workflow_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("## Realtime", "## Voice module"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing Realtime workflow"
+    end
+  end
 end

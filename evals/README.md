@@ -23,7 +23,7 @@ Use exactly these level-two sections in order:
 3. `Expected behavior`
 4. `Assertions`
 
-Allowed categories are `ai_like`, `good_prose`, `personalized_voice`, `spoken_output`, `exemptions`, and `onboarding`. Allowed operations are `compose`, `rewrite`, `audit`, and `onboarding`. Allowed modes are `written`, `spoken`, `mixed`, and `onboarding`.
+Allowed categories are `ai_like`, `good_prose`, `personalized_voice`, `spoken_output`, `exemptions`, and `onboarding`. Allowed operations are `compose`, `rewrite`, `audit`, `profile`, `realtime`, and `onboarding`. Allowed modes are `written`, `spoken`, `mixed`, and `onboarding`.
 
 Write observable expectations without inventing a final rewrite. Assertions should protect meaning, factual details, required routing, exemptions, or onboarding state. A later phase may add approved outputs and human scores without changing the source fixture.
 
@@ -44,6 +44,22 @@ Phase 2 maps each portable rule family to representative fixtures:
 
 The good-prose controls use `expected_mutation: false` to make unnecessary polishing an observable failure.
 
+## Router coverage
+
+Phase 3 fixtures make the runtime contract observable without adding a second rule source:
+
+| Behavior | Fixture |
+| --- | --- |
+| Implicit written composition and clean output | `phase-3-compose-routing` |
+| Implicit rewrite and silent second pass | `phase-3-rewrite-routing` |
+| Audit without mutation | `phase-3-audit-routing` |
+| Clearly spoken routing | `phase-3-spoken-routing` |
+| Exact quotation exemption | `phase-3-exact-quote-exemption` |
+| Code exemption | `phase-3-code-exemption` |
+| Structured-data exemption | `phase-3-structured-data-exemption` |
+
+The repository validator requires all seven fixtures and checks their operation, mode, mutation, and key assertion language. Host evaluation remains responsible for judging generated content.
+
 ## Token-count method
 
 Context budgets use a repository-stable token proxy because host agents and models tokenize Markdown differently. `scripts/validate.rb` counts each Unicode word, number, contraction, or non-whitespace punctuation mark as one lexical unit, then adds a 25 percent safety margin and rounds up.
@@ -54,7 +70,7 @@ This proxy is the deterministic CI gate. Before a release, maintainers should al
 
 ## Validation
 
-Run all Phase 1 checks with:
+Run all repository contract checks with:
 
 ```sh
 ruby scripts/validate.rb

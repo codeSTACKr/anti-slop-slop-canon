@@ -11,6 +11,7 @@ PROFILE_TEMPLATE = SKILL_DIR / "assets/voice-profile.template.md"
 SKILL = SKILL_DIR / "SKILL.md"
 OPENAI_YAML = SKILL_DIR / "agents/openai.yaml"
 SCHEMA_DOC = SKILL_DIR / "references/profile-schema.md"
+OPERATIONS = SKILL_DIR / "references/operations.md"
 FIXTURE_DIR = ROOT / "evals/fixtures"
 
 REQUIRED_BUNDLE_SECTIONS = [
@@ -42,9 +43,19 @@ REQUIRED_CATEGORIES = %w[
   onboarding
 ].freeze
 
-ALLOWED_OPERATIONS = %w[compose rewrite audit onboarding].freeze
+ALLOWED_OPERATIONS = %w[compose rewrite audit profile realtime onboarding].freeze
 ALLOWED_MODES = %w[written spoken mixed onboarding].freeze
 SEMVER = /\A(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\z/
+
+PHASE_3_FIXTURE_CONTRACTS = {
+  "phase-3-compose-routing" => ["compose", "written", true, ["without asking", "clean prose"]],
+  "phase-3-rewrite-routing" => ["rewrite", "written", true, ["silent second pass", "only clean revised prose"]],
+  "phase-3-audit-routing" => ["audit", "written", false, ["without editing", "active rules"]],
+  "phase-3-spoken-routing" => ["compose", "spoken", true, ["without asking", "first-listen"]],
+  "phase-3-exact-quote-exemption" => ["rewrite", "written", true, ["quotation byte for byte"]],
+  "phase-3-code-exemption" => ["rewrite", "written", true, ["code block byte for byte"]],
+  "phase-3-structured-data-exemption" => ["rewrite", "written", true, ["structured-data spans byte for byte"]]
+}.freeze
 
 class Validation
   attr_reader :errors
@@ -108,6 +119,39 @@ validation.check(skill_meta["description"].is_a?(String), "skills/anti-slop-slop
 validation.check(skill_meta["description"].to_s.length <= 1024, "skills/anti-slop-slop-canon/SKILL.md: description exceeds 1,024 characters")
 validation.check(!skill_meta["description"].to_s.match?(/[<>]/), "skills/anti-slop-slop-canon/SKILL.md: description cannot contain angle brackets")
 
+%w[composition rewriting editing scripts narration voice-agent].each do |trigger|
+  validation.check(skill_meta["description"].to_s.downcase.include?(trigger.sub("composition", "compose").sub("rewriting", "rewrite").sub("editing", "edit")), "skills/anti-slop-slop-canon/SKILL.md: description must trigger #{trigger}")
+end
+
+router_requirements = {
+  "project state path" => "<project-root>/.anti-slop-slop-canon/voice-profile.md",
+  "global state path" => "~/.config/anti-slop-slop-canon/voice-profile.md",
+  "project isolation" => "never inspect or fall back to global state",
+  "ambiguous written routing" => "Otherwise choose written without asking",
+  "single profile bundle" => "Load a valid profile alone",
+  "single defaults bundle" => "load [references/defaults.md](references/defaults.md) alone",
+  "exact quotation exemption" => "exact quotations",
+  "code exemption" => "code",
+  "structured data exemption" => "structured data",
+  "legal exemption" => "legally fixed wording",
+  "silent second pass" => "Run a silent second pass",
+  "clean output" => "Return clean content",
+  "audit routing" => "audit",
+  "profile routing" => "profile",
+  "realtime routing" => "realtime"
+}.freeze
+router_requirements.each do |label, text|
+  validation.check(skill_text.include?(text), "skills/anti-slop-slop-canon/SKILL.md: missing #{label} contract")
+end
+
+operations_text = OPERATIONS.read
+required_operation_headings = %w[Compose Rewrite Audit Profile Realtime]
+required_operation_headings.each do |heading|
+  validation.check(headings(operations_text).include?(heading), "skills/anti-slop-slop-canon/references/operations.md: missing #{heading} workflow")
+end
+validation.check(operations_text.include?("Do not synthesize or persist a replacement in Phase 3"), "skills/anti-slop-slop-canon/references/operations.md: realtime later-phase boundary is required")
+validation.check(operations_text.include?("do not implement persistence or recompilation in Phase 3"), "skills/anti-slop-slop-canon/references/operations.md: profile later-phase boundary is required")
+
 begin
   openai_meta = YAML.safe_load(OPENAI_YAML.read, permitted_classes: [], aliases: false)
   interface = openai_meta.is_a?(Hash) ? openai_meta["interface"] : nil
@@ -148,11 +192,14 @@ validation.check(bundle_data.dig("profile", "defaults_version") == bundle_data.d
 validation.check(bundle_data.dig("defaults", "schema_version") != bundle_data.dig("defaults", "content_version"), "schema and default content versions must demonstrate independent lifecycles")
 schema_doc_version = SCHEMA_DOC.read[/^Schema version: `([^`]+)`$/, 1]
 validation.check(schema_doc_version == bundle_data.dig("defaults", "schema_version"), "skills/anti-slop-slop-canon/references/profile-schema.md: declared schema version must match the bundles")
+router_default_version = skill_text[/^Use current default content version `([^`]+)`\.$/, 1]
+validation.check(router_default_version == bundle_data.dig("defaults", "content_version"), "skills/anti-slop-slop-canon/SKILL.md: current default content version must match defaults.md")
 
 fixture_paths = FIXTURE_DIR.glob("*.md").sort
 validation.check(!fixture_paths.empty?, "evals/fixtures: at least one fixture is required")
 seen_ids = []
 seen_categories = []
+fixture_records = {}
 fixture_paths.each do |path|
   meta, text = validation.frontmatter(path)
   required = %w[category expected_mutation id mode operation]
@@ -170,15 +217,31 @@ fixture_paths.each do |path|
   end
   seen_ids << meta["id"]
   seen_categories << meta["category"]
+  fixture_records[meta["id"]] = [meta, text]
 end
 missing_categories = REQUIRED_CATEGORIES - seen_categories
 validation.check(missing_categories.empty?, "evals/fixtures: missing categories #{missing_categories.join(', ')}")
+
+PHASE_3_FIXTURE_CONTRACTS.each do |id, (operation, mode, mutation, snippets)|
+  record = fixture_records[id]
+  validation.check(!record.nil?, "evals/fixtures: missing Phase 3 fixture #{id}")
+  next unless record
+
+  meta, text = record
+  validation.check(meta["operation"] == operation, "evals/fixtures/#{id}.md: operation must be #{operation}")
+  validation.check(meta["mode"] == mode, "evals/fixtures/#{id}.md: mode must be #{mode}")
+  validation.check(meta["expected_mutation"] == mutation, "evals/fixtures/#{id}.md: expected_mutation must be #{mutation}")
+  snippets.each do |snippet|
+    validation.check(text.include?(snippet), "evals/fixtures/#{id}.md: missing Phase 3 assertion language #{snippet.inspect}")
+  end
+end
 
 allowed_runtime_files = [
   "SKILL.md",
   "agents/openai.yaml",
   "assets/voice-profile.template.md",
   "references/defaults.md",
+  "references/operations.md",
   "references/profile-schema.md"
 ].freeze
 actual_runtime_files = SKILL_DIR.glob("**/*", File::FNM_DOTMATCH).select(&:file?).map { |path| path.relative_path_from(SKILL_DIR).to_s }.sort

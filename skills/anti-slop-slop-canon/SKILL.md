@@ -1,14 +1,26 @@
 ---
 name: anti-slop-slop-canon
-description: Defines the pre-release style-bundle contract and default writing canon for anti-slop-slop-canon. Use only when reviewing or contributing to its Markdown schema, defaults, and evaluation fixtures; composition, rewriting, auditing, routing, and onboarding behavior are not shipped yet.
+description: Compose, rewrite, edit, or audit mutable natural-language text in a clear personal voice without recognizable AI-writing habits. Use for writing and revising prose, messages, documents, scripts, narration, prepared speech, and voice-agent text, including requests to inspect a voice profile or obtain a realtime style prompt.
 ---
 
 # Anti-Slop Slop Canon
 
-Treat this package as a contract preview. Do not claim that it changes writing or performs onboarding.
+Use current default content version `0.1.0`.
 
-## Review the contract
+## Resolve one bundle
 
-- Read [references/profile-schema.md](references/profile-schema.md) to inspect the shared defaults and profile schema.
-- Read [references/defaults.md](references/defaults.md) to review the default writing canon and its shared bundle shape. Its content version is `0.1.0`.
-- Use the repository evaluation fixtures and maintainer validation outside this skill directory when contributing.
+- Prefer a project copy inside its project. Resolve only `<project-root>/.anti-slop-slop-canon/voice-profile.md`; never inspect or fall back to global state. Otherwise resolve only `~/.config/anti-slop-slop-canon/voice-profile.md`.
+- Validate profiles with [references/profile-schema.md](references/profile-schema.md). Load a valid profile alone. Otherwise load [references/defaults.md](references/defaults.md) alone. After the task, report an invalid present profile and offer a previewed repair.
+- Compare a profile's `defaults_version` with `0.1.0`. Complete the task with that profile, then report a non-blocking mismatch. Never load defaults for a mismatch.
+
+## Protect intent
+
+- Select spoken only for text clearly meant to be heard, including scripts, narration, announcements, and voice-agent responses. Otherwise choose written without asking.
+- Preserve meaning, facts, uncertainty, and intent. Exempt exact quotations, code, structured data, and legally fixed wording from style edits.
+- Reject detector-evasion or undetectability framing. Offer clarity and voice editing.
+
+## Route and deliver
+
+- Read [references/operations.md](references/operations.md). Route explicit requests to compose, rewrite, audit, profile, or realtime. Treat ordinary creation as compose and ordinary revision as rewrite.
+- Apply the bundle's shared rules and selected mode. Run a silent second pass for meaning, exemptions, mode, and rule violations, then fix only mutable prose.
+- Return clean content for compose and rewrite. Add reasoning, rule mappings, or a diff only when requested. Return findings without edits for audit.

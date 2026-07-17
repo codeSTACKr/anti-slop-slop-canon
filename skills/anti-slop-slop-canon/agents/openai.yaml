@@ -1,4 +1,4 @@
 interface:
   display_name: "Anti-Slop Slop Canon"
-  short_description: "Review the pre-release writing contract"
-  default_prompt: "Use $anti-slop-slop-canon to inspect the pre-release style-bundle contract."
+  short_description: "Write and edit in a clear personal voice"
+  default_prompt: "Use $anti-slop-slop-canon to write or revise this text in my active voice."

@@ -4,7 +4,7 @@ Sound like yourself.
 
 `anti-slop-slop-canon` is an open-source Agent Skill for removing recognizable AI-writing habits and adapting written and spoken content to a transparent, editable personal voice.
 
-The repository now includes the frozen profile schema, the default writing canon, evaluation fixtures, and maintainer validation. The runtime router and onboarding behavior are not included, so the skill is not ready to install.
+The repository now includes the frozen profile schema, default writing canon, canonical runtime router, operation workflows, evaluation fixtures, and maintainer validation. Adaptive onboarding and generated realtime artifacts remain later-phase work, so the skill is not ready to install.
 
 ## Planned install
 
