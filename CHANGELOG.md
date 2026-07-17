@@ -1,27 +1,23 @@
 # Changelog
 
-All notable changes will be documented here.
+This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## [Unreleased]
 
-- Record the independent Phase 5 lifecycle review and recover interrupted refresh state and overdue reminder cadence without changing frozen style contracts.
-- Add Phase 5 read-only profile inspection, stable direct edits, explicit re-onboarding, metadata-only mismatch detection, and post-task update notices.
-- Add minimal refresh, keep, and later settings with complete preview-and-approve refreshes, permanent per-version keep suppression, and a deterministic repeating 14-day cooldown.
-- Add explicit previewed realtime prompt regeneration while preventing mismatch notices, direct edits, and ordinary tasks from regenerating state.
-- Add six section-scoped lifecycle fixtures and adversarial mutation coverage for task ordering, single-bundle isolation, scope, refresh transactions, edit precedence, keep suppression, cooldown arithmetic, and regeneration boundaries.
-- Record the independent Phase 4 onboarding and privacy review, clarify personalized realtime exclusions and pair-validation order, and strengthen section-scoped fixtures and mutation coverage for input routing, rerun versioning, task resumption, precedence, and rollback.
-- Add Phase 4 adaptive first-use and explicit onboarding with one-question-at-a-time evidence collection, contradiction resolution, complete profile compilation, preview, approval, scope-safe persistence, and default non-retention.
-- Add the prebuilt style-only realtime voice module and approved personalized prompt generation with first-listen delivery and policy-domain exclusions.
-- Add ten Phase 4 fixtures plus semantic validation and mutation coverage for choices, evidence strength, preview-before-save, helper approval, retention, precedence, scope, budgets, and consistent profile/prompt writes.
-- Keep profile lifecycle refresh, mismatch-choice persistence, reminders, distribution, evaluation release gates, and site work deferred.
-- Record the independent Phase 3 contract review, clarify profile validity and later-phase boundaries, strengthen semantic fixture validation, and update stale phase copy.
-- Add the Phase 3 canonical router and detailed compose, rewrite, audit, profile, and realtime operation workflows.
-- Enforce project-isolated profile resolution, written-by-default mode inference, protected-content exemptions, clean output, version mismatch notices, and a silent second pass.
-- Add Phase 3 routing and exemption fixtures plus mechanical router, operation, and default-version contracts.
-- Record the Phase 2 blind restraint review against commit `3f6297a`, including a pass on all clean-writing controls and disclosed blinded-method limitations.
-- Add default canon content version `0.1.0` with written and spoken guidance, portable voice mechanics, exemptions, and explicit anti-patterns.
-- Expand fixtures across punctuation, vocabulary, structure, rhythm, confidence, spoken delivery, and good-writing restraint.
-- Keep style-bundle schema version `1.0.0` independent from the default content lifecycle.
-- Add representative Phase 1 evaluation fixtures and their authoring contract.
-- Add deterministic repository, skill, fixture, link, and context-budget validation.
-- Mark the canonical skill as a non-operational contract preview until later runtime phases land.
+Targets initial release `0.1.0`. The skill is not yet published. See the README status line before recommending an install command to anyone.
+
+### Added
+
+- **Phase 1, contracts and scaffold.** The public repository, the MIT license, the canonical skill scaffold under `skills/anti-slop-slop-canon/`, the shared style-bundle schema, the first representative evaluation fixtures, and the deterministic repository validator.
+- **Phase 2, default writing canon.** `defaults.md` at content version `0.1.0`, covering written and spoken guidance, vocabulary, rhythm, structure, signature moves, and the required no-hype, no-marketing-jargon, no-em/en-dash, no-semicolon, no-exclamation, no-mid-sentence-colon, no-rule-of-three, no-"here's the thing," and no-contrast-framing rules, under 1,500 guarded tokens. Fixtures across every rule family, plus good-writing controls that must remain unchanged, and an independent blind restraint review of the result.
+- **Phase 3, router and operations.** `SKILL.md` as the canonical router, under 600 guarded tokens, plus `references/operations.md` covering compose, rewrite, audit, profile, profile lifecycle, and realtime workflows. Scope-safe profile resolution, written-by-default mode inference, protected-content exemptions, a silent second pass, and clean output by default. Routing and exemption fixtures, and an independent contract review.
+- **Phase 4, adaptive onboarding.** The first-use choice between personalize, defaults, and defer, one-question-at-a-time evidence collection, optional and approval-gated extraction helpers, contradiction handling, complete profile compilation with the agreed precedence order, preview before any write, and default non-retention of samples and analysis. The prebuilt default realtime module and personalized generation at approval time. Ten onboarding fixtures and an independent onboarding and privacy review.
+- **Phase 5, profile lifecycle.** Read-only profile inspection, stability of direct edits, metadata-only version-mismatch detection, and post-task notices. Refresh, keep, and later lifecycle states, with refresh as a complete preview-and-approve recompilation, permanent per-version suppression for keep, and a deterministic 14-day cooldown for later. Explicit, approval-gated realtime prompt regeneration. Six lifecycle fixtures and an independent lifecycle review.
+- **Phase 6, evaluation and release gates.** Human scoring rubrics for meaning preservation, edit restraint, personal fidelity, written-versus-spoken routing, and first-listen clarity. A cross-agent fixture matrix for Claude Code, Codex, and Cursor. An optional, maintainer-run model-judge policy that never substitutes for human or editorial review. A blind-comparison template for personalized-versus-default scoring. The deterministic half of the release gate, frontmatter, schema sections, version parity, banned patterns, fixture coverage, broken links, and context budgets, passes. Recording actual scored comparisons, filling the cross-agent matrix, and Jesse's editorial approval of representative output remain open.
+- **Phase 7, documentation and distribution.** A README that leads with the product's purpose and a real before-and-after example drawn from an evaluation fixture, states the planned global and project install commands, and documents scope, first-use choices, direct editing, privacy, supported operations, and the realtime prompt. Expanded `docs/installation.md`, `docs/onboarding.md`, `docs/profiles.md`, `docs/realtime-voice.md`, and `docs/contributing-rules.md`. A manual-install fallback that copies the one canonical skill folder without generating a host-specific rule file. Optional extraction helpers documented as suggestions that require approval, never as dependencies. The detector-evasion boundary stated once, plainly, without making it the product's theme.
+
+### Deferred
+
+- Cross-agent manual test runs, recorded blind comparisons, and Jesse's editorial sign-off on representative output.
+- The Astro, shadcn, and Hallmark showcase.
+- Tagging and publishing `0.1.0` itself.
