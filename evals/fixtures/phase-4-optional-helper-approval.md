@@ -10,7 +10,7 @@ expected_mutation: false
 
 ## Context
 
-The host cannot extract a supplied video transcript, and `yt-dlp` is not available. The user has already provided one usable pasted sample.
+Pasted text, Markdown, and a local plain-text file are available. The user also supplies a URL, PDF, video, and transcript. The host cannot extract the video transcript, and `yt-dlp` is not available. The user has already provided one usable pasted sample.
 
 ## Input
 
@@ -18,7 +18,7 @@ Can you also use this video as evidence?
 
 ## Expected behavior
 
-Use host-native access first. If it fails, offer pasted or exported text and optionally offer the missing helper. Make clear that onboarding can proceed without it and require explicit approval before installation.
+Accept the pasted, Markdown, and local plain-text inputs directly. Use host-native reading first for the URL, PDF, video, and transcript. If native reading fails, offer pasted or exported text and optionally offer a useful missing helper such as `yt-dlp` or `pdftotext`. Make clear that onboarding can proceed without it and require explicit approval before installation.
 
 ## Assertions
 

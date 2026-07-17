@@ -4,6 +4,7 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+- Record the independent Phase 4 onboarding and privacy review, clarify personalized realtime exclusions and pair-validation order, and strengthen section-scoped fixtures and mutation coverage for input routing, rerun versioning, task resumption, precedence, and rollback.
 - Add Phase 4 adaptive first-use and explicit onboarding with one-question-at-a-time evidence collection, contradiction resolution, complete profile compilation, preview, approval, scope-safe persistence, and default non-retention.
 - Add the prebuilt style-only realtime voice module and approved personalized prompt generation with first-listen delivery and policy-domain exclusions.
 - Add ten Phase 4 fixtures plus semantic validation and mutation coverage for choices, evidence strength, preview-before-save, helper approval, retention, precedence, scope, budgets, and consistent profile/prompt writes.

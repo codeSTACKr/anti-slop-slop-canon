@@ -210,6 +210,16 @@ class ValidateScriptTest < Minitest::Test
     end
   end
 
+  def test_profile_precedence_reordering_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("3. Traits consistent across supplied samples.\n4. Bundled defaults.", "3. Bundled defaults.\n4. Traits consistent across supplied samples."))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "profile precedence must preserve the exact ordered chain"
+    end
+  end
+
   def test_copying_invariants_into_profile_contract_fails
     with_repository do |root|
       onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
@@ -257,6 +267,27 @@ class ValidateScriptTest < Minitest::Test
       _stdout, stderr, status = run_validator(root)
       refute status.success?
       assert_includes stderr, "missing atomic pair write contract"
+    end
+  end
+
+  def test_pair_validation_before_replacement_contract_removal_fails
+    with_repository do |root|
+      onboarding = root / "skills/anti-slop-slop-canon/references/onboarding.md"
+      onboarding.write(onboarding.read.sub("and budgets before replacing either current file", "and budgets after replacing the current files"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing validate pair before replacement contract"
+    end
+  end
+
+  def test_rerun_rollback_fixture_relocation_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/onboarding-conflicting-evidence.md"
+      contract = "- If either replacement fails, restore the prior profile and prompt rather than leaving a mixed pair.\n"
+      fixture.write(fixture.read.sub(contract, "").sub("## Expected behavior\n", "## Expected behavior\n\n#{contract}"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Assertions must preserve Phase 4 contract"
     end
   end
 
@@ -323,7 +354,7 @@ class ValidateScriptTest < Minitest::Test
   def test_weakening_realtime_fixture_policy_boundary_fails
     with_repository do |root|
       fixture = root / "evals/fixtures/phase-4-personalized-realtime.md"
-      fixture.write(fixture.read.sub("Define no jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration", "Keep the module useful"))
+      fixture.write(fixture.read.sub("Define no jobs or roles; tools, APIs, or function calls; safety or refusal policy; facts or knowledge; conversation flow, greetings, or follow-up behavior; handoff, transfer, or escalation; interruption or barge-in behavior; or orchestration or delegation", "Keep the module useful"))
       _stdout, stderr, status = run_validator(root)
       refute status.success?
       assert_includes stderr, "Assertions must preserve Phase 4 contract"

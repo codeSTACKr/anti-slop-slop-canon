@@ -26,3 +26,4 @@ Before writing, ask exactly one choice: personalize now, use defaults, or defer.
 - Treat the project directory as the only state scope.
 - Do not claim any profile, prompt, or settings write before a choice.
 - Resume the original task after a defaults or defer choice.
+- After first-use personalization is approved, resume the original task with the approved profile.

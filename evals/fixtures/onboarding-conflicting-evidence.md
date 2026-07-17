@@ -27,3 +27,5 @@ Preserve current state while asking one focused question at a time. Surface the 
 - Do not write a profile before explicit approval.
 - Keep confidence and evidence notes outside the runtime profile.
 - Preserve the prior profile and prompt unless the user explicitly approves the replacement.
+- After approval, increment the profile content version when the profile instructions changed.
+- If either replacement fails, restore the prior profile and prompt rather than leaving a mixed pair.

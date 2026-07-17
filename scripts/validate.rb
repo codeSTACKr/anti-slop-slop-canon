@@ -100,7 +100,7 @@ PHASE_4_FIXTURE_CONTRACTS = {
     metadata: ["onboarding", "onboarding", false],
     Context: ["neither `voice-profile.md` nor `settings.md`", "Global state may exist but is out of scope"],
     "Expected behavior": ["ask exactly one choice", "personalize now, use defaults, or defer", "Do not inspect global state"],
-    Assertions: ["Present all three choices and no onboarding questionnaire", "Do not claim any profile, prompt, or settings write"]
+    Assertions: ["Present all three choices and no onboarding questionnaire", "Do not claim any profile, prompt, or settings write", "After first-use personalization is approved, resume the original task with the approved profile"]
   },
   "phase-4-one-short-sample" => {
     metadata: ["onboarding", "onboarding", false],
@@ -138,8 +138,8 @@ PHASE_4_FIXTURE_CONTRACTS = {
   },
   "phase-4-optional-helper-approval" => {
     metadata: ["onboarding", "onboarding", false],
-    Context: ["`yt-dlp` is not available", "usable pasted sample"],
-    "Expected behavior": ["Use host-native access first", "proceed without it", "explicit approval before installation"],
+    Context: ["Pasted text, Markdown, and a local plain-text file", "URL, PDF, video, and transcript", "`yt-dlp` is not available", "usable pasted sample"],
+    "Expected behavior": ["Accept the pasted, Markdown, and local plain-text inputs directly", "Use host-native reading first for the URL, PDF, video, and transcript", "`yt-dlp` or `pdftotext`", "proceed without it", "explicit approval before installation"],
     Assertions: ["Do not install `yt-dlp`", "Do not block onboarding", "Ask no helper-install question when the source can be read natively"]
   },
   "phase-4-profile-compilation" => {
@@ -150,7 +150,13 @@ PHASE_4_FIXTURE_CONTRACTS = {
   "phase-4-personalized-realtime" => {
     metadata: ["realtime", "spoken", true],
     "Expected behavior": ["bundled default realtime style", "approved spoken traits", "persist both consistently in global state"],
-    Assertions: ["plain speakable output", "concise pronounceable sentences", "no Markdown or visual notation", "first-listen clarity", "between 250 and 400 guarded units", "Define no jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration"]
+    Assertions: ["plain speakable output", "concise pronounceable sentences", "no Markdown or visual notation", "first-listen clarity", "between 250 and 400 guarded units", "Define no jobs or roles; tools, APIs, or function calls; safety or refusal policy; facts or knowledge; conversation flow, greetings, or follow-up behavior; handoff, transfer, or escalation; interruption or barge-in behavior; or orchestration or delegation"]
+  },
+  "onboarding-conflicting-evidence" => {
+    metadata: ["onboarding", "onboarding", false],
+    Context: ["explicitly reruns onboarding"],
+    "Expected behavior": ["Preserve current state", "one focused question at a time", "instead of silently averaging", "before any persistent write"],
+    Assertions: ["Preserve the prior profile and prompt unless the user explicitly approves the replacement", "increment the profile content version when the profile instructions changed", "If either replacement fails, restore the prior profile and prompt rather than leaving a mixed pair"]
   }
 }.freeze
 
@@ -295,7 +301,7 @@ onboarding_requirements = {
   "invariants remain outside profile" => "Product invariants constrain compilation but stay in the router",
   "profile replaces defaults" => "replace defaults at runtime, not supplement them",
   "profile budget" => "below 1,500 guarded units",
-  "personalized realtime policy boundary" => "Never define jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration",
+  "personalized realtime policy boundary" => "Never define jobs or roles; tools, APIs, or function calls; safety or refusal policy; facts or knowledge; conversation flow, greetings, or follow-up behavior; handoff, transfer, or escalation; interruption or barge-in behavior; or orchestration or delegation",
   "complete preview" => "The complete proposed `voice-profile.md`",
   "realtime preview" => "The complete proposed `realtime-voice-prompt.md`",
   "written preview" => "One short written example",
@@ -304,13 +310,17 @@ onboarding_requirements = {
   "approval gate" => "Approval must be explicit",
   "scope-safe writes" => "Never write above project scope or into the installed skill directory",
   "atomic pair write" => "atomically where the host supports it",
-  "consistent pair write" => "otherwise as one consistent approval action",
+  "validate pair before replacement" => "validate their metadata, scope, sections, content, and budgets before replacing either current file",
+  "consistent pair write" => "Otherwise replace them as one rollback-protected approval action",
   "exact retained state" => "only `voice-profile.md`, `realtime-voice-prompt.md`, and minimal `settings.md`",
   "non-retention" => "Never copy or retain raw samples, pasted text, URLs, downloads, transcripts, source lists, extraction notes, confidence data, measurements, or onboarding analysis"
 }.freeze
 onboarding_requirements.each do |label, text|
   validation.check(onboarding_text.include?(text), "skills/anti-slop-slop-canon/references/onboarding.md: missing #{label} contract")
 end
+precedence_pattern = /1\. Non-overridable product invariants from the router\.\n2\. Explicit current user answers\.\n3\. Traits consistent across supplied samples\.\n4\. Bundled defaults\./
+validation.check(onboarding_text.match?(precedence_pattern), "skills/anti-slop-slop-canon/references/onboarding.md: profile precedence must preserve the exact ordered chain")
+validation.check(onboarding_text.include?("higher-precedence personal choices to replace conflicting defaults"), "skills/anti-slop-slop-canon/references/onboarding.md: higher-precedence rules must replace conflicting lower-precedence rules")
 
 begin
   openai_meta = YAML.safe_load(OPENAI_YAML.read, permitted_classes: [], aliases: false)

@@ -24,5 +24,5 @@ Compile the personalized module from the bundled default realtime style and appl
 
 - Keep plain speakable output, concise pronounceable sentences, no Markdown or visual notation, and first-listen clarity.
 - Keep the module style-only and between 250 and 400 guarded units.
-- Define no jobs, tools, safety policy, facts, conversation flow, handoffs, interruption logic, or orchestration.
+- Define no jobs or roles; tools, APIs, or function calls; safety or refusal policy; facts or knowledge; conversation flow, greetings, or follow-up behavior; handoff, transfer, or escalation; interruption or barge-in behavior; or orchestration or delegation.
 - Do not save the module before explicit approval or inside the installed skill directory.
