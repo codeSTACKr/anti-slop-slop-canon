@@ -1,0 +1,7 @@
+.DS_Store
+.astro/
+dist/
+node_modules/
+
+# Personal voice data must never enter the public repository.
+.anti-slop-slop-canon/
