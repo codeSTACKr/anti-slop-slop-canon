@@ -128,7 +128,7 @@ PHASE_4_FIXTURE_CONTRACTS = {
   "phase-4-defaults-defer" => {
     metadata: ["onboarding", "onboarding", true],
     "Expected behavior": ["`setup: defaults`", "`setup: deferred`", "bundled defaults"],
-    Assertions: ["Create no profile or personalized realtime prompt", "Write nowhere above", "Do not implement reminder cooldown, refresh, keep, or later lifecycle fields"]
+    Assertions: ["Create no profile or personalized realtime prompt", "Write nowhere above", "Do not create profile-mismatch lifecycle fields when no profile exists"]
   },
   "phase-4-sample-non-retention" => {
     metadata: ["onboarding", "onboarding", true],
@@ -157,6 +157,44 @@ PHASE_4_FIXTURE_CONTRACTS = {
     Context: ["explicitly reruns onboarding"],
     "Expected behavior": ["Preserve current state", "one focused question at a time", "instead of silently averaging", "before any persistent write"],
     Assertions: ["Preserve the prior profile and prompt unless the user explicitly approves the replacement", "increment the profile content version when the profile instructions changed", "If either replacement fails, restore the prior profile and prompt rather than leaving a mixed pair"]
+  }
+}.freeze
+
+PHASE_5_FIXTURE_CONTRACTS = {
+  "phase-5-profile-edit-stability" => {
+    metadata: ["profile", "written", false],
+    Context: ["directly edited after onboarding", "Global state also exists"],
+    "Expected behavior": ["Return the project profile unchanged", "minimal lifecycle settings", "inspection read-only"],
+    Assertions: ["Do not inspect global state, load defaults, or regenerate either generated file", "silently synchronize the realtime module", "preview-and-approval onboarding workflow", "exact three-file state allowlist"]
+  },
+  "phase-5-mismatch-notice" => {
+    metadata: ["compose", "written", true],
+    Context: ["router declares defaults version `0.2.0`", 'defaults_version: "0.1.0"', "No notice state exists", "global state exists"],
+    "Expected behavior": ["already-loaded router and winning-profile metadata", "writing task with the project profile alone", "then show one non-blocking `refresh`, `keep`, or `later` notice", "shown state in project settings"],
+    Assertions: ["Do not read bundled defaults, global settings, or the global profile", "Do not show the notice before or inside", 'defaults_notice_version: "0.2.0"', "defaults_notice_state: shown", "Do not repeat a shown notice", "Do not regenerate or replace"]
+  },
+  "phase-5-refresh-preview" => {
+    metadata: ["profile", "onboarding", true],
+    Context: ["current project profile includes direct edits", "current defaults are `0.2.0`"],
+    "Expected behavior": ["separate complete recompilation after the prior writing task", "direct edits, as approved preferences over the new defaults", "complete replacement profile", "complete realtime module", "one written example", "one spoken example", "before any replacement"],
+    Assertions: ["Do not automatically merge, patch, overwrite, or activate", "Increment profile content version", 'defaults_version: "0.2.0"', "all ten sections", "both context budgets", "Require explicit approval", "stage and validate both files before rollback-protected pair replacement", "On cancellation or failure, preserve the prior profile and prompt", "Clear lifecycle notice keys only after approved replacement"]
+  },
+  "phase-5-keep-choice" => {
+    metadata: ["profile", "onboarding", true],
+    "Expected behavior": ['defaults_notice_version: "0.2.0"', "defaults_notice_state: keep", "preserving any setup line"],
+    Assertions: ["Never notify for defaults `0.2.0` again", "Do not change, regenerate, or replace", "Do not read defaults or write global state", "newer mismatched defaults version"]
+  },
+  "phase-5-later-cooldown" => {
+    metadata: ["profile", "onboarding", true],
+    Context: ["local date is 2026-07-17", "shown mismatch notice"],
+    "Expected behavior": ["defaults_notice_state: later", 'defaults_remind_after: "2026-07-31"', "exactly 14 local calendar days"],
+    Assertions: ["Do not notify before 2026-07-31", "notify once after the current task", "advance the date by exactly 14 calendar days", "Do not notify more than once in a cooldown window", "Do not regenerate either generated file, load defaults, or leave project scope"]
+  },
+  "phase-5-explicit-realtime-regeneration" => {
+    metadata: ["realtime", "spoken", true],
+    Context: ["directly edited a valid global profile", "explicitly request"],
+    "Expected behavior": ["active profile alone", "preview one complete style-only realtime module", "Require explicit approval", "replace only the global realtime prompt with rollback protection"],
+    Assertions: ["Do not load defaults, rewrite the profile, or infer regeneration", "Do not write the prompt before approval or outside global state", "between 250 and 400 guarded units", "preserve every realtime policy exclusion", "approved onboarding, approved refresh, or this explicit request"]
   }
 }.freeze
 
@@ -271,8 +309,30 @@ operation_requirements = {
 operation_requirements.each do |label, text|
   validation.check(operations_text.include?(text), "skills/anti-slop-slop-canon/references/operations.md: missing #{label} contract")
 end
-validation.check(operations_text.include?("Do not load defaults, persist a choice, refresh, merge, or offer keep/later behavior"), "skills/anti-slop-slop-canon/references/operations.md: Phase 5 lifecycle boundary is required")
-validation.check(operations_text.include?("Generate a personalized module only as part of approved onboarding"), "skills/anti-slop-slop-canon/references/operations.md: personalized realtime generation boundary is required")
+profile_lifecycle_requirements = {
+  "already-loaded mismatch detection" => "Use only metadata already loaded from the router and winning profile",
+  "post-task notice" => "Complete the current writing task with the profile alone",
+  "single notice" => "has not been noticed, kept, or deferred past today",
+  "shown-state ordering" => "only after showing it",
+  "minimal settings keys" => "defaults_notice_version`, `defaults_notice_state`, and, only for `later`, `defaults_remind_after`",
+  "settings state allowlist" => "Accept only `shown`, `refresh`, `keep`, or `later`",
+  "separate refresh" => "Only then load current defaults alongside the profile",
+  "direct edits win refresh" => "including direct edits, as approved preferences over new defaults",
+  "complete refresh preview" => "Preview both complete files plus written and spoken examples",
+  "no automatic refresh" => "Never merge or write automatically",
+  "refresh approval" => "Require explicit approval",
+  "refresh pair validation" => "Stage and validate the pair before rollback-protected replacement",
+  "permanent keep" => "Never notify for that defaults version again",
+  "deterministic later" => "exactly 14 calendar days after the choice",
+  "later repeat cadence" => "advance the date by another 14 calendar days",
+  "lifecycle scope isolation" => "A project copy reads and writes project state only",
+  "no mismatch regeneration" => "never regenerates either generated file"
+}.freeze
+profile_lifecycle_requirements.each do |label, text|
+  validation.check(operations_text.include?(text), "skills/anti-slop-slop-canon/references/operations.md: missing #{label} contract")
+end
+validation.check(operations_text.include?("only during approved onboarding, approved refresh, or an explicit regeneration request"), "skills/anti-slop-slop-canon/references/operations.md: personalized realtime generation boundary is required")
+validation.check(operations_text.include?("Do not rewrite the profile or load defaults"), "skills/anti-slop-slop-canon/references/operations.md: explicit realtime regeneration must preserve single-bundle isolation")
 
 onboarding_text = ONBOARDING.read
 onboarding_requirements = {
@@ -280,7 +340,7 @@ onboarding_requirements = {
   "exact first-use choice" => "personalize now, use defaults, or defer",
   "minimal defaults state" => "`setup: defaults`",
   "minimal defer state" => "`setup: deferred`",
-  "no Phase 5 lifecycle" => "Do not implement reminders, cooldowns, refresh, keep, or later lifecycle behavior",
+  "profile-only mismatch lifecycle" => "Profile mismatch lifecycle begins only after a profile exists",
   "explicit rerun" => "Explicit onboarding may start or rerun at any time",
   "early samples" => "Next ask for representative material early",
   "guaranteed inputs" => "pasted text, Markdown, and plain-text or local text files",
@@ -428,6 +488,24 @@ PHASE_4_FIXTURE_CONTRACTS.each do |id, contract|
   contract.reject { |key, _value| key == :metadata }.each do |section, snippets|
     snippets.each do |snippet|
       validation.check(sections.fetch(section.to_s, "").include?(snippet), "evals/fixtures/#{id}.md: #{section} must preserve Phase 4 contract #{snippet.inspect}")
+    end
+  end
+end
+
+PHASE_5_FIXTURE_CONTRACTS.each do |id, contract|
+  record = fixture_records[id]
+  validation.check(!record.nil?, "evals/fixtures: missing Phase 5 fixture #{id}")
+  next unless record
+
+  meta, text = record
+  operation, mode, mutation = contract.fetch(:metadata)
+  validation.check(meta["operation"] == operation, "evals/fixtures/#{id}.md: operation must be #{operation}")
+  validation.check(meta["mode"] == mode, "evals/fixtures/#{id}.md: mode must be #{mode}")
+  validation.check(meta["expected_mutation"] == mutation, "evals/fixtures/#{id}.md: expected_mutation must be #{mutation}")
+  sections = section_bodies(text)
+  contract.reject { |key, _value| key == :metadata }.each do |section, snippets|
+    snippets.each do |snippet|
+      validation.check(sections.fetch(section.to_s, "").include?(snippet), "evals/fixtures/#{id}.md: #{section} must preserve Phase 5 contract #{snippet.inspect}")
     end
   end
 end

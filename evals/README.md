@@ -64,6 +64,10 @@ The repository validator requires all seven fixtures and checks their operation,
 
 Phase 4 adds semantic fixtures for first-use choice, one short sample, strong evidence, sparse and contradictory evidence, complete preview before save, defaults and defer state, sample non-retention, optional helper approval, complete profile precedence and scope, and personalized realtime generation. Validation checks each fixture's metadata and decisive contract text in the correct section. Mutation tests prove that approval, precedence, retention, helper, profile-section, realtime-policy, and budget regressions fail.
 
+## Profile lifecycle coverage
+
+Phase 5 adds section-scoped fixtures for read-only profile inspection, direct-edit stability, metadata-only mismatch detection, post-task notices, complete refresh preview and approval, permanent keep, a deterministic 14-day later cooldown, scope isolation, and explicit realtime regeneration. Lifecycle settings use only the notice version, notice state, and later date keys alongside an existing setup line. Mutation tests move or weaken decisive clauses so plausible ordering, merge, cooldown, regeneration, and scope regressions fail validation.
+
 ## Token-count method
 
 Context budgets use a repository-stable token proxy because host agents and models tokenize Markdown differently. `scripts/validate.rb` counts each Unicode word, number, contraction, or non-whitespace punctuation mark as one lexical unit, then adds a 25 percent safety margin and rounds up.

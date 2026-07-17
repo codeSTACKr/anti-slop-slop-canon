@@ -24,5 +24,5 @@ Write only minimal in-scope setup state: `setup: defaults` or `setup: deferred`.
 
 - Create no profile or personalized realtime prompt.
 - Write nowhere above `<project-root>/.anti-slop-slop-canon/`.
-- Do not implement reminder cooldown, refresh, keep, or later lifecycle fields.
+- Do not create profile-mismatch lifecycle fields when no profile exists.
 - Do not ask the first-use choice again while that settings state exists.

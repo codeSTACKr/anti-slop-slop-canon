@@ -12,8 +12,9 @@ Choose one operation from the user's requested outcome.
 | Rewrite, edit, polish, shorten, expand, or adapt supplied prose | `rewrite` |
 | Review, check, diagnose, or list style violations without changing text | `audit` |
 | Start setup, learn a voice, or create or replace a profile | `onboarding` |
-| Inspect the active voice, profile, scope, or versions | `profile` |
-| Retrieve a voice-agent style module | `realtime` |
+| Inspect the active voice, profile, scope, versions, or lifecycle state | `profile` |
+| Refresh a profile, keep it, or remind later | `profile lifecycle` |
+| Retrieve or explicitly regenerate a voice-agent style module | `realtime` |
 
 Prefer an explicit operation over inference. Treat a request for both review and correction as `rewrite`. Include an explanation or diff only when asked. Do not turn operation names into shell commands.
 
@@ -54,16 +55,27 @@ Read [onboarding.md](onboarding.md). Use it for the first-use choice and every e
 
 ## Profile
 
-- Report whether the active bundle is a valid project profile, valid global profile, or bundled defaults. Include the selected state path, scope, schema version, content version, and `defaults_version` when present.
+- On explicit inspection, return the active profile unchanged when one exists, plus its selected state path, scope, schema version, content version, `defaults_version`, and minimal lifecycle settings. For bundled defaults, report its metadata and that no personal profile exists. Inspection is read-only.
 - If a profile is unusable, keep defaults selected for the task, explain the defect afterward, and offer a previewed repair. Never overwrite or silently repair it.
-- If `defaults_version` differs from the router version, keep the profile selected and report the mismatch after the task. Do not load defaults, persist a choice, refresh, merge, or offer keep/later behavior. Those actions belong to Phase 5.
-- Route profile creation or replacement through onboarding. Direct inspection remains read-only.
+- Treat direct profile edits as authoritative. Do not normalize, regenerate, or replace the profile or realtime module because the file changed. Route explicit re-onboarding through onboarding and preserve current state through approval.
+
+## Profile lifecycle
+
+Use only metadata already loaded from the router and winning profile to detect a defaults mismatch. Do not read defaults or another scope for detection. Complete the current writing task with the profile alone. After returning its content, inspect only in-scope `settings.md` and show one non-blocking `refresh`, `keep`, or `later` notice when that defaults version has not been noticed, kept, or deferred past today. Record `defaults_notice_version` and `defaults_notice_state: shown` only after showing it.
+
+Store lifecycle state as minimal YAML-like lines in `settings.md`, preserving `setup` when present. Use `defaults_notice_version`, `defaults_notice_state`, and, only for `later`, `defaults_remind_after`. Quote the semantic version and ISO `YYYY-MM-DD` date. Accept only `shown`, `refresh`, `keep`, or `later` as the notice state.
+
+- `refresh`: record the choice, then start a separate recompilation. Only then load current defaults alongside the profile. Treat current profile instructions, including direct edits, as approved preferences over new defaults. Compile a complete replacement profile and realtime module with the onboarding precedence, current schema, active scope, new `defaults_version`, and an incremented profile content version. Preview both complete files plus written and spoken examples. Require explicit approval. Never merge or write automatically. Stage and validate the pair before rollback-protected replacement. On approval, clear notice keys because profile metadata now matches. On cancellation or failure, leave the current pair active and record no successful refresh.
+- `keep`: record the mismatched version with `defaults_notice_state: keep`. Never notify for that defaults version again. Do not change either generated file.
+- `later`: record that version, `defaults_notice_state: later`, and `defaults_remind_after` exactly 14 calendar days after the choice. Notify at most once when that local date arrives, after the current task, then advance the date by another 14 calendar days. Do not notify before it. A newer mismatch version starts its own notice state.
+
+Never perform lifecycle work above the installed scope. A project copy reads and writes project state only. A global copy reads and writes global state only. A mismatch, notice, keep, or later choice never regenerates either generated file.
 
 ## Realtime
 
 - Treat a normal voice-agent response as spoken compose or rewrite. Do not load a realtime prompt for that task.
 - For an explicit module request, return the active scope's `realtime-voice-prompt.md` unchanged when present. Otherwise return [../assets/realtime-voice-prompt.md](../assets/realtime-voice-prompt.md).
-- Generate a personalized module only as part of approved onboarding. Standalone regeneration after direct profile edits belongs to the later profile lifecycle.
+- Generate a personalized module only during approved onboarding, approved refresh, or an explicit regeneration request. For explicit regeneration, use the active profile alone, preview the complete module, require explicit approval, validate it, and replace only the in-scope prompt with rollback protection. Do not rewrite the profile or load defaults.
 - Keep every module style-only and within its guarded budget.
 
 ## Silent second pass

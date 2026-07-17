@@ -151,13 +151,134 @@ class ValidateScriptTest < Minitest::Test
     end
   end
 
-  def test_claiming_later_profile_actions_fails
+  def test_metadata_only_mismatch_detection_weakening_fails
     with_repository do |root|
       operations = root / "skills/anti-slop-slop-canon/references/operations.md"
-      operations.write(operations.read.sub("Do not load defaults, persist a choice, refresh, merge, or offer keep/later behavior", "Offer refresh, keep, and later choices"))
+      operations.write(operations.read.sub("Use only metadata already loaded from the router and winning profile", "Load defaults to compare their contents with the profile"))
       _stdout, stderr, status = run_validator(root)
       refute status.success?
-      assert_includes stderr, "Phase 5 lifecycle boundary is required"
+      assert_includes stderr, "missing already-loaded mismatch detection contract"
+    end
+  end
+
+  def test_post_task_notice_order_weakening_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("Complete the current writing task with the profile alone", "Pause the current task for the update notice"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing post-task notice contract"
+    end
+  end
+
+  def test_automatic_refresh_merge_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("Never merge or write automatically", "Merge the new defaults into the profile automatically"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing no automatic refresh contract"
+    end
+  end
+
+  def test_refresh_direct_edit_precedence_removal_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("including direct edits, as approved preferences over new defaults", "except direct edits, as temporary preferences below new defaults"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing direct edits win refresh contract"
+    end
+  end
+
+  def test_permanent_keep_suppression_weakening_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("Never notify for that defaults version again", "Notify for that defaults version in a later session"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing permanent keep contract"
+    end
+  end
+
+  def test_later_cooldown_length_mutation_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("exactly 14 calendar days after the choice", "about one week after the choice"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing deterministic later contract"
+    end
+  end
+
+  def test_lifecycle_scope_isolation_weakening_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("A project copy reads and writes project state only", "A project copy may use global lifecycle state"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing lifecycle scope isolation contract"
+    end
+  end
+
+  def test_automatic_realtime_regeneration_fails
+    with_repository do |root|
+      operations = root / "skills/anti-slop-slop-canon/references/operations.md"
+      operations.write(operations.read.sub("only during approved onboarding, approved refresh, or an explicit regeneration request", "whenever the profile or defaults version changes"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "personalized realtime generation boundary is required"
+    end
+  end
+
+  def test_missing_phase_5_fixture_fails
+    with_repository do |root|
+      FileUtils.rm(root / "evals/fixtures/phase-5-refresh-preview.md")
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "missing Phase 5 fixture phase-5-refresh-preview"
+    end
+  end
+
+  def test_mismatch_notice_moved_into_task_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/phase-5-mismatch-notice.md"
+      contract = "- Do not show the notice before or inside the requested content.\n"
+      fixture.write(fixture.read.sub(contract, "").sub("## Expected behavior\n", "## Expected behavior\n\n#{contract}"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Assertions must preserve Phase 5 contract"
+    end
+  end
+
+  def test_refresh_failure_rollback_relocation_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/phase-5-refresh-preview.md"
+      contract = "- On cancellation or failure, preserve the prior profile and prompt as the active pair.\n"
+      fixture.write(fixture.read.sub(contract, "").sub("## Expected behavior\n", "## Expected behavior\n\n#{contract}"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Assertions must preserve Phase 5 contract"
+    end
+  end
+
+  def test_later_fixture_date_arithmetic_mutation_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/phase-5-later-cooldown.md"
+      fixture.write(fixture.read.sub('defaults_remind_after: "2026-07-31"', 'defaults_remind_after: "2026-07-24"'))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Expected behavior must preserve Phase 5 contract"
+    end
+  end
+
+  def test_profile_inspection_mutation_regression_fails
+    with_repository do |root|
+      fixture = root / "evals/fixtures/phase-5-profile-edit-stability.md"
+      fixture.write(fixture.read.sub("Return the project profile unchanged", "Normalize and return the project profile"))
+      _stdout, stderr, status = run_validator(root)
+      refute status.success?
+      assert_includes stderr, "Expected behavior must preserve Phase 5 contract"
     end
   end
 

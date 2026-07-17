@@ -4,7 +4,7 @@ Sound like yourself.
 
 `anti-slop-slop-canon` is an open-source Agent Skill for removing recognizable AI-writing habits and adapting written and spoken content to a transparent, editable personal voice.
 
-The repository now includes the frozen profile schema, default writing canon, canonical runtime router, adaptive onboarding, default and personalized realtime prompt contracts, evaluation fixtures, and maintainer validation. Profile lifecycle, cross-host release evaluation, packaging, and the showcase remain later-phase work, so the skill is not ready to install.
+The repository now includes the frozen profile schema, default writing canon, canonical runtime router, adaptive onboarding, update-safe profile lifecycle, default and personalized realtime prompt contracts, evaluation fixtures, and maintainer validation. Cross-host release evaluation, packaging, and the showcase remain later-phase work, so the skill is not ready to install.
 
 ## Planned install
 
@@ -24,7 +24,7 @@ npx skills add codeSTACKr/anti-slop-slop-canon
 
 - `skills/anti-slop-slop-canon/` contains the canonical Agent Skill.
 - `evals/` contains public fixtures and the evaluation contract.
-- `scripts/validate.rb` checks schemas, onboarding and routing fixtures, links, exact runtime contents, realtime policy boundaries, and context budgets.
+- `scripts/validate.rb` checks schemas, onboarding, routing and lifecycle fixtures, links, exact runtime contents, realtime policy boundaries, and context budgets.
 - `docs/` contains user and contributor documentation.
 - `site/` is reserved for a later Astro, shadcn, and Hallmark showcase phase.
 

@@ -1,6 +1,6 @@
 ---
 name: anti-slop-slop-canon
-description: Compose, rewrite, edit, or audit mutable natural-language text in a clear personal voice without recognizable AI-writing habits. Use for prose, messages, documents, scripts, narration, prepared speech, voice-agent text, voice onboarding or setup, profile inspection, and realtime style-prompt requests.
+description: Compose, rewrite, edit, or audit mutable natural-language text in a clear personal voice without recognizable AI-writing habits. Use for prose, messages, documents, scripts, narration, prepared speech, voice-agent text, voice onboarding or setup, profile inspection or refresh, and realtime style-prompt requests.
 ---
 
 # Anti-Slop Slop Canon
@@ -10,14 +10,14 @@ Use default content version `0.1.0`.
 ## Resolve scope and one bundle
 
 - In a project copy, inspect only `<project-root>/.anti-slop-slop-canon/`; never inspect or fall back to global state. Otherwise inspect only `~/.config/anti-slop-slop-canon/`.
-- Validate `voice-profile.md` with [references/profile-schema.md](references/profile-schema.md). Require schema `1.0.0`, active scope, every required section, and actionable rules. Load it alone; otherwise load [references/defaults.md](references/defaults.md) alone. After the task, report invalidity and offer a previewed repair.
+- Validate `voice-profile.md` with [references/profile-schema.md](references/profile-schema.md). Require schema `1.0.0`, active scope, every required section, and actionable rules. Load it alone; otherwise load [references/defaults.md](references/defaults.md) alone. Report invalidity after the task and offer a previewed repair.
 - When profile and `settings.md` are absent, read [references/onboarding.md](references/onboarding.md) before the first natural-language task. Also read it for explicit onboarding, setup, or voice learning; otherwise do not.
-- On a defaults-version mismatch, finish with the profile and report it. Never load defaults or offer unimplemented lifecycle choices.
+- With a profile, compare its loaded `defaults_version` to `0.1.0` without reading defaults. Finish the task with that profile before any notice or lifecycle action.
 
 ## Protect and route
 
 - Select spoken only when text is clearly meant to be heard. Otherwise use written without asking.
 - Preserve meaning, facts, uncertainty, intent, exact quotations, code, structured data, and legally fixed wording. Reject detector-evasion framing and offer clarity or voice editing.
-- Read [references/operations.md](references/operations.md). Route explicit operations; infer compose for creation and rewrite for revision.
+- Read [references/operations.md](references/operations.md). Route explicit operations and lifecycle choices; infer compose for creation and rewrite for revision.
 - Apply one bundle and mode. Silently check meaning, exemptions, mode, and rules, then fix only mutable prose.
 - Return clean compose or rewrite output. Add reasoning or a diff only when requested. Audit without editing.

@@ -8,7 +8,7 @@ On the first natural-language task in the active scope, when neither `voice-prof
 
 - `personalize now`: start the interview. Persist nothing yet.
 - `use defaults`: write only a minimal in-scope `settings.md` recording `setup: defaults`, then resume the original task with bundled defaults.
-- `defer`: write only a minimal in-scope `settings.md` recording `setup: deferred`, then complete the original task with bundled defaults. Do not implement reminders, cooldowns, refresh, keep, or later lifecycle behavior.
+- `defer`: write only a minimal in-scope `settings.md` recording `setup: deferred`, then complete the original task with bundled defaults. Profile mismatch lifecycle begins only after a profile exists.
 
 Explicit onboarding may start or rerun at any time. It bypasses the first-use choice. Preserve every existing state file until the replacement preview receives explicit approval.
 

@@ -8,4 +8,6 @@ One short sample is accepted. Strong consistent evidence shortens the interview.
 
 Before saving, the skill shows the complete profile, complete realtime module, one written example, and one spoken example. You may approve, revise one trait, or continue the interview. Approval writes the profile and prompt together only in the active global or project scope. Existing state remains untouched during a rerun until approval.
 
+You can rerun onboarding at any time. The current profile, prompt, and settings remain active until you explicitly approve the complete replacement preview.
+
 By default, retained state is limited to `voice-profile.md`, `realtime-voice-prompt.md`, and minimal `settings.md`. Samples, pasted text, URLs, downloads, transcripts, source lists, extraction notes, measurements, confidence notes, and onboarding analysis are not retained.
