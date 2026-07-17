@@ -68,6 +68,10 @@ Phase 4 adds semantic fixtures for first-use choice, one short sample, strong ev
 
 Phase 5 adds section-scoped fixtures for read-only profile inspection, direct-edit stability, metadata-only mismatch detection, post-task notices, complete refresh preview and approval, permanent keep, a deterministic 14-day later cooldown, scope isolation, and explicit realtime regeneration. Lifecycle settings use only the notice version, notice state, and later date keys alongside an existing setup line. Mutation tests move or weaken decisive clauses so plausible ordering, merge, cooldown, regeneration, and scope regressions fail validation.
 
+## Release gate coverage
+
+Phase 6 adds the human and editorial half of the release gates on top of the deterministic checks below. `evals/rubrics/` holds five scoring rubrics, one each for meaning preservation, edit restraint, personal fidelity, written versus spoken choice, and first-listen clarity, mapped to the fixtures above. `evals/cross-agent-matrix.md` states which fixtures a human runs manually in Claude Code, Codex, and Cursor, and how host-specific limitations get documented from evidence rather than assumption. `evals/model-judge.md` states the boundary for an optional, maintainer-run model judge, which is never a release prerequisite by itself. `evals/results/blind-comparison-template.md` is the blank form for recording a blinded personalized-versus-default comparison. See `evals/results/phase-6-evaluation-gates-status.md` for which of these have actually been run.
+
 ## Token-count method
 
 Context budgets use a repository-stable token proxy because host agents and models tokenize Markdown differently. `scripts/validate.rb` counts each Unicode word, number, contraction, or non-whitespace punctuation mark as one lexical unit, then adds a 25 percent safety margin and rounds up.
