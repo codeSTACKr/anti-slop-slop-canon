@@ -1,0 +1,774 @@
+---
+import Layout from "../layouts/Layout.astro";
+import DiffExplorer from "../components/DiffExplorer.astro";
+import StateExplorer from "../components/StateExplorer.astro";
+import CopyCommand from "../components/CopyCommand.astro";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+
+// Curated Markdown, compiled at build time (no client-side Markdown parser).
+import { Content as ProfileExcerpt } from "../content/profile-excerpt.md";
+import { Content as RealtimePrompt } from "../content/realtime-prompt.md";
+import { Content as RulesExcerpt } from "../content/rules-excerpt.md";
+
+const REPO = "codeSTACKr/anti-slop-slop-canon";
+
+// The default-cleanup diffs use before/after pairs committed to the repository:
+// the hero pair is the golden output published in repo/README.md; the punctuation
+// pair is a verbatim example from skills/.../references/defaults.md § Short examples.
+const heroBefore =
+  "We're thrilled to announce a groundbreaking update that unlocks a seamless, robust, and transformative experience. Here's the thing: Smart Filters arrive on August 12, and early tests show a 17% drop in time spent sorting results. This isn't just an update; it's a game-changer for every workflow!";
+const heroAfter =
+  "Smart Filters arrive on August 12. Early tests show a 17% drop in time spent sorting results.";
+
+const punctBefore =
+  "The result is clear: keep both routes—one is faster; one is safer!";
+const punctAfter = "Keep both routes. One is faster. The other is safer.";
+
+// Three states, drawn from evals/fixtures/personalized-maker-update.md.
+const states = [
+  {
+    key: "input",
+    tab: "The facts you give it",
+    caption: "Generic input",
+    body: "Write a project update: the enclosure is walnut, the third hinge prototype finally closes flush, twelve units are ready, and orders open Friday.",
+    meta: "Just facts. No voice attached yet.",
+  },
+  {
+    key: "default",
+    tab: "Default cleanup",
+    caption: "Default voice, before onboarding",
+    body: "The enclosure is walnut. The third hinge prototype now closes flush. Twelve units are ready, and orders open Friday.",
+    meta: "The floor everyone gets: plain, factual, no hype, no invented claim. Same facts, no signature yet.",
+  },
+  {
+    key: "personal",
+    tab: "Personalized output",
+    caption: "Your voice, after onboarding",
+    body: "Walnut enclosure. The third hinge prototype finally closes flush. Twelve units ready. I open orders Friday.\nBack to the bench.",
+    meta: "Composed to the approved profile in personalized-maker-update.md: clipped first person, dry understatement, the fixed sign-off. Uses only the supplied facts. Illustrative of the profile's rules; your onboarded output would differ.",
+  },
+];
+
+const spokenIn =
+  "Tell passengers that Route 6 is delayed about 15 minutes because a disabled vehicle is blocking Oak Street. Valid tickets will be accepted on Route 9 until 6:30 PM.";
+const spokenOut =
+  "Route 6 is running about 15 minutes late. A disabled vehicle is blocking Oak Street. Your Route 6 ticket is good on Route 9 until 6:30 PM.";
+
+const navLinks = [
+  { href: "#proof", label: "Proof" },
+  { href: "#states", label: "Three states" },
+  { href: "#voice", label: "Written & spoken" },
+  { href: "#onboarding", label: "Onboarding" },
+  { href: "#profile", label: "Profile" },
+  { href: "#install", label: "Install" },
+];
+---
+
+<Layout
+  title="anti-slop-slop-canon — sound like yourself"
+  description="An open-source Agent Skill that removes AI-writing habits, then learns your voice. A static showcase: no hosted model, no text sent anywhere."
+>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="mast">
+    <div class="wrap mast__inner">
+      <div class="mast__brand">
+        <a class="mast__word" href="#main">anti-slop-slop-canon</a>
+        <Badge variant="outline" className="mast__badge">Pre-release</Badge>
+      </div>
+      <nav class="mast__nav" aria-label="Sections">
+        {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+    </div>
+    <div class="mast__rule" role="presentation"></div>
+  </header>
+
+  <main id="main" class="wrap">
+    <!-- HERO — typographic, Long Document lede -->
+    <section class="hero">
+      <p class="hero__kicker">An open-source Agent Skill</p>
+      <h1 class="hero__title">Sound like yourself.</h1>
+      <p class="hero__lede typeset">
+        <code>anti-slop-slop-canon</code> removes the habits that make writing sound
+        machine-made, then learns a transparent, editable profile of your actual
+        voice. One profile governs both what you write and what you say aloud. It runs
+        on the model your agent already has.
+      </p>
+      <p class="hero__sub">
+        This page is the demonstration. Every example below comes from the
+        repository's own rules and fixtures. Nothing you read here was generated by a
+        hosted model, and no text is sent to any service.
+      </p>
+
+      <Alert className="hero__alert">
+        <AlertTitle>Pre-release. The install command does not work yet.</AlertTitle>
+        <AlertDescription>
+          The writing canon, router, onboarding, and profile lifecycle are built and
+          covered by local fixtures, but the skill is not yet published to a registry.
+          The command below describes the plan. Running it today finds nothing to
+          install.
+        </AlertDescription>
+      </Alert>
+    </section>
+
+    <Separator />
+
+    <!-- PROOF — default cleanup, interactive diff -->
+    <section id="proof" class="section">
+      <p class="eyebrow">The floor</p>
+      <h2 class="h2">Default cleanup, before you do anything</h2>
+      <p class="lead typeset">
+        Out of the box the skill strips hype, canned framing, and ornamental
+        punctuation without inventing a claim the source never made. Toggle between the
+        original, the cleaned result, and the exact changes. The diff is computed at
+        build time and needs no JavaScript to read.
+      </p>
+
+      <div class="stack">
+        <DiffExplorer
+          id="hero"
+          label="Product update · rewrite"
+          before={heroBefore}
+          after={heroAfter}
+          note="Same feature, same date, same number. Removed: unsupported hype, a manufactured contrast, and an exclamation point. Golden output as published in the repository README."
+        />
+        <DiffExplorer
+          id="punct"
+          label="Punctuation · rewrite"
+          before={punctBefore}
+          after={punctAfter}
+          note="No em dash, no semicolon, no exclamation point, no mid-sentence colon. Verbatim example from the bundled defaults."
+        />
+      </div>
+    </section>
+
+    <Separator />
+
+    <!-- THREE STATES -->
+    <section id="states" class="section">
+      <p class="eyebrow">Generic to default to yours</p>
+      <h2 class="h2">The same facts, three ways</h2>
+      <p class="lead typeset">
+        Cleanup is the floor. Once you complete onboarding, output shifts from a neutral
+        default to your approved voice. Here is one set of facts moving through all
+        three states.
+      </p>
+      <StateExplorer id="maker" states={states} />
+      <p class="fineprint">
+        Source: <code>evals/fixtures/personalized-maker-update.md</code>. The default
+        and personalized panels apply the committed rules and profile traits to the
+        fixture's supplied facts.
+      </p>
+    </section>
+
+    <Separator />
+
+    <!-- WRITTEN & SPOKEN -->
+    <section id="voice" class="section">
+      <p class="eyebrow">One profile, two modes</p>
+      <h2 class="h2">Written and spoken</h2>
+      <p class="lead typeset">
+        The same profile governs prose you read and words meant to be heard. The skill
+        picks spoken guidance only when text is clearly meant for the ear, and defaults
+        to written otherwise.
+      </p>
+
+      <div class="grid2">
+        <Card className="ex">
+          <CardHeader>
+            <CardTitle>Written</CardTitle>
+            <CardDescription>Optimized for scanning and re-reading</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p class="ex__caption">Before</p>
+            <p class="ex__before">This isn't a redesign. It's a reset.</p>
+            <p class="ex__caption">After</p>
+            <p class="ex__after">
+              This redesign changes the navigation and search model.
+            </p>
+            <p class="ex__src">
+              Contrast-framing example from the bundled defaults.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="ex">
+          <CardHeader>
+            <CardTitle>Spoken</CardTitle>
+            <CardDescription>Optimized for first-listen clarity</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p class="ex__caption">Request</p>
+            <p class="ex__before">{spokenIn}</p>
+            <p class="ex__caption">Read aloud</p>
+            <p class="ex__after">{spokenOut}</p>
+            <p class="ex__src">
+              Composed to <code>spoken-service-delay.md</code>: delay stated before the
+              ticket alternative, every route and time preserved, no visual notation.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+
+    <Separator />
+
+    <!-- ONBOARDING -->
+    <section id="onboarding" class="section">
+      <p class="eyebrow">How it learns your voice</p>
+      <h2 class="h2">Onboarding asks one thing first</h2>
+      <p class="lead typeset">
+        The first time you write in a scope with no saved profile, the skill asks a
+        single question before it does anything else.
+      </p>
+
+      <div class="choices">
+        <div class="choice">
+          <span class="choice__n">1</span>
+          <div>
+            <h3 class="choice__h">Personalize now</h3>
+            <p class="choice__p">
+              A short, adaptive interview. One question at a time, samples collected
+              early. Strong evidence shortens it; sparse or conflicting evidence
+              triggers targeted questions instead of silent guesses.
+            </p>
+          </div>
+        </div>
+        <div class="choice">
+          <span class="choice__n">2</span>
+          <div>
+            <h3 class="choice__h">Use the defaults</h3>
+            <p class="choice__p">
+              Skip straight to Jesse's opinionated defaults and resume your original
+              task immediately. No setup, no profile written.
+            </p>
+          </div>
+        </div>
+        <div class="choice">
+          <span class="choice__n">3</span>
+          <div>
+            <h3 class="choice__h">Defer</h3>
+            <p class="choice__p">
+              Not now. The skill uses the defaults for this task and asks again later,
+              on your schedule.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p class="body typeset">
+        If you personalize, the skill separates stable voice traits from subject matter
+        and one-off quirks, then compiles one complete profile. It previews that profile
+        with a written and a spoken example and writes nothing until you approve. It
+        does not keep your samples, pasted text, URLs, or its own analysis.
+      </p>
+    </section>
+
+    <Separator />
+
+    <!-- PROFILE + RULES -->
+    <section id="profile" class="section">
+      <p class="eyebrow">Nothing hidden</p>
+      <h2 class="h2">A transparent, editable profile</h2>
+      <p class="lead typeset">
+        The compiled profile is a plain Markdown file that lives in your project, not
+        inside the installed skill. Open it and edit any rule directly. The skill treats
+        a direct edit as your intent and will not silently regenerate the file.
+      </p>
+
+      <div class="grid2">
+        <Card className="doc">
+          <CardHeader>
+            <CardTitle>Profile schema</CardTitle>
+            <CardDescription>
+              From <code>assets/voice-profile.template.md</code>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class="typeset" data-density="compact">
+              <ProfileExcerpt />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="doc">
+          <CardHeader>
+            <CardTitle>A slice of the default rules</CardTitle>
+            <CardDescription>
+              From the bundled <code>defaults.md</code>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class="typeset" data-density="compact">
+              <RulesExcerpt />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+
+    <Separator />
+
+    <!-- REALTIME -->
+    <section id="realtime" class="section">
+      <p class="eyebrow">For voice agents</p>
+      <h2 class="h2">A realtime voice prompt</h2>
+      <p class="lead typeset">
+        Ask for the realtime prompt and the skill returns a compact, style-only module
+        to paste into a voice agent's system prompt. It covers delivery only: word
+        choice, sentence shape, pacing, first-listen clarity. It defines no tools,
+        facts, safety policy, or conversation flow, so it sits beside your agent's own
+        instructions rather than replacing them.
+      </p>
+
+      <Card className="doc">
+        <CardHeader>
+          <CardTitle>Bundled default module</CardTitle>
+          <CardDescription>
+            Verbatim from <code>assets/realtime-voice-prompt.md</code>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div class="typeset" data-density="compact">
+            <RealtimePrompt />
+          </div>
+        </CardContent>
+      </Card>
+    </section>
+
+    <Separator />
+
+    <!-- INSTALL -->
+    <section id="install" class="section">
+      <p class="eyebrow">When it ships</p>
+      <h2 class="h2">Install</h2>
+      <p class="lead typeset">
+        Installation uses <code>npx skills</code>. Global scope activates the skill in
+        every project on the machine; omit the flag to scope it to one repository. A
+        project copy reads and writes only its own state and never falls back to the
+        global one.
+      </p>
+
+      <div class="install">
+        <CopyCommand label="Global scope" command={`npx skills add ${REPO} -g`} />
+        <CopyCommand label="Project scope" command={`npx skills add ${REPO}`} />
+      </div>
+
+      <Alert className="install__alert">
+        <AlertTitle>Status: pre-release</AlertTitle>
+        <AlertDescription>
+          These commands describe the planned install. The skill is not yet published to
+          a registry, so running them today will not find anything to install. This page
+          exists to show what the skill does, not to sell a shipped product.
+        </AlertDescription>
+      </Alert>
+
+      <div class="cta">
+        <a
+          class={cn(buttonVariants({ variant: "default" }), "h-11 px-5 text-[0.95rem]")}
+          href={`https://github.com/${REPO}`}>View the repository</a
+        >
+        <a
+          class={cn(buttonVariants({ variant: "outline" }), "h-11 px-5 text-[0.95rem]")}
+          href="#proof">Back to the examples</a
+        >
+      </div>
+
+      <p class="body typeset">
+        This skill will not help you evade AI-detection tools and makes no claim that
+        its output is undetectable. Its purpose is to remove habits that make writing
+        sound generic and to help you sound like yourself.
+      </p>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <div class="wrap colophon__inner">
+      <div class="colophon__brand">
+        <span class="colophon__word">anti-slop-slop-canon</span>
+        <span class="colophon__tag">Sound like yourself.</span>
+      </div>
+      <div class="colophon__cols">
+        <div>
+          <h2 class="colophon__h">Repository</h2>
+          <ul>
+            <li><a href={`https://github.com/${REPO}`}>Source</a></li>
+            <li>
+              <a href={`https://github.com/${REPO}/tree/main/skills`}>The skill</a>
+            </li>
+            <li><a href={`https://github.com/${REPO}/tree/main/docs`}>Docs</a></li>
+            <li><a href={`https://github.com/${REPO}/tree/main/evals`}>Evals</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="colophon__h">On this page</h2>
+          <ul>
+            <li><a href="#proof">Default cleanup</a></li>
+            <li><a href="#states">Three states</a></li>
+            <li><a href="#voice">Written &amp; spoken</a></li>
+            <li><a href="#realtime">Realtime prompt</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="colophon__h">Status</h2>
+          <ul>
+            <li>Pre-release preview</li>
+            <li>MIT licensed</li>
+            <li>No analytics, no trackers</li>
+            <li>No text leaves the page</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--color-foreground);
+      color: var(--color-background);
+      padding: 0.6rem 1rem;
+      z-index: 50;
+      border-radius: 0 0 var(--radius-md) 0;
+    }
+    .skip:focus {
+      left: 0;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 60rem;
+      margin-inline: auto;
+      padding-inline: 1.25rem;
+    }
+
+    /* Masthead */
+    .mast {
+      padding-top: 1.4rem;
+    }
+    .mast__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem 1.5rem;
+      padding-bottom: 1rem;
+    }
+    .mast__brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .mast__word {
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--color-foreground);
+      text-decoration: none;
+    }
+    .mast__nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.1rem;
+    }
+    .mast__nav a {
+      font-family: var(--font-ui);
+      font-size: 0.86rem;
+      color: var(--color-muted-foreground);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .mast__nav a:hover {
+      color: var(--color-foreground);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+    .mast__rule {
+      height: 0;
+      border-top: 2px solid var(--color-foreground);
+      border-bottom: 1px solid var(--color-foreground);
+      padding-bottom: 3px;
+    }
+
+    /* Hero */
+    .hero {
+      padding-block: 3.5rem 3rem;
+    }
+    .hero__kicker {
+      margin: 0 0 1rem;
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+    }
+    .hero__title {
+      margin: 0;
+      font-size: clamp(2.75rem, 8vw, 4.75rem);
+      line-height: 1.02;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .hero__lede {
+      margin: 1.5rem 0 0;
+      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+      line-height: 1.6;
+      max-width: 40ch;
+    }
+    .hero__sub {
+      margin: 1.25rem 0 0;
+      font-family: var(--font-ui);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: var(--color-muted-foreground);
+      max-width: 60ch;
+    }
+    .hero :global(.hero__alert) {
+      margin-top: 2rem;
+      max-width: 60ch;
+    }
+
+    /* Sections */
+    .section {
+      padding-block: 3rem;
+    }
+    .eyebrow {
+      margin: 0 0 0.65rem;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+    }
+    .h2 {
+      margin: 0;
+      font-size: clamp(1.75rem, 4.5vw, 2.6rem);
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+    .lead {
+      margin: 1rem 0 2rem;
+      font-size: 1.08rem;
+    }
+    .body {
+      margin-top: 1.75rem;
+    }
+    .fineprint {
+      margin: 1rem 0 0;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--color-muted-foreground);
+    }
+    .fineprint code,
+    .lead code,
+    .body code,
+    .hero__lede code {
+      font-family: var(--font-code);
+      font-size: 0.86em;
+      background: var(--color-muted);
+      padding: 0.08em 0.32em;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 46rem) {
+      .grid2 {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+    }
+
+    /* Example cards */
+    .ex__caption {
+      margin: 0.9rem 0 0.3rem;
+      font-family: var(--font-ui);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-muted-foreground);
+    }
+    .ex__caption:first-child {
+      margin-top: 0;
+    }
+    .ex__before {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--color-del-foreground);
+    }
+    .ex__after {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--color-foreground);
+    }
+    .ex__src {
+      margin: 1rem 0 0;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--color-muted-foreground);
+    }
+    .ex__src code {
+      font-family: var(--font-code);
+      font-size: 0.92em;
+    }
+
+    /* Onboarding choices */
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    @media (min-width: 46rem) {
+      .choices {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .choice {
+      display: flex;
+      gap: 0.85rem;
+      padding: 1.25rem;
+      border: 1px solid var(--color-rule);
+      border-radius: var(--radius-lg);
+      background: var(--color-card);
+    }
+    .choice__n {
+      flex: 0 0 auto;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--color-primary);
+    }
+    .choice__h {
+      margin: 0 0 0.4rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .choice__p {
+      margin: 0;
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--color-muted-foreground);
+    }
+
+    /* Install */
+    .install {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .section :global(.install__alert) {
+      margin-top: 1.75rem;
+      max-width: 62ch;
+    }
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    /* Colophon */
+    .colophon {
+      margin-top: 2rem;
+      border-top: 2px solid var(--color-foreground);
+      background: var(--color-secondary);
+      padding-block: 2.5rem 3rem;
+    }
+    .colophon__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 46rem) {
+      .colophon__inner {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+        align-items: start;
+      }
+    }
+    .colophon__word {
+      display: block;
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-foreground);
+    }
+    .colophon__tag {
+      display: block;
+      margin-top: 0.4rem;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--color-muted-foreground);
+    }
+    .colophon__cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+      gap: 1.5rem;
+    }
+    .colophon__h {
+      margin: 0 0 0.6rem;
+      font-family: var(--font-ui);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-muted-foreground);
+    }
+    .colophon__cols ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .colophon__cols li {
+      font-family: var(--font-ui);
+      font-size: 0.88rem;
+      color: var(--color-muted-foreground);
+    }
+    .colophon__cols a {
+      color: var(--color-foreground);
+      text-decoration: none;
+    }
+    .colophon__cols a:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  </style>
+</Layout>

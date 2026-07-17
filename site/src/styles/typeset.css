@@ -1,0 +1,176 @@
+/* typeset.css — owned shadcn/typeset stylesheet.
+ *
+ * The single place that styles build-time-rendered Markdown and rich HTML on the
+ * showcase (profile excerpt, rules excerpt, realtime prompt, fixture prose). It is
+ * NOT a dependency pulled at runtime; it is a project-owned file, edited by hand.
+ *
+ * Every rule scopes under `.typeset`. Context-specific size, leading, and flow are
+ * exposed as custom properties so a caller can tune density per placement, e.g.
+ *   <div class="typeset" style="--typeset-size: 0.9375rem; --typeset-leading: 1.7">
+ */
+
+.typeset {
+    --typeset-size: 1rem;
+    --typeset-leading: 1.72;
+    --typeset-measure: 68ch;
+    --typeset-flow: 1.15em; /* vertical rhythm between blocks */
+    --typeset-heading-flow: 1.9em;
+    --typeset-rule: var(--color-rule, oklch(0.892 0.008 80));
+
+    font-family: var(--font-display);
+    font-size: var(--typeset-size);
+    line-height: var(--typeset-leading);
+    color: var(--foreground);
+    max-width: var(--typeset-measure);
+    text-wrap: pretty;
+    hanging-punctuation: first;
+}
+
+/* Vertical flow via the lobotomized-owl selector keeps rhythm without margins
+   collapsing unpredictably across mixed block types. */
+.typeset > * + * {
+    margin-top: var(--typeset-flow);
+}
+
+.typeset > h1,
+.typeset > h2,
+.typeset > h3,
+.typeset > h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-style: normal;
+    line-height: 1.22;
+    letter-spacing: -0.005em;
+    overflow-wrap: anywhere;
+}
+.typeset > * + h1,
+.typeset > * + h2,
+.typeset > * + h3,
+.typeset > * + h4 {
+    margin-top: var(--typeset-heading-flow);
+}
+
+.typeset > h1 { font-size: 1.6em; }
+.typeset > h2 { font-size: 1.28em; }
+.typeset > h3 {
+    font-size: 1.05em;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--muted-foreground);
+}
+.typeset > h4 {
+    font-size: 0.82em;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted-foreground);
+}
+
+.typeset p {
+    margin: 0;
+}
+
+.typeset a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 0.06em;
+    text-decoration-color: color-mix(in oklch, var(--primary) 45%, transparent);
+}
+.typeset a:hover {
+    text-decoration-color: var(--primary);
+}
+
+.typeset strong {
+    font-weight: 640;
+    color: color-mix(in oklch, var(--foreground) 92%, var(--primary));
+}
+.typeset em {
+    font-style: italic; /* body-copy emphasis only; headings stay roman */
+}
+
+.typeset ul,
+.typeset ol {
+    margin: 0;
+    padding-left: 1.35em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+.typeset li {
+    padding-left: 0.15em;
+}
+.typeset li::marker {
+    color: var(--muted-foreground);
+}
+
+.typeset blockquote {
+    margin: 0;
+    padding: 0.1em 0 0.1em 1.1em;
+    border-left: 2px solid var(--primary);
+    color: var(--muted-foreground);
+    font-style: normal;
+}
+
+.typeset hr {
+    border: 0;
+    border-top: 1px solid var(--typeset-rule);
+    margin-block: 1.6em;
+}
+
+/* Inline code and small fenced blocks use the mono stack and a quiet surface. */
+.typeset code {
+    font-family: var(--font-code);
+    font-size: 0.86em;
+    background: var(--muted);
+    padding: 0.12em 0.34em;
+    border-radius: var(--radius-sm, 0.22rem);
+    border: 1px solid var(--border);
+    word-break: break-word;
+}
+.typeset pre {
+    font-family: var(--font-code);
+    font-size: 0.84em;
+    line-height: 1.6;
+    background: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md, 0.3rem);
+    padding: 0.9em 1em;
+    overflow-x: auto;
+}
+.typeset pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: 1em;
+}
+
+.typeset table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94em;
+    font-family: var(--font-ui);
+    display: block;
+    overflow-x: auto;
+}
+.typeset th,
+.typeset td {
+    text-align: left;
+    padding: 0.5em 0.75em;
+    border-bottom: 1px solid var(--typeset-rule);
+    vertical-align: top;
+}
+.typeset th {
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+/* Compact variant for dense excerpts embedded inside cards. */
+.typeset[data-density="compact"] {
+    --typeset-size: 0.9375rem;
+    --typeset-leading: 1.62;
+    --typeset-flow: 0.85em;
+    --typeset-heading-flow: 1.4em;
+}

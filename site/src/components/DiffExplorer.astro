@@ -1,0 +1,270 @@
+---
+/**
+ * DiffExplorer — a custom, product-specific composition.
+ *
+ * Renders a before / after / changes view of one deslop example. The word-level
+ * diff is computed HERE, at build time, and emitted as static HTML. Switching views
+ * uses native radio inputs + CSS `:checked` sibling selectors — no client JavaScript,
+ * fully usable with JS disabled. All three views are in the DOM; the control only
+ * changes which one is visible, and every control is keyboard-reachable.
+ *
+ * The radios sit as direct children of the figure so the general-sibling combinator
+ * (`:checked ~ .diff__viewport`) can reach the views.
+ */
+interface Props {
+  id: string;
+  label: string;
+  before: string;
+  after: string;
+  note?: string;
+}
+const { id, label, before, after, note } = Astro.props;
+
+type Op = { type: "equal" | "del" | "add"; text: string };
+
+// Word-level LCS diff. Tokenize on whitespace, diff the word arrays, reconstruct.
+function wordDiff(a: string, b: string): Op[] {
+  const aw = a.split(/(\s+)/).filter((t) => t.length > 0);
+  const bw = b.split(/(\s+)/).filter((t) => t.length > 0);
+  const n = aw.length;
+  const m = bw.length;
+  const dp: number[][] = Array.from({ length: n + 1 }, () =>
+    new Array(m + 1).fill(0),
+  );
+  for (let i = n - 1; i >= 0; i--) {
+    for (let j = m - 1; j >= 0; j--) {
+      dp[i][j] =
+        aw[i] === bw[j]
+          ? dp[i + 1][j + 1] + 1
+          : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+  const ops: Op[] = [];
+  let i = 0;
+  let j = 0;
+  const push = (type: Op["type"], text: string) => {
+    const last = ops[ops.length - 1];
+    if (last && last.type === type) last.text += text;
+    else ops.push({ type, text });
+  };
+  while (i < n && j < m) {
+    if (aw[i] === bw[j]) {
+      push("equal", aw[i]);
+      i++;
+      j++;
+    } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+      push("del", aw[i]);
+      i++;
+    } else {
+      push("add", bw[j]);
+      j++;
+    }
+  }
+  while (i < n) push("del", aw[i++]);
+  while (j < m) push("add", bw[j++]);
+  return ops;
+}
+
+const ops = wordDiff(before, after);
+const countWords = (t: string) => t.split(/\s+/).filter(Boolean).length;
+const removed = ops
+  .filter((o) => o.type === "del")
+  .reduce((s, o) => s + countWords(o.text), 0);
+const added = ops
+  .filter((o) => o.type === "add")
+  .reduce((s, o) => s + countWords(o.text), 0);
+const name = `diff-${id}`;
+---
+
+<figure class="diff" aria-labelledby={`${id}-cap`}>
+  <input
+    class="diff__radio diff__radio--changes"
+    type="radio"
+    name={name}
+    id={`${id}-changes`}
+    checked
+  />
+  <input
+    class="diff__radio diff__radio--before"
+    type="radio"
+    name={name}
+    id={`${id}-before`}
+  />
+  <input
+    class="diff__radio diff__radio--after"
+    type="radio"
+    name={name}
+    id={`${id}-after`}
+  />
+
+  <figcaption id={`${id}-cap`} class="diff__cap">
+    <span class="diff__label">{label}</span>
+    <span class="diff__count">{removed} removed · {added} added</span>
+  </figcaption>
+
+  <div class="diff__controls" role="group" aria-label={`View for ${label}`}>
+    <label class="diff__tab" for={`${id}-changes`}>Changes</label>
+    <label class="diff__tab" for={`${id}-before`}>Input</label>
+    <label class="diff__tab" for={`${id}-after`}>Cleaned</label>
+  </div>
+
+  <div class="diff__viewport">
+    <p class="diff__view diff__view--changes">
+      {
+        ops.map((o) =>
+          o.type === "equal" ? (
+            <span>{o.text}</span>
+          ) : o.type === "del" ? (
+            <del class="diff__del">{o.text}</del>
+          ) : (
+            <ins class="diff__add">{o.text}</ins>
+          ),
+        )
+      }
+    </p>
+    <p class="diff__view diff__view--before">{before}</p>
+    <p class="diff__view diff__view--after">{after}</p>
+  </div>
+
+  {note && <p class="diff__note">{note}</p>}
+</figure>
+
+<style>
+  .diff {
+    margin: 0;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    overflow: clip;
+  }
+  .diff__cap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .diff__label {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+  }
+  .diff__count {
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+    color: var(--color-muted-foreground);
+  }
+  .diff__controls {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.6rem 1rem 0;
+    flex-wrap: wrap;
+  }
+  /* Radios drive the views; visually hidden but keyboard-reachable and focusable. */
+  .diff__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .diff__tab {
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    color: var(--color-muted-foreground);
+    cursor: pointer;
+    transition:
+      background-color 150ms var(--ease-out),
+      color 150ms var(--ease-out);
+  }
+  .diff__tab:hover {
+    background: var(--color-muted);
+    color: var(--color-foreground);
+  }
+  .diff__viewport {
+    padding: 1rem;
+  }
+  .diff__view {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    line-height: 1.72;
+    color: var(--color-foreground);
+    text-wrap: pretty;
+  }
+  /* Default view is Changes; the others hide until their radio is checked. */
+  .diff__view--before,
+  .diff__view--after {
+    display: none;
+  }
+
+  /* Selected-tab styling, driven by the checked radio (general sibling). */
+  .diff__radio--changes:checked ~ .diff__controls .diff__tab:nth-child(1),
+  .diff__radio--before:checked ~ .diff__controls .diff__tab:nth-child(2),
+  .diff__radio--after:checked ~ .diff__controls .diff__tab:nth-child(3) {
+    background: var(--color-secondary);
+    color: var(--color-foreground);
+    border-color: var(--color-rule);
+  }
+  .diff__radio:focus-visible ~ .diff__controls .diff__tab {
+    /* keep hover affordance readable while a hidden radio has focus */
+  }
+  .diff__radio--changes:focus-visible ~ .diff__controls .diff__tab:nth-child(1),
+  .diff__radio--before:focus-visible ~ .diff__controls .diff__tab:nth-child(2),
+  .diff__radio--after:focus-visible ~ .diff__controls .diff__tab:nth-child(3) {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  /* View switching. */
+  .diff__radio--changes:checked ~ .diff__viewport .diff__view--changes {
+    display: block;
+  }
+  .diff__radio--before:checked ~ .diff__viewport .diff__view--before {
+    display: block;
+  }
+  .diff__radio--after:checked ~ .diff__viewport .diff__view--after {
+    display: block;
+  }
+  .diff__radio--before:checked ~ .diff__viewport .diff__view--changes,
+  .diff__radio--after:checked ~ .diff__viewport .diff__view--changes {
+    display: none;
+  }
+
+  .diff__del {
+    background: var(--color-del-surface);
+    color: var(--color-del-foreground);
+    text-decoration: line-through;
+    text-decoration-thickness: 0.08em;
+    border-radius: 0.15em;
+    padding: 0 0.08em;
+  }
+  .diff__add {
+    background: var(--color-add-surface);
+    color: var(--color-add-foreground);
+    text-decoration: none;
+    border-radius: 0.15em;
+    padding: 0 0.08em;
+  }
+  .diff__note {
+    margin: 0;
+    padding: 0.75rem 1rem 1rem;
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--color-muted-foreground);
+  }
+</style>

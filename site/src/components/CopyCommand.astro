@@ -1,0 +1,109 @@
+---
+/**
+ * CopyCommand — a selectable install command with an optional copy button.
+ *
+ * The command text is always visible and selectable, so this works with JS disabled.
+ * A tiny inline vanilla script (no framework, no import) adds click-to-copy as
+ * progressive enhancement. The button is rendered but hidden until the script marks
+ * clipboard support, so no dead control shows when JS is off.
+ */
+interface Props {
+  command: string;
+  label?: string;
+}
+const { command, label } = Astro.props;
+---
+
+<div class="cmd" data-copy-command>
+  {label && <span class="cmd__label">{label}</span>}
+  <div class="cmd__row">
+    <code class="cmd__code" data-cmd-text>{command}</code>
+    <button class="cmd__btn" type="button" data-cmd-btn hidden aria-live="polite">
+      Copy
+    </button>
+  </div>
+</div>
+
+<style>
+  .cmd {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .cmd__label {
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--color-muted-foreground);
+  }
+  .cmd__row {
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .cmd__code {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--font-code);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding: 0.7rem 0.85rem;
+    background: var(--color-foreground);
+    color: var(--color-background);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .cmd__btn {
+    flex: 0 0 auto;
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0 0.9rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-input);
+    background: var(--color-secondary);
+    color: var(--color-foreground);
+    cursor: pointer;
+    transition:
+      background-color 150ms var(--ease-out),
+      transform 100ms var(--ease-out);
+  }
+  .cmd__btn:hover {
+    background: var(--color-muted);
+  }
+  .cmd__btn:active {
+    transform: translateY(1px);
+  }
+  .cmd__btn[data-copied] {
+    color: var(--color-add-foreground);
+    border-color: var(--color-add);
+  }
+</style>
+
+<script>
+  // Progressive enhancement only. If this never runs, the command stays visible
+  // and selectable. No network, no third-party code, no data leaves the page.
+  for (const root of document.querySelectorAll<HTMLElement>("[data-copy-command]")) {
+    const btn = root.querySelector<HTMLButtonElement>("[data-cmd-btn]");
+    const codeEl = root.querySelector<HTMLElement>("[data-cmd-text]");
+    if (!btn || !codeEl || !navigator.clipboard) continue;
+    btn.hidden = false;
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(codeEl.textContent ?? "");
+        const prev = btn.textContent;
+        btn.textContent = "Copied";
+        btn.setAttribute("data-copied", "");
+        window.setTimeout(() => {
+          btn.textContent = prev;
+          btn.removeAttribute("data-copied");
+        }, 1600);
+      } catch {
+        /* clipboard denied — the command is still selectable by hand */
+      }
+    });
+  }
+</script>

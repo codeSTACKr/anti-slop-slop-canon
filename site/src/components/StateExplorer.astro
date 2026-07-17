@@ -1,0 +1,157 @@
+---
+/**
+ * StateExplorer — three states of the same request, toggled with native radios.
+ *
+ * generic input → default cleanup (the floor everyone gets) → personalized output
+ * (after onboarding). No client JS; all three panels are in the DOM and every
+ * control is keyboard-reachable. Radios are direct children so `:checked ~` reaches
+ * the panels.
+ */
+interface State {
+  key: string;
+  tab: string;
+  caption: string;
+  body: string;
+  meta?: string;
+}
+interface Props {
+  id: string;
+  states: State[];
+}
+const { id, states } = Astro.props;
+const name = `state-${id}`;
+---
+
+<div class="states">
+  {
+    states.map((s, i) => (
+      <input
+        class={`states__radio states__radio--${i}`}
+        type="radio"
+        name={name}
+        id={`${id}-${s.key}`}
+        checked={i === 0}
+      />
+    ))
+  }
+
+  <div class="states__tabs" role="group" aria-label="Output state">
+    {
+      states.map((s) => (
+        <label class="states__tab" for={`${id}-${s.key}`}>
+          {s.tab}
+        </label>
+      ))
+    }
+  </div>
+
+  <div class="states__stage">
+    {
+      states.map((s, i) => (
+        <article class={`states__panel states__panel--${i}`}>
+          <p class="states__caption">{s.caption}</p>
+          <p class="states__body">{s.body}</p>
+          {s.meta && <p class="states__meta">{s.meta}</p>}
+        </article>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .states {
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    overflow: clip;
+  }
+  .states__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .states__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.6rem;
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-secondary);
+  }
+  .states__tab {
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    color: var(--color-muted-foreground);
+    cursor: pointer;
+    transition:
+      background-color 150ms var(--ease-out),
+      color 150ms var(--ease-out);
+  }
+  .states__tab:hover {
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+  .states__stage {
+    padding: 1.25rem 1.15rem;
+  }
+  .states__panel {
+    display: none;
+  }
+  .states__caption {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+  }
+  .states__body {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1.72;
+    color: var(--color-foreground);
+    text-wrap: pretty;
+    white-space: pre-line;
+  }
+  .states__meta {
+    margin: 0.9rem 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-muted-foreground);
+    border-top: 1px solid var(--color-rule);
+    padding-top: 0.75rem;
+  }
+
+  /* Selected-tab styling + panel switching for up to three states. */
+  .states__radio--0:checked ~ .states__tabs .states__tab:nth-child(1),
+  .states__radio--1:checked ~ .states__tabs .states__tab:nth-child(2),
+  .states__radio--2:checked ~ .states__tabs .states__tab:nth-child(3) {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    border-color: var(--color-rule);
+  }
+  .states__radio--0:focus-visible ~ .states__tabs .states__tab:nth-child(1),
+  .states__radio--1:focus-visible ~ .states__tabs .states__tab:nth-child(2),
+  .states__radio--2:focus-visible ~ .states__tabs .states__tab:nth-child(3) {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+  .states__radio--0:checked ~ .states__stage .states__panel--0,
+  .states__radio--1:checked ~ .states__stage .states__panel--1,
+  .states__radio--2:checked ~ .states__stage .states__panel--2 {
+    display: block;
+  }
+</style>
