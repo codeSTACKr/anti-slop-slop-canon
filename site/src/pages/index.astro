@@ -632,16 +632,18 @@ const navLinks = [
     }
     .ex__list {
       margin: 0.35rem 0 0;
-      padding-left: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
+      padding-left: 1.6rem;
+      list-style: decimal outside;
     }
     .ex__list li {
       font-family: var(--font-display);
       font-size: 1rem;
       line-height: 1.6;
       color: var(--color-foreground);
+      margin-top: 0.2rem;
+    }
+    .ex__list li::marker {
+      color: var(--color-muted-foreground);
     }
     .ex__src {
       margin: 1rem 0 0;
