@@ -31,8 +31,9 @@ below, and the build kept going.
   (light warm-paper band · roman/system-serif display · cool ink-blue accent used
   under 5% of any viewport). Diversification rule: first Hallmark run in this project,
   no prior stamp, no constraint.
-- **Enrichment** — none (typography only). The strongest hero for a writing tool is a
-  typographic one; no invented screenshots, no stock imagery, no fabricated metrics.
+- **Enrichment** — originally none (typography only). Two hairline diagrams were added
+  later at the owner's request; see the Graphics section below. Still no invented
+  screenshots, no stock imagery, no fabricated metrics.
 - **shadcn visual preset** — `radix-nova` base selected at `shadcn init` (base `radix`,
   preset `nova`), then re-skinned to the Canon palette. The preset is the starting
   primitive set, not the design, per the plan.
@@ -77,25 +78,71 @@ leading, and flow variables for profile and rules excerpts.
 
 ## Honesty of examples
 
-Every example is drawn from committed sources in the repo:
+Every example applies the committed rules to real facts. Raw fixture filenames were
+removed from the reading flow (owner feedback): citations are now phrased for a human
+("the bundled defaults", "a voice-agent reply"), while the profile / rules / realtime
+excerpts keep their short `From ...template.md` / `defaults.md` captions because those
+cards render the actual shipped files.
 
-- The **default-cleanup before/after** pairs are the verbatim input and the curated
-  output from `evals/fixtures/ai-like-product-update.md` (output as published in
-  `repo/README.md`) and `evals/fixtures/punctuation-and-three-part-padding.md`.
-- The **spoken example** uses `evals/fixtures/spoken-service-delay.md`.
+- The **default-cleanup before/after** pairs are the verbatim slop input and the curated
+  output for a product-update rewrite and a punctuation rewrite (the latter is the
+  `Short examples` line in the bundled `defaults.md`).
+- The **three-state release note** (input / default / personalized) replaces the earlier
+  walnut/maker example so the demo lands with a developer and content-creator audience.
+  The input is plain facts (a v2.4 release note). The default panel cleans those exact
+  facts strictly per `defaults.md`: no em/en dash, semicolon, exclamation point, or
+  mid-sentence colon, no hype, no invented claim. The personalized panel restates the
+  same facts in one illustrative voice (clipped first person, dry understatement, a fixed
+  `Ship it.` sign-off) and is labeled as illustrative of a sample profile, not a real
+  person's output. No fact, number, date, or claim is added in any panel.
+- The **spoken example** is a transit voice-agent reply: the delay is stated before the
+  ticket alternative, every route and time is preserved, and nothing relies on visual
+  notation.
 - The **profile excerpt** is the committed `assets/voice-profile.template.md` schema.
 - The **realtime prompt** is the committed `assets/realtime-voice-prompt.md` verbatim.
-- The **personalized-output** panel is composed to the exact spec of
-  `evals/fixtures/personalized-maker-update.md` (its supplied facts and approved
-  traits: clipped first person, the `Back to the bench.` sign-off, no invented price,
-  date, quote, or quality claim). It is labeled as an illustrative composition to that
-  fixture's rules, not a golden output committed to the repo, so the page never
-  overclaims. Fixture assertions were followed literally.
-- The **pre-release status note** matches `repo/README.md`: the install command
-  describes the plan and will not find anything to install today.
 
-No metric, testimonial, logo, or benefit was invented. No arbitrary-text input box,
-account, analytics, hosted inference, or third-party script appears on the page.
+The pre-release framing was removed entirely (owner feedback): no hero or install
+caveat, no masthead badge, no footer pre-release line. The install commands stayed as
+they are. No metric, testimonial, logo, or benefit was invented. No arbitrary-text input
+box, account, analytics, or third-party script appears on the page.
+
+## Copy audit (owner feedback)
+
+Every line was reviewed and any copy about the page's own plumbing was cut, since a
+reader cares about what they get, not how the page renders:
+
+- Removed the hero claim about hosted models and text never leaving the page. Kept one
+  short credibility line: the examples are real output from the project's own rules.
+- Removed "The diff is computed at build time and needs no JavaScript to read."
+- Removed raw fixture paths from the body copy; kept human-phrased credibility signals.
+- Trimmed the footer column to `MIT licensed` + a source link (dropped the no-trackers,
+  no-text-leaves-the-page, and pre-release lines); renamed it `License`.
+- Fixed one em dash in the page `<title>` to the middle-dot separator the page already
+  uses, so the showcase does not violate its own canon.
+
+## Graphics (owner feedback)
+
+The page was all typography. Two diagrams were added, built to fit the Canon system
+(warm paper, system serif, ink-blue accent under 5% of the viewport) and to hold the
+hard budgets: inline SVG or CSS only, no raster, no external or network asset, no web
+font, no client JavaScript, and fully legible with JS off. Both reference Canon tokens
+by name (`var(--color-rule)`, `var(--color-primary)`, `var(--font-ui)`); no raw colour
+or font value is inlined.
+
+- **`ResolutionFlow.astro`** — a hairline stepper in the hero (it fills the space left
+  by the removed pre-release alert). Four nodes, `Active scope → One bundle → Written or
+  spoken → Clean output`, connected by CSS-drawn chevrons (rotated border corners, no
+  image). It stacks vertically on mobile and becomes a row at 46rem; the chevrons rotate
+  from down to right with the layout. The ink-blue accent appears only on the final node
+  and the chevrons.
+- **`TwoModes.astro`** — a compact "one profile, two modes" mark in the Written & spoken
+  section. One `Profile` node branches through orthogonal hairline connectors to a
+  `Written` node and a `Spoken` node. Pure inline SVG; text uses the system UI stack via
+  the font token; the SVG carries `role="img"` and an `aria-label` so the meaning
+  survives without sight of the mark. It scales fluidly and needs no JavaScript.
+
+Both are decorative-but-labeled and add negligible transfer (inline markup + a few CSS
+rules). The performance budget below is unchanged.
 
 ## Performance approach
 

@@ -1,0 +1,129 @@
+---
+/**
+ * ResolutionFlow — a hairline stepper that shows how the skill resolves a piece
+ * of text into clean output. Theme-consistent with the Canon system: warm-paper
+ * cards, hairline rules, ink-blue accent used only on the final node and the
+ * small chevrons. Pure HTML + CSS, no JavaScript, legible with JS off. Chevrons
+ * are CSS-drawn (border corners), so there is no raster image and no network asset.
+ */
+interface Step {
+  k: string;
+  v: string;
+  out?: boolean;
+}
+const steps: Step[] = [
+  { k: "Active scope", v: "Project or global" },
+  { k: "One bundle", v: "Defaults or your profile" },
+  { k: "Written or spoken", v: "Matched to the text" },
+  { k: "Clean output", v: "Your meaning, kept", out: true },
+];
+---
+
+<figure class="flow" aria-labelledby="flow-cap">
+  <figcaption id="flow-cap" class="flow__cap">How the skill resolves a piece of text</figcaption>
+  <div class="flow__track">
+    {
+      steps.map((s, i) => (
+        <>
+          {i > 0 && (
+            <span class="flow__arrow" aria-hidden="true">
+              <i></i>
+            </span>
+          )}
+          <div class={`flow__node${s.out ? " flow__node--out" : ""}`}>
+            <span class="flow__k">{s.k}</span>
+            <span class="flow__v">{s.v}</span>
+          </div>
+        </>
+      ))
+    }
+  </div>
+</figure>
+
+<style>
+  .flow {
+    margin: 0;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    padding: 1.15rem 1.15rem 1.35rem;
+  }
+  .flow__cap {
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+    margin-bottom: 1rem;
+  }
+  .flow__track {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+  }
+  .flow__node {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    background: var(--color-secondary);
+  }
+  .flow__node--out {
+    border-color: var(--color-primary);
+    background: var(--color-card);
+  }
+  .flow__k {
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-foreground);
+  }
+  .flow__node--out .flow__k {
+    color: var(--color-primary);
+  }
+  .flow__v {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--color-muted-foreground);
+  }
+  .flow__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    height: 0.9rem;
+  }
+  /* CSS-drawn chevron: a rotated top+right border corner. Points down while the
+     track is stacked; rotates to point right when the track becomes a row. */
+  .flow__arrow i {
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: 2px solid var(--color-primary);
+    border-right: 2px solid var(--color-primary);
+    transform: rotate(135deg);
+  }
+
+  @media (min-width: 46rem) {
+    .flow__track {
+      flex-direction: row;
+      align-items: stretch;
+      gap: 0.35rem;
+    }
+    .flow__arrow {
+      height: auto;
+      flex: 0 0 auto;
+    }
+    .flow__arrow i {
+      transform: rotate(45deg);
+    }
+  }
+</style>

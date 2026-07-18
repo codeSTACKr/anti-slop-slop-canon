@@ -1,0 +1,58 @@
+---
+/**
+ * TwoModes — a compact "one profile, two modes" mark. One Profile node branches
+ * to a Written node and a Spoken node through orthogonal hairline connectors.
+ * Inline SVG only: no raster image, no network asset, no web font (text uses the
+ * system UI stack via a token). Decorative but labeled, so screen readers get the
+ * meaning and the page stays legible with JavaScript off.
+ */
+---
+
+<figure class="modes" role="img" aria-label="One profile drives both written and spoken output.">
+  <svg class="modes__svg" viewBox="0 0 260 100" preserveAspectRatio="xMidYMid meet">
+    <path class="modes__line" d="M92 50 H134" />
+    <path class="modes__line" d="M134 50 V26 H176" />
+    <path class="modes__line" d="M134 50 V74 H176" />
+
+    <rect class="modes__box modes__box--source" x="12" y="34" width="80" height="32" rx="6" />
+    <text class="modes__t" x="52" y="54" text-anchor="middle">Profile</text>
+
+    <rect class="modes__box" x="176" y="12" width="72" height="28" rx="6" />
+    <text class="modes__t" x="212" y="30" text-anchor="middle">Written</text>
+
+    <rect class="modes__box" x="176" y="60" width="72" height="28" rx="6" />
+    <text class="modes__t" x="212" y="78" text-anchor="middle">Spoken</text>
+  </svg>
+</figure>
+
+<style>
+  .modes {
+    margin: 0 0 2rem;
+    max-width: 20rem;
+  }
+  .modes__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .modes__line {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1.5;
+  }
+  .modes__box {
+    fill: var(--color-secondary);
+    stroke: var(--color-rule);
+    stroke-width: 1.5;
+  }
+  .modes__box--source {
+    fill: var(--color-card);
+    stroke: var(--color-primary);
+  }
+  .modes__t {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    fill: var(--color-foreground);
+  }
+</style>
