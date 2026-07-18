@@ -94,7 +94,10 @@ const navLinks = [
   <main id="main" class="wrap">
     <!-- HERO — typographic, Long Document lede -->
     <section class="hero">
-      <p class="hero__kicker">An open-source Agent Skill</p>
+      <p class="hero__kicker">
+        <span class="hero__kicker-rule" aria-hidden="true"></span>
+        An open-source Agent Skill
+      </p>
       <h1 class="hero__title">Sound like yourself.</h1>
       <p class="hero__lede typeset">
         <code>anti-slop-slop-canon</code> removes the habits that make writing sound
@@ -103,7 +106,8 @@ const navLinks = [
         on the model your agent already has.
       </p>
       <p class="hero__sub">
-        Every example below is real output from the project's own rules.
+        Every example below is <mark class="mark">real output</mark> from the project's
+        own rules.
       </p>
 
       <div class="hero__flow">
@@ -115,7 +119,11 @@ const navLinks = [
 
     <!-- PROOF — default cleanup, interactive diff -->
     <section id="proof" class="section">
-      <p class="eyebrow">The floor</p>
+      <p class="eyebrow">
+        <span class="eyebrow__num">01</span>
+        <span class="eyebrow__rule" aria-hidden="true"></span>
+        <span class="eyebrow__text">The floor</span>
+      </p>
       <h2 class="h2">Default cleanup, before you do anything</h2>
       <p class="lead typeset">
         Out of the box the skill strips hype, canned framing, and ornamental
@@ -145,7 +153,11 @@ const navLinks = [
 
     <!-- THREE STATES -->
     <section id="states" class="section">
-      <p class="eyebrow">Three levels of guardrail</p>
+      <p class="eyebrow">
+        <span class="eyebrow__num">02</span>
+        <span class="eyebrow__rule" aria-hidden="true"></span>
+        <span class="eyebrow__text">Three levels of guardrail</span>
+      </p>
       <h2 class="h2">The same release, three levels of guardrail</h2>
       <p class="lead typeset">
         Every panel is output for the same v2.4 release. What changes is how much
@@ -164,7 +176,11 @@ const navLinks = [
 
     <!-- WRITTEN & SPOKEN -->
     <section id="voice" class="section">
-      <p class="eyebrow">One profile, two modes</p>
+      <p class="eyebrow">
+        <span class="eyebrow__num">03</span>
+        <span class="eyebrow__rule" aria-hidden="true"></span>
+        <span class="eyebrow__text">One profile, two modes</span>
+      </p>
       <h2 class="h2">Written and spoken</h2>
       <p class="lead typeset">
         The same profile covers what people read and what they hear. The skill applies
@@ -223,7 +239,11 @@ const navLinks = [
 
     <!-- ONBOARDING -->
     <section id="onboarding" class="section">
-      <p class="eyebrow">How it learns your voice</p>
+      <p class="eyebrow">
+        <span class="eyebrow__num">04</span>
+        <span class="eyebrow__rule" aria-hidden="true"></span>
+        <span class="eyebrow__text">How it learns your voice</span>
+      </p>
       <h2 class="h2">It builds a profile from your own writing</h2>
       <p class="lead typeset">
         You give it a few samples. It separates the traits that are your voice from the
@@ -274,7 +294,11 @@ const navLinks = [
 
     <!-- PROFILE -->
     <section id="profile" class="section">
-      <p class="eyebrow">Nothing hidden</p>
+      <p class="eyebrow">
+        <span class="eyebrow__num">05</span>
+        <span class="eyebrow__rule" aria-hidden="true"></span>
+        <span class="eyebrow__text">Nothing hidden</span>
+      </p>
       <h2 class="h2">A transparent, editable profile</h2>
       <p class="lead typeset">
         The compiled profile is a plain Markdown file that lives in your project, not
@@ -301,7 +325,11 @@ const navLinks = [
 
     <!-- REALTIME -->
     <section id="realtime" class="section">
-      <p class="eyebrow">For voice agents</p>
+      <p class="eyebrow">
+        <span class="eyebrow__num">06</span>
+        <span class="eyebrow__rule" aria-hidden="true"></span>
+        <span class="eyebrow__text">For voice agents</span>
+      </p>
       <h2 class="h2">A realtime voice prompt</h2>
       <p class="lead typeset">
         Ask for the realtime prompt and the skill returns a compact, style-only module
@@ -330,7 +358,11 @@ const navLinks = [
 
     <!-- INSTALL -->
     <section id="install" class="section">
-      <p class="eyebrow">Getting started</p>
+      <p class="eyebrow">
+        <span class="eyebrow__num">07</span>
+        <span class="eyebrow__rule" aria-hidden="true"></span>
+        <span class="eyebrow__text">Getting started</span>
+      </p>
       <h2 class="h2">Install</h2>
       <p class="lead typeset">
         Installation uses <code>npx skills</code>. Global scope activates the skill in
@@ -474,65 +506,98 @@ const navLinks = [
 
     /* Hero */
     .hero {
-      padding-block: 3.5rem 3rem;
+      padding-block: 4.5rem 3.5rem;
     }
     .hero__kicker {
-      margin: 0 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin: 0 0 1.4rem;
       font-family: var(--font-ui);
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--color-primary);
     }
+    .hero__kicker-rule {
+      display: block;
+      width: 2rem;
+      height: 2px;
+      flex: 0 0 auto;
+      background: var(--color-primary);
+    }
     .hero__title {
       margin: 0;
-      font-size: clamp(2.75rem, 8vw, 4.75rem);
-      line-height: 1.02;
+      font-size: clamp(3rem, 9.5vw, 6rem);
+      line-height: 0.98;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.028em;
     }
     .hero__lede {
-      margin: 1.5rem 0 0;
-      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
-      line-height: 1.6;
+      margin: 1.75rem 0 0;
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      line-height: 1.55;
       max-width: 40ch;
     }
     .hero__sub {
-      margin: 1.25rem 0 0;
+      margin: 1.35rem 0 0;
       font-family: var(--font-ui);
-      font-size: 0.98rem;
+      font-size: 1rem;
       line-height: 1.6;
       color: var(--color-muted-foreground);
       max-width: 60ch;
     }
     .hero__flow {
-      margin-top: 2.5rem;
+      margin-top: 3.25rem;
     }
 
     /* Sections */
     .section {
-      padding-block: 3rem;
+      padding-block: 4rem;
     }
+
+    /* Numbered spec-sheet eyebrow — number (mono, accent) · short rule · label. */
     .eyebrow {
-      margin: 0 0 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin: 0 0 1rem;
+    }
+    .eyebrow__num {
+      font-family: var(--font-code);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--color-primary);
+      font-variant-numeric: tabular-nums;
+    }
+    .eyebrow__rule {
+      display: block;
+      width: 1.75rem;
+      height: 1px;
+      flex: 0 0 auto;
+      background: var(--color-primary);
+      opacity: 0.55;
+    }
+    .eyebrow__text {
       font-family: var(--font-ui);
       font-size: 0.78rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      color: var(--color-primary);
+      color: var(--color-muted-foreground);
     }
     .h2 {
       margin: 0;
-      font-size: clamp(1.75rem, 4.5vw, 2.6rem);
-      line-height: 1.1;
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      line-height: 1.06;
       font-weight: 600;
-      letter-spacing: -0.015em;
+      letter-spacing: -0.02em;
     }
     .lead {
-      margin: 1rem 0 2rem;
-      font-size: 1.08rem;
+      margin: 1.1rem 0 2.25rem;
+      font-size: 1.12rem;
     }
     .body {
       margin-top: 1.75rem;

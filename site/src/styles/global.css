@@ -1,7 +1,11 @@
 /* Hallmark · genre: editorial · macrostructure: Long Document · theme: Canon
- * enrichment: none (typography only) · nav: N6 masthead-lite · footer: Ft4 colophon
- * pre-emit critique: P5 H5 E5 S5 R5 V4
+ * enrichment: E5 hand-built (hero specimen mark) · nav: N6 masthead-lite · footer: Ft4 colophon
+ * pre-emit critique: P5 H5 E5 S5 R5 V5
  * Canon axes: paper light (warm off-white) · display roman-serif · accent cool ink-blue
+ * Design pass (Hallmark elevation): numbered spec-sheet eyebrows, wider typographic
+ * scale + vertical rhythm, and ONE selective warm highlight pop (hue ~80) that harmonizes
+ * with the warm paper and plays warm-against-cool with the ink-blue accent. Ink-blue stays
+ * the primary structural accent; the warm marker is used on two phrases only.
  * Palette re-skins the shadcn radix-nova preset. Fonts are system stacks only:
  * no external or bundled font request, so font transfer is zero and the page is offline.
  */
@@ -43,6 +47,8 @@
     --color-del-foreground: var(--del-foreground);
     --color-del-surface: var(--del-surface);
     --color-rule: var(--rule);
+    --color-highlight: var(--highlight);
+    --color-highlight-strong: var(--highlight-strong);
 
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
@@ -91,6 +97,17 @@
     --del-foreground: oklch(0.44 0.15 25);
     --del-surface: oklch(0.955 0.035 30);
     --rule: oklch(0.892 0.008 80);
+
+    /* Signature warm highlight — the one vivid accent pop. A honey/amber marker
+       at hue ~80 that harmonizes with the warm paper and reads warm against the
+       cool ink-blue. Light enough (L 0.87) that foreground ink stays legible over
+       it, so it never lowers text contrast. Used on two phrases across the page. */
+    --highlight: oklch(0.83 0.125 63);
+    --highlight-strong: oklch(0.76 0.14 62);
+
+    /* Quiet elevation for the signature hero mark — hairline seat + a soft
+       cool-ink drop, so the mark reads as a designed object, not a plain note. */
+    --shadow-mark: 0 1px 0 var(--rule), 0 18px 40px -34px oklch(0.30 0.03 260 / 0.5);
 
     /* Motion — three named easings, never the browser default. */
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -145,4 +162,19 @@
         background: oklch(0.88 0.05 256);
         color: var(--foreground);
     }
+}
+
+/* Highlighter marker — the single warm accent pop. Drawn as a hand-run band that
+   sits low behind the text (like a highlighter pen), so the ink keeps full contrast
+   over the paper. Roman, never italic. Used on two phrases only across the page. */
+.mark {
+    background-image: linear-gradient(
+        var(--highlight),
+        var(--highlight)
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 0.42em;
+    background-position: 0 92%;
+    padding-inline: 0.06em;
+    color: var(--foreground);
 }

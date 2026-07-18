@@ -170,6 +170,48 @@ or font value is inlined.
 Both are decorative-but-labeled and add negligible transfer (inline markup + a few CSS
 rules). The performance budget below is unchanged.
 
+## Hallmark design elevation pass
+
+A later visual pass raised the craft of the page without touching the approved copy,
+content, examples, section order, or any prior product decision. It took inspiration
+from the sibling Hallmark product site (the anti-slop skill for design) for energy and
+structure only, and copied none of its typeface, colours, layout, focal graphic, or
+wording. The Canon system (warm paper, system serif display, ink-blue accent) is
+preserved and, per the inverted diversification rule for a system-managed project, the
+pass stays inside Canon rather than diverging from it. What changed:
+
+- **Numbered spec-sheet eyebrows (01–07).** Each section now opens with a mono tabular
+  number in ink-blue, a short accent rule, and the existing kicker label in UI caps,
+  stacked directly above the heading. This gives the walkthrough a confident editorial
+  rhythm and reads as a sequence. The number/rule/label stack is vertical only (never
+  the banned tag-left / heading-right two-column pattern). The eyebrow labels are the
+  existing copy, unchanged.
+- **Wider typographic scale and vertical rhythm.** The hero headline steps up to
+  `clamp(3rem, 9.5vw, 6rem)` with tighter tracking; section headings step up to
+  `clamp(1.9rem, 5vw, 3rem)`; section padding and hero rhythm are more generous. The
+  hero kicker gained a short accent rule to tie into the numbered-eyebrow system.
+- **One selective warm highlight pop.** A single new pair of tokens (`--highlight`,
+  `--highlight-strong`, honey-amber at hue ~63) drives a `.mark` highlighter utility.
+  The hue harmonizes with the warm paper and plays warm-against-cool with the ink-blue
+  accent, so the palette stays cohesive. It is drawn as a low band behind the text (a
+  highlighter-pen effect), so foreground ink keeps full contrast over it and legibility
+  in the light theme is unchanged. It is used on exactly two phrases: `real output` in
+  the hero credibility line and `your own voice.` in the hero specimen mark. Ink-blue
+  remains the primary structural accent.
+- **Signature hero mark elevated.** `TellsRemoved.astro` (the approved "AI tells, struck
+  out" graphic) is now a stronger focal object: a larger, softly lifted panel, larger
+  struck specimens, a mono spec-count in the header derived from the real number of
+  tells (honest, not fabricated), and a larger resolve line carrying the amber marker.
+  Its meaning is unchanged: each removed habit is a real `<del>` with a real line-through
+  and a visually hidden `removed:` prefix, and it resolves to `your point, in your own
+  voice.`
+
+All hard constraints held: inline SVG/CSS only, system fonts only, no raster or network
+asset, no added client JavaScript, no whole-page hydration, and every element stays
+legible with JavaScript off. Verified at 375 px with no horizontal scroll. New colour
+values are lifted into named tokens and referenced by name; no raw values are inlined in
+component styles.
+
 ## Performance approach
 
 - Astro static output, zero server runtime.

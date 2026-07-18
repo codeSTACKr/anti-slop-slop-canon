@@ -25,7 +25,10 @@ const tells: string[] = [
 ---
 
 <figure class="tells" aria-labelledby="tells-cap">
-  <figcaption id="tells-cap" class="tells__cap">Habits the skill removes</figcaption>
+  <figcaption id="tells-cap" class="tells__cap">
+    <span class="tells__cap-text">Habits the skill removes</span>
+    <span class="tells__count" aria-hidden="true">{String(tells.length).padStart(2, "0")}</span>
+  </figcaption>
 
   <ul class="tells__grid" aria-label="Writing habits the skill removes">
     {
@@ -44,7 +47,9 @@ const tells: string[] = [
 
   <p class="tells__left">
     <span class="tells__left-label">What's left</span>
-    <span class="tells__left-line">your point, in your own voice.</span>
+    <span class="tells__left-line"
+      >your point, in <mark class="mark">your own voice.</mark></span
+    >
   </p>
 </figure>
 
@@ -64,18 +69,34 @@ const tells: string[] = [
   .tells {
     margin: 0;
     border: 1px solid var(--color-rule);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     background: var(--color-card);
-    padding: 1.35rem 1.35rem 1.5rem;
+    padding: 1.75rem 1.75rem 1.9rem;
+    /* A quiet lift so the signature mark reads as a designed object, not a note. */
+    box-shadow: var(--shadow-mark);
   }
   .tells__cap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.15rem;
+  }
+  .tells__cap-text {
     font-family: var(--font-ui);
     font-size: 0.78rem;
     font-weight: 600;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-muted-foreground);
-    margin-bottom: 1rem;
+  }
+  .tells__count {
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-primary);
+    font-variant-numeric: tabular-nums;
   }
   .tells__grid {
     list-style: none;
@@ -83,7 +104,7 @@ const tells: string[] = [
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.55rem;
+    gap: 0.6rem;
   }
   .tells__cell {
     display: flex;
@@ -91,13 +112,13 @@ const tells: string[] = [
   .tells__item {
     display: inline-block;
     font-family: var(--font-display);
-    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    font-size: clamp(1.05rem, 2.3vw, 1.28rem);
     line-height: 1.2;
     color: var(--color-muted-foreground);
     background: var(--color-secondary);
     border: 1px solid var(--color-rule);
     border-radius: var(--radius-md);
-    padding: 0.3rem 0.65rem;
+    padding: 0.32rem 0.68rem;
     /* Real strike line — the signal does not rely on color. */
     text-decoration: line-through;
     text-decoration-color: var(--color-del);
@@ -107,13 +128,13 @@ const tells: string[] = [
   .tells__rule {
     height: 0;
     border-top: 1px solid var(--color-rule);
-    margin: 1.35rem 0 1.1rem;
+    margin: 1.6rem 0 1.3rem;
   }
   .tells__left {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.55rem;
   }
   .tells__left-label {
     font-family: var(--font-ui);
@@ -125,9 +146,10 @@ const tells: string[] = [
   }
   .tells__left-line {
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 3.4vw, 1.75rem);
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    line-height: 1.24;
+    letter-spacing: -0.015em;
     color: var(--color-foreground);
+    text-wrap: pretty;
   }
 </style>
