@@ -87,17 +87,33 @@ cards render the actual shipped files.
 - The **default-cleanup before/after** pairs are the verbatim slop input and the curated
   output for a product-update rewrite and a punctuation rewrite (the latter is the
   `Short examples` line in the bundled `defaults.md`).
-- The **three-state release note** (input / default / personalized) replaces the earlier
-  walnut/maker example so the demo lands with a developer and content-creator audience.
-  The input is plain facts (a v2.4 release note). The default panel cleans those exact
-  facts strictly per `defaults.md`: no em/en dash, semicolon, exclamation point, or
-  mid-sentence colon, no hype, no invented claim. The personalized panel restates the
-  same facts in one illustrative voice (clipped first person, dry understatement, a fixed
-  `Ship it.` sign-off) and is labeled as illustrative of a sample profile, not a real
-  person's output. No fact, number, date, or claim is added in any panel.
-- The **spoken example** is a transit voice-agent reply: the delay is stated before the
-  ticket alternative, every route and time is preserved, and nothing relies on visual
-  notation.
+- The **three-state release note** now frames the three panels as levels of guardrail on
+  the same v2.4 release, not as an input turning into output (the earlier version wrongly
+  opened panel one with a `Write a release note:` instruction that never appears in real
+  output). All three panels are output. Panel one, `No guardrails`, is a deliberate before:
+  what an assistant writes with no help, so the AI tells (hype, an em dash, exclamation
+  points, `here's the thing`) belong there. Panel two, `With our defaults`, cleans the same
+  release strictly per `defaults.md`: no em/en dash, semicolon, exclamation point, or
+  mid-sentence colon, no hype, no invented claim, defensible line by line. Panel three,
+  `With your profile`, restates the same facts in one illustrative voice (clipped first
+  person, dry understatement, a fixed `Ship it.` sign-off) and is labeled illustrative of a
+  sample profile, not a real person's output. The facts are identical across all three
+  (ships Thursday, `--watch` flag, cold start 4.2s to 1.8s, the Windows env-var bug fixed).
+- The **spoken example** is now a straight before/after, parallel to the Written card, not
+  a request. The `Written` side is a set of deploy steps as a real numbered `<ol>`; the
+  `Read aloud` side is the same content spoken naturally with the numbers removed, so a
+  listener never hears them counted out. The source line explains that list markers are
+  dropped as a reader benefit. The read-aloud form obeys the canon (it is good spoken
+  output).
+- The **onboarding section** now demonstrates personalization instead of only listing the
+  three first-use choices. `VoiceShift.astro` shows detected traits separated into stable
+  voice versus set-aside subject matter and one-off quirks, then the same neutral sentence
+  in the default and personalized voices. The traits and both sentences are labeled
+  illustrative of one sample profile. The honest points are kept in the body copy (one
+  question at a time, preview before saving, nothing retained by default), and the three
+  first-use choices remain as a smaller secondary block below the demonstration. Rewriting
+  that block also removed a stray semicolon the earlier copy had, so the section obeys the
+  canon it describes.
 - The **profile excerpt** is the committed `assets/voice-profile.template.md` schema.
 - The **realtime prompt** is the committed `assets/realtime-voice-prompt.md` verbatim.
 
@@ -129,12 +145,22 @@ font, no client JavaScript, and fully legible with JS off. Both reference Canon 
 by name (`var(--color-rule)`, `var(--color-primary)`, `var(--font-ui)`); no raw colour
 or font value is inlined.
 
-- **`ResolutionFlow.astro`** — a hairline stepper in the hero (it fills the space left
-  by the removed pre-release alert). Four nodes, `Active scope → One bundle → Written or
-  spoken → Clean output`, connected by CSS-drawn chevrons (rotated border corners, no
-  image). It stacks vertically on mobile and becomes a row at 46rem; the chevrons rotate
-  from down to right with the layout. The ink-blue accent appears only on the final node
-  and the chevrons.
+- **`TellsRemoved.astro`** — the hero mark (it replaced `ResolutionFlow.astro`, which was
+  deleted with the stepper concept). A designed typographic panel that names the writing
+  habits the skill removes, each specimen shown as a `<del>` with a real line-through, and
+  resolves to a single accented line, `your point, in your own voice.` The strike is a
+  real line, not color alone, and each specimen carries a visually hidden `removed:` prefix
+  so assistive tech reads "removed game-changer" without seeing the strike. The list has
+  its own group label. The punctuation tells are named in words (`the em dash`, `the
+  semicolon`, `exclamation points`) rather than shown as glyphs, so no forbidden character
+  appears on the page. Pure HTML + CSS.
+- **`VoiceShift.astro`** — the onboarding demonstration. Two static steps: detected voice
+  traits sorted into `Kept as your voice` versus set-aside subject matter and one-off
+  quirks, then the same neutral sentence rendered in the default voice and the personalized
+  voice so the tone shift is visible. The `Kept` lane and the `Your voice` panel carry the
+  ink-blue accent; the connector is a CSS-drawn chevron (rotated border corner) that points
+  down when stacked and right at 46rem. Pure HTML + CSS, legible with JS off. The traits are
+  labeled illustrative of one sample profile, not a real person's writing.
 - **`TwoModes.astro`** — a compact "one profile, two modes" mark in the Written & spoken
   section. One `Profile` node branches through orthogonal hairline connectors to a
   `Written` node and a `Spoken` node. Pure inline SVG; text uses the system UI stack via

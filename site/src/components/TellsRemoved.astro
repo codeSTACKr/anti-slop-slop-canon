@@ -1,0 +1,133 @@
+---
+/**
+ * TellsRemoved — the hero mark. A designed typographic panel that names the
+ * writing habits the skill removes, each specimen visibly struck through, and
+ * resolves to what is left. Theme-consistent with the Canon system: warm-paper
+ * card, hairline rule, ink-blue accent on the resolve line only.
+ *
+ * Pure HTML + CSS. No raster, no network asset, no web font, no JavaScript, and
+ * fully legible with JS off. Accessibility: each removed specimen is a real
+ * <del> with a real line-through (not color alone) and a visually hidden
+ * "removed" prefix, so assistive tech reads "removed game-changer" rather than
+ * relying on the strike being seen. The list carries its own group label.
+ */
+const tells: string[] = [
+  "game-changer",
+  "“here’s the thing”",
+  "seamless",
+  "robust",
+  "delve",
+  "the em dash",
+  "the semicolon",
+  "exclamation points",
+  "rule of three",
+];
+---
+
+<figure class="tells" aria-labelledby="tells-cap">
+  <figcaption id="tells-cap" class="tells__cap">Habits the skill removes</figcaption>
+
+  <ul class="tells__grid" aria-label="Writing habits the skill removes">
+    {
+      tells.map((t) => (
+        <li class="tells__cell">
+          <del class="tells__item">
+            <span class="sr-only">removed: </span>
+            {t}
+          </del>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="tells__rule" role="presentation"></div>
+
+  <p class="tells__left">
+    <span class="tells__left-label">What's left</span>
+    <span class="tells__left-line">your point, in your own voice.</span>
+  </p>
+</figure>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .tells {
+    margin: 0;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    padding: 1.35rem 1.35rem 1.5rem;
+  }
+  .tells__cap {
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+    margin-bottom: 1rem;
+  }
+  .tells__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+  .tells__cell {
+    display: flex;
+  }
+  .tells__item {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    line-height: 1.2;
+    color: var(--color-muted-foreground);
+    background: var(--color-secondary);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    padding: 0.3rem 0.65rem;
+    /* Real strike line — the signal does not rely on color. */
+    text-decoration: line-through;
+    text-decoration-color: var(--color-del);
+    text-decoration-thickness: 0.11em;
+    text-underline-offset: 0;
+  }
+  .tells__rule {
+    height: 0;
+    border-top: 1px solid var(--color-rule);
+    margin: 1.35rem 0 1.1rem;
+  }
+  .tells__left {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .tells__left-label {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .tells__left-line {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 3.4vw, 1.75rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--color-foreground);
+  }
+</style>

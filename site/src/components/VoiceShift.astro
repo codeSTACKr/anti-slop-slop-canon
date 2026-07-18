@@ -1,0 +1,222 @@
+---
+/**
+ * VoiceShift — shows what onboarding actually does. Two steps, both static:
+ *   1. Detected voice traits from a sample, sorted into what is kept as voice
+ *      and what is set aside (subject matter, one-off quirks).
+ *   2. The same neutral sentence rendered in the default voice and in the
+ *      personalized voice, so the tone shift is visible.
+ *
+ * Canon system: warm-paper cards, hairline rules, ink-blue accent on the
+ * personalized result only. Pure HTML + CSS, no raster, no network asset, no
+ * web font, no JavaScript, legible with JS off. The connector between the two
+ * sentences is a CSS-drawn chevron (rotated border corner), so there is no
+ * image. It points down when stacked and right when the pair sits in a row.
+ */
+interface Lane {
+  h: string;
+  kept?: boolean;
+  items: string[];
+}
+const lanes: Lane[] = [
+  {
+    h: "Kept as your voice",
+    kept: true,
+    items: [
+      "Short sentences, one idea each",
+      "First person, with contractions",
+      "Understatement over enthusiasm",
+      "A dry aside now and then",
+    ],
+  },
+  {
+    h: "Set aside · subject matter",
+    items: ["Kubernetes, latency, migrations", "The topic you happened to write about"],
+  },
+  {
+    h: "Set aside · one-off quirks",
+    items: ["An all-caps word in one draft", "A typo you never repeated"],
+  },
+];
+---
+
+<div class="vs">
+  <section class="vs__step">
+    <p class="vs__cap">Detected from a writing sample</p>
+    <div class="vs__lanes">
+      {
+        lanes.map((l) => (
+          <div class={`vlane${l.kept ? " vlane--kept" : ""}`}>
+            <p class="vlane__h">{l.h}</p>
+            <ul class="vlane__list">
+              {l.items.map((it) => (
+                <li>{it}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <p class="vs__fine">Illustrative traits from one sample profile, not a real person's writing.</p>
+  </section>
+
+  <section class="vs__step">
+    <p class="vs__cap">The same sentence, before and after</p>
+    <div class="vs__ab">
+      <article class="vab">
+        <p class="vab__label">Default voice</p>
+        <p class="vab__text">The cache warm-up now finishes in about two seconds.</p>
+      </article>
+      <span class="vab__link" aria-hidden="true"><i></i></span>
+      <article class="vab vab--you">
+        <p class="vab__label">Your voice</p>
+        <p class="vab__text">Cache warm-up is down to about two seconds now. Good enough.</p>
+      </article>
+    </div>
+  </section>
+</div>
+
+<style>
+  .vs {
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    overflow: clip;
+  }
+  .vs__step {
+    padding: 1.25rem 1.15rem;
+  }
+  .vs__step + .vs__step {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-secondary);
+  }
+  .vs__cap {
+    margin: 0 0 0.9rem;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+  }
+
+  /* Step 1 — trait lanes */
+  .vs__lanes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+  @media (min-width: 46rem) {
+    .vs__lanes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .vlane {
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    padding: 0.85rem 0.9rem;
+  }
+  .vlane--kept {
+    border-color: var(--color-primary);
+  }
+  .vlane__h {
+    margin: 0 0 0.55rem;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+  }
+  .vlane--kept .vlane__h {
+    color: var(--color-primary);
+  }
+  .vlane__list {
+    margin: 0;
+    padding-left: 1.05rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .vlane__list li {
+    font-family: var(--font-ui);
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--color-muted-foreground);
+  }
+  .vs__fine {
+    margin: 0.9rem 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--color-muted-foreground);
+  }
+
+  /* Step 2 — before / after sentence */
+  .vs__ab {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+  }
+  .vab {
+    flex: 1 1 0;
+    min-width: 0;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    padding: 0.9rem 1rem;
+  }
+  .vab--you {
+    border-color: var(--color-primary);
+  }
+  .vab__label {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+  }
+  .vab--you .vab__label {
+    color: var(--color-primary);
+  }
+  .vab__text {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--color-foreground);
+    text-wrap: pretty;
+  }
+
+  /* CSS-drawn chevron between the two sentences. */
+  .vab__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    height: 0.9rem;
+  }
+  .vab__link i {
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: 2px solid var(--color-primary);
+    border-right: 2px solid var(--color-primary);
+    transform: rotate(135deg);
+  }
+
+  @media (min-width: 46rem) {
+    .vs__ab {
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .vab__link {
+      height: auto;
+      flex: 0 0 auto;
+    }
+    .vab__link i {
+      transform: rotate(45deg);
+    }
+  }
+</style>

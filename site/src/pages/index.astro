@@ -3,8 +3,9 @@ import Layout from "../layouts/Layout.astro";
 import DiffExplorer from "../components/DiffExplorer.astro";
 import StateExplorer from "../components/StateExplorer.astro";
 import CopyCommand from "../components/CopyCommand.astro";
-import ResolutionFlow from "../components/ResolutionFlow.astro";
+import TellsRemoved from "../components/TellsRemoved.astro";
 import TwoModes from "../components/TwoModes.astro";
+import VoiceShift from "../components/VoiceShift.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -35,40 +36,37 @@ const punctBefore =
   "The result is clear: keep both routes—one is faster; one is safer!";
 const punctAfter = "Keep both routes. One is faster. The other is safer.";
 
-// Three states of one release note. The default panel applies the bundled rules
-// to the supplied facts; the personalized panel illustrates one sample profile.
+// One release, three levels of guardrail. Every panel is OUTPUT for the same
+// v2.4 facts. Panel 1 is a deliberate before: what an assistant writes with no
+// help, so the AI tells belong there. Panel 2 cleans it strictly per the bundled
+// rules. Panel 3 restates it in one illustrative sample voice.
 const states = [
   {
-    key: "input",
-    tab: "The facts you give it",
-    caption: "Plain facts",
-    body: "Write a release note: version 2.4 ships Thursday, the CLI gets a --watch flag, cold start drops from 4.2 seconds to 1.8 seconds, and the Windows bug that dropped environment variables is fixed.",
-    meta: "Just the facts. No voice attached yet.",
+    key: "none",
+    tab: "No guardrails",
+    caption: "What a typical assistant writes",
+    body: "We're thrilled to announce that v2.4 is here, and it's a game-changer! Here's the thing—this groundbreaking release makes your whole workflow feel seamless. The CLI now has a powerful new --watch flag, cold starts are blazing fast (down from 4.2s to a mere 1.8s), and we've finally squashed that pesky Windows bug that kept dropping your environment variables. You're going to love it!",
+    meta: "A realistic draft from an assistant with no help. The hype and the ornamental punctuation are exactly the habits the skill removes.",
   },
   {
     key: "default",
-    tab: "Default cleanup",
-    caption: "Default voice, before onboarding",
+    tab: "With our defaults",
+    caption: "Cleaned with the bundled defaults",
     body: "Version 2.4 ships Thursday. The CLI gets a --watch flag. Cold start drops from 4.2 seconds to 1.8 seconds. The Windows bug that dropped environment variables is fixed.",
-    meta: "The floor everyone gets. Plain and factual, with no hype and no invented claim. Same facts, no signature yet.",
+    meta: "The floor everyone gets. Plain and factual, defensible line by line, with no hype and no invented claim.",
   },
   {
-    key: "personal",
-    tab: "Personalized output",
-    caption: "Your voice, after onboarding",
-    body: "2.4 lands Thursday. The CLI finally gets a --watch flag. Cold start went from 4.2 seconds to 1.8. And that Windows bug that ate your environment variables is fixed.\nShip it.",
+    key: "profile",
+    tab: "With your profile",
+    caption: "In a sample personal voice",
+    body: "2.4 lands Thursday. The CLI finally gets a --watch flag. Cold start went from 4.2 seconds to 1.8. And that Windows bug that ate your environment variables is gone.\nShip it.",
     meta: "Illustrative of one sample profile: clipped first person, dry understatement, a fixed sign-off. It uses only the facts above. Your onboarded output would sound like you.",
   },
 ];
 
-const spokenIn =
-  "Tell passengers that Route 6 is delayed about 15 minutes because a disabled vehicle is blocking Oak Street. Valid tickets will be accepted on Route 9 until 6:30 PM.";
-const spokenOut =
-  "Route 6 is running about 15 minutes late. A disabled vehicle is blocking Oak Street. Your Route 6 ticket is good on Route 9 until 6:30 PM.";
-
 const navLinks = [
   { href: "#proof", label: "Proof" },
-  { href: "#states", label: "Three states" },
+  { href: "#states", label: "Guardrail levels" },
   { href: "#voice", label: "Written & spoken" },
   { href: "#onboarding", label: "Onboarding" },
   { href: "#profile", label: "Profile" },
@@ -110,7 +108,7 @@ const navLinks = [
       </p>
 
       <div class="hero__flow">
-        <ResolutionFlow />
+        <TellsRemoved />
       </div>
     </section>
 
@@ -148,18 +146,18 @@ const navLinks = [
 
     <!-- THREE STATES -->
     <section id="states" class="section">
-      <p class="eyebrow">Generic to default to yours</p>
-      <h2 class="h2">The same facts, three ways</h2>
+      <p class="eyebrow">Three levels of guardrail</p>
+      <h2 class="h2">The same release, three levels of guardrail</h2>
       <p class="lead typeset">
-        Cleanup is the floor. Once you complete onboarding, output shifts from a neutral
-        default to your approved voice. Here is one set of facts moving through all
-        three states.
+        Every panel is output for the same v2.4 release. What changes is how much
+        guidance the agent had. First no guardrails, then the shared defaults, then a
+        personal profile.
       </p>
       <StateExplorer id="release" states={states} />
       <p class="fineprint">
-        The input is plain facts. The default panel applies the bundled rules. The
-        personalized panel illustrates one sample profile and is not a claim about any
-        real person's output.
+        The first panel is a deliberate before, written the way an assistant sounds with
+        no help. The middle panel applies the bundled rules. The last panel illustrates
+        one sample profile and is not a claim about any real person's output.
       </p>
     </section>
 
@@ -201,13 +199,21 @@ const navLinks = [
             <CardDescription>Video scripts, narration, voice-agent replies</CardDescription>
           </CardHeader>
           <CardContent>
-            <p class="ex__caption">Request</p>
-            <p class="ex__before">{spokenIn}</p>
+            <p class="ex__caption">Written</p>
+            <p class="ex__lead-line">Deploying takes three steps:</p>
+            <ol class="ex__list">
+              <li>Pull the latest main.</li>
+              <li>Run the database migration.</li>
+              <li>Restart the workers.</li>
+            </ol>
             <p class="ex__caption">Read aloud</p>
-            <p class="ex__after">{spokenOut}</p>
+            <p class="ex__after">
+              Deploying takes three steps. First, pull the latest main. Then run the
+              database migration. Last, restart the workers.
+            </p>
             <p class="ex__src">
-              A voice-agent reply. The delay comes before the ticket alternative, every
-              route and time is preserved, and nothing relies on visual notation.
+              Read aloud, the list numbers are dropped so a listener never hears them
+              counted out. The steps and their order stay the same.
             </p>
           </CardContent>
         </Card>
@@ -219,52 +225,56 @@ const navLinks = [
     <!-- ONBOARDING -->
     <section id="onboarding" class="section">
       <p class="eyebrow">How it learns your voice</p>
-      <h2 class="h2">Onboarding asks one thing first</h2>
+      <h2 class="h2">It builds a profile from your own writing</h2>
       <p class="lead typeset">
-        The first time you write in a scope with no saved profile, the skill asks a
-        single question before it does anything else.
+        You give it a few samples. It separates the traits that are your voice from the
+        subject you happened to write about and any one-off quirks, compiles a profile
+        you preview and approve, and shifts your output toward the way you write.
       </p>
 
-      <div class="choices">
-        <div class="choice">
-          <span class="choice__n">1</span>
-          <div>
-            <h3 class="choice__h">Personalize now</h3>
-            <p class="choice__p">
-              A short, adaptive interview. One question at a time, samples collected
-              early. Strong evidence shortens it; sparse or conflicting evidence
-              triggers targeted questions instead of silent guesses.
-            </p>
+      <VoiceShift />
+
+      <p class="body typeset">
+        It asks one question at a time. It writes nothing until you preview and approve
+        the profile. By default it keeps none of your samples, pasted text, URLs, or its
+        own analysis.
+      </p>
+
+      <div class="firstrun">
+        <h3 class="firstrun__h">The first time, it offers three ways to start</h3>
+        <div class="choices choices--compact">
+          <div class="choice">
+            <span class="choice__n">1</span>
+            <div>
+              <h4 class="choice__h">Personalize now</h4>
+              <p class="choice__p">
+                A short, adaptive interview. One question at a time, samples collected
+                early, targeted follow-ups only where the evidence is thin.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="choice">
-          <span class="choice__n">2</span>
-          <div>
-            <h3 class="choice__h">Use the defaults</h3>
-            <p class="choice__p">
-              Skip straight to Jesse's opinionated defaults and resume your original
-              task immediately. No setup, no profile written.
-            </p>
+          <div class="choice">
+            <span class="choice__n">2</span>
+            <div>
+              <h4 class="choice__h">Use the defaults</h4>
+              <p class="choice__p">
+                Skip straight to the bundled defaults and resume your task right away. No
+                setup, no profile written.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="choice">
-          <span class="choice__n">3</span>
-          <div>
-            <h3 class="choice__h">Defer</h3>
-            <p class="choice__p">
-              Not now. The skill uses the defaults for this task and asks again later,
-              on your schedule.
-            </p>
+          <div class="choice">
+            <span class="choice__n">3</span>
+            <div>
+              <h4 class="choice__h">Defer</h4>
+              <p class="choice__p">
+                Not now. The skill uses the defaults for this task and asks again later,
+                on your schedule.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-
-      <p class="body typeset">
-        If you personalize, the skill separates stable voice traits from subject matter
-        and one-off quirks, then compiles one complete profile. It previews that profile
-        with a written and a spoken example and writes nothing until you approve. It
-        does not keep your samples, pasted text, URLs, or its own analysis.
-      </p>
     </section>
 
     <Separator />
@@ -398,7 +408,7 @@ const navLinks = [
           <h2 class="colophon__h">On this page</h2>
           <ul>
             <li><a href="#proof">Default cleanup</a></li>
-            <li><a href="#states">Three states</a></li>
+            <li><a href="#states">Guardrail levels</a></li>
             <li><a href="#voice">Written &amp; spoken</a></li>
             <li><a href="#realtime">Realtime prompt</a></li>
           </ul>
@@ -613,6 +623,26 @@ const navLinks = [
       line-height: 1.6;
       color: var(--color-foreground);
     }
+    .ex__lead-line {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--color-foreground);
+    }
+    .ex__list {
+      margin: 0.35rem 0 0;
+      padding-left: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .ex__list li {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--color-foreground);
+    }
     .ex__src {
       margin: 1rem 0 0;
       font-family: var(--font-ui);
@@ -664,6 +694,36 @@ const navLinks = [
       font-size: 0.9rem;
       line-height: 1.55;
       color: var(--color-muted-foreground);
+    }
+
+    /* First-run choices, now a smaller secondary element under the demo. */
+    .firstrun {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-rule);
+    }
+    .firstrun__h {
+      margin: 0 0 1rem;
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-foreground);
+    }
+    .choices--compact {
+      margin-bottom: 0;
+    }
+    .choices--compact .choice {
+      padding: 0.9rem 1rem;
+    }
+    .choices--compact .choice__n {
+      font-size: 1.2rem;
+    }
+    .choices--compact .choice__h {
+      font-size: 0.98rem;
+      margin-bottom: 0.3rem;
+    }
+    .choices--compact .choice__p {
+      font-size: 0.84rem;
     }
 
     /* Install */
