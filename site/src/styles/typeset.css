@@ -1,5 +1,5 @@
-/* typeset.css — owned shadcn/typeset stylesheet, reskinned for the Broadsheet
- * (neo-brutalist) redesign.
+/* typeset.css — owned shadcn/typeset stylesheet, reskinned for the Terminal
+ * (dark atmospheric) redesign.
  *
  * The single place that styles build-time-rendered Markdown and rich HTML on the
  * showcase (profile excerpt, rules excerpt, realtime prompt, fixture prose). It is
@@ -15,7 +15,7 @@
     --typeset-measure: 68ch;
     --typeset-flow: 1.05em; /* vertical rhythm between blocks */
     --typeset-heading-flow: 1.8em;
-    --typeset-rule: var(--color-ink);
+    --typeset-rule: var(--color-rule);
 
     font-family: var(--font-ui);
     font-size: var(--typeset-size);
@@ -36,7 +36,7 @@
 .typeset > h3,
 .typeset > h4 {
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 700;
     font-style: normal;
     line-height: 1.08;
     letter-spacing: -0.01em;
@@ -56,7 +56,7 @@
 .typeset > h3 {
     font-size: 0.82em;
     font-family: var(--font-code);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--ink-2);
@@ -64,7 +64,7 @@
 .typeset > h4 {
     font-size: 0.78em;
     font-family: var(--font-code);
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--ink-2);
@@ -89,7 +89,7 @@
 }
 
 .typeset strong {
-    font-weight: 800;
+    font-weight: 700;
     color: var(--foreground);
 }
 .typeset em {
@@ -131,22 +131,25 @@
     margin-block: 1.5em;
 }
 
-/* Inline code and small fenced blocks use the mono stack and a hard-edged surface. */
+/* Inline code and small fenced blocks sit one lightness step above the page —
+   elevation via lightness, never a shadow or a light/dark invert. */
 .typeset code {
     font-family: var(--font-code);
     font-size: 0.86em;
     background: var(--paper-2);
     padding: 0.12em 0.34em;
-    border: var(--rule-thin) solid var(--ink);
+    border-radius: var(--radius-sm);
+    border: var(--rule-thin) solid var(--rule);
     word-break: break-word;
 }
 .typeset pre {
     font-family: var(--font-code);
     font-size: 0.84em;
     line-height: 1.6;
-    background: var(--ink);
-    color: var(--paper);
-    border: var(--rule-mid) solid var(--ink);
+    background: var(--paper-2);
+    color: var(--ink);
+    border-radius: var(--radius-md);
+    border: var(--rule-thin) solid var(--rule);
     padding: 0.9em 1em;
     overflow-x: auto;
 }

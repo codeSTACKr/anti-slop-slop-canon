@@ -1,16 +1,23 @@
-/* Hallmark · genre: editorial (brutalist register) · macrostructure: Poster/Manifesto
- * theme: custom "Broadsheet" · nav: N7 brutal slab · footer: Ft7 brutal statement
- * pre-emit critique: P5 H5 E5 S5 R4 V5
- * Broadsheet axes: paper light (near-white) · display heavy-grotesque roman · accent LOUD acid-yellow
- * Redesign direction (site-3): neo-brutalist editorial poster. Massive display type at
- * poster scale, stark ink-on-paper contrast, thick 3px hard rules and hard-edged borders
- * (radius 0), hard OFFSET shadows (no blur), oversized numerals, ONE saturated acid-yellow
- * accent used with confidence. Content bodies sit on LIGHT surfaces for readability; dark
- * ink is used only on small card headers / title bars, sparingly. No blue or purple hue
- * anywhere — every neutral is tinted warm (~95). System fonts only (heavy grotesque + mono),
- * no external or bundled font request, so font transfer is zero and the page is offline.
- * Every colour and font references a named token; no raw values are inlined in component
- * styles. contrast: pass (40-41) · tokens: pass (48) · chrome: pass (47).
+/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V5
+ * genre: atmospheric · macrostructure: Component Playground · theme: Terminal
+ * nav: N8 terminal command · footer: Ft4 dense colophon
+ * Previous stamp on this file: macrostructure Poster/Manifesto (Broadsheet) · nav N7 brutal
+ * slab · footer Ft7 brutal statement. This build differs on all three diversification
+ * axes: paper band (light → dark, L < 30%) · display style (heavy-grotesque roman → mono)
+ * · accent hue (warm acid-yellow → phosphor green, chromatic-other).
+ * Redesign direction (site-2): late-night atmospheric terminal. A focused developer
+ * tool at 2am — not a fake terminal window. No re-drawn chrome, no title-bar dots, no
+ * drop shadows for elevation. Interactive examples (diff explorer, state explorer, voice
+ * shift, two-modes) read as a component playground: preview blocks the reader can flip
+ * through, each one a small, real, working thing. Dark paper is tinted cool slate, never
+ * pure black; the single accent is a phosphor green used the way a terminal uses it — for
+ * a prompt glyph, a focus ring, an active tab, one CTA. Elevation is lightness steps
+ * (paper → paper-2 → paper-3), never glow shadows. Corner language is one small uniform
+ * radius, used on every box including the inline SVG in TwoModes. Two font families:
+ * a monospace leads (headings, labels, nav, footer, buttons — the terminal register) and
+ * a system sans carries body prose (long-form legibility at 2am). No web font request;
+ * system stacks only, so the page stays fully offline. Every colour and font references a
+ * named token. contrast: pass (all body pairs > 8:1) · tokens: pass (48) · chrome: pass (47).
  */
 @import "tailwindcss";
 @import "shadcn/tailwind.css";
@@ -42,12 +49,14 @@
     --color-foreground: var(--foreground);
     --color-background: var(--background);
 
-    /* Brutalist brand + surface tokens. */
+    /* Terminal brand + surface tokens. */
     --color-ink: var(--ink);
     --color-ink-2: var(--ink-2);
     --color-paper: var(--paper);
     --color-paper-2: var(--paper-2);
+    --color-paper-3: var(--paper-3);
     --color-brand: var(--brand);
+    --color-brand-hover: var(--brand-hover);
     --color-brand-ink: var(--brand-ink);
     --color-rule: var(--rule);
 
@@ -59,84 +68,81 @@
     --color-del-foreground: var(--del-foreground);
     --color-del-surface: var(--del-surface);
 
-    /* Radius is 0 everywhere — brutalist hard edges. */
-    --radius-sm: 0px;
-    --radius-md: 0px;
-    --radius-lg: 0px;
-    --radius-xl: 0px;
-    --radius-2xl: 0px;
-    --radius-3xl: 0px;
-    --radius-4xl: 0px;
+    /* One small uniform radius language — applied everywhere, including inline SVG. */
+    --radius-sm: 6px;
+    --radius-md: 6px;
+    --radius-lg: 10px;
+    --radius-xl: 10px;
+    --radius-2xl: 10px;
+    --radius-3xl: 10px;
+    --radius-4xl: 10px;
 }
 
 :root {
-    /* Font stacks — system only, no network fetch. A heavy grotesque for display
-       and body (one family, weighted for poster impact) plus a mono for labels,
-       numerals captions, and code. Two families total. */
-    --font-display: "Helvetica Neue", Helvetica, Arial, "Liberation Sans",
-        "Segoe UI", Roboto, sans-serif;
-    --font-ui: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", "Segoe UI",
-        Roboto, sans-serif;
+    /* Font stacks — system only, no network fetch. Mono leads (headings, labels, nav,
+       buttons, code); a system sans carries body prose. Two families total. */
+    --font-display: ui-monospace, "SF Mono", "SFMono-Regular", "Cascadia Code",
+        "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
     --font-code: ui-monospace, "SF Mono", "SFMono-Regular", "Cascadia Code",
         "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+        Arial, sans-serif;
 
-    /* Broadsheet palette — near-white paper, near-black ink, one loud acid-yellow.
-       Every neutral is tinted toward the warm anchor hue (~95, in the paper/accent
-       family). No blue or purple hue anywhere on the page. */
-    --paper: oklch(0.973 0.006 100);
-    --paper-2: oklch(0.928 0.008 100);
-    --ink: oklch(0.185 0.009 95);
-    --ink-2: oklch(0.415 0.011 95);
-    --brand: oklch(0.875 0.195 103);
-    --brand-ink: oklch(0.185 0.009 95);
-    --rule: oklch(0.185 0.009 95);
+    /* Terminal palette — cool slate paper (tinted, never pure black), three lightness
+       steps for elevation, near-white ink, one phosphor-green accent. Anchor hue 235
+       (cool slate) for neutrals; accent sits at hue 152 (phosphor green). */
+    --paper: oklch(0.15 0.014 235);
+    --paper-2: oklch(0.19 0.016 235);
+    --paper-3: oklch(0.24 0.018 235);
+    --ink: oklch(0.94 0.010 235);
+    --ink-2: oklch(0.72 0.012 235);
+    --brand: oklch(0.78 0.16 152);
+    --brand-hover: oklch(0.84 0.16 152);
+    --brand-ink: oklch(0.14 0.03 152);
+    --rule: oklch(0.32 0.016 235);
 
-    /* shadcn semantic mapping. Primary is INK (brutalist black buttons); the loud
-       accent lives in --brand and is applied deliberately, not as the primary fill. */
+    /* shadcn semantic mapping. Primary surfaces stay dark; the phosphor accent is
+       reserved for the primary CTA, the active tab, and small marks — never a full
+       section fill. */
     --background: var(--paper);
     --foreground: var(--ink);
-    --card: var(--paper);
+    --card: var(--paper-2);
     --card-foreground: var(--ink);
-    --popover: var(--paper);
+    --popover: var(--paper-2);
     --popover-foreground: var(--ink);
-    --primary: var(--ink);
-    --primary-foreground: var(--paper);
+    --primary: var(--brand);
+    --primary-foreground: var(--brand-ink);
     --secondary: var(--paper-2);
     --secondary-foreground: var(--ink);
     --muted: var(--paper-2);
     --muted-foreground: var(--ink-2);
     --accent: var(--brand);
     --accent-foreground: var(--brand-ink);
-    --destructive: oklch(0.52 0.2 27);
-    --border: var(--ink);
-    --input: var(--ink);
-    --ring: var(--ink);
-    --radius: 0px;
+    --destructive: oklch(0.64 0.19 25);
+    --border: var(--rule);
+    --input: var(--rule);
+    --ring: var(--brand);
+    --radius: 6px;
 
-    /* Diff semantics — monochrome + the brand block. Removed text carries a real
-       strikethrough (signal is not colour alone); cleaned text sits on the yellow
-       brand block. No competing colours, so the accent stays singular. */
-    --add: var(--ink);
-    --add-foreground: var(--ink);
+    /* Diff semantics — the strikethrough carries the "removed" signal (not colour
+       alone); the single accent marks "added" as a small inline chip, never a full
+       surface fill. */
+    --add: var(--brand-ink);
+    --add-foreground: var(--brand-ink);
     --add-surface: var(--brand);
-    --del: var(--ink);
+    --del: var(--ink-2);
     --del-foreground: var(--ink-2);
-    --del-surface: var(--paper-2);
+    --del-surface: var(--paper-3);
 
-    /* Hard offset shadows — the brutalist signature. No blur, no spread, pure offset
-       in ink. Two depths: a card seat and a lifted focal object. */
-    --shadow-hard: 4px 4px 0 0 var(--ink);
-    --shadow-hard-lg: 7px 7px 0 0 var(--ink);
-
-    /* Rule weights — thick by default, this is a poster. */
+    /* Rule weights — hairline by default. A quiet page, not a poster. */
     --rule-thin: 1px;
-    --rule-mid: 2px;
-    --rule-thick: 3px;
-    --rule-heavy: 5px;
+    --rule-mid: 1px;
+    --rule-thick: 1.5px;
+    --rule-heavy: 2px;
 
     /* Motion — three named easings, never the browser default. */
-    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-    --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
@@ -146,6 +152,7 @@
     }
     html {
         font-family: var(--font-ui);
+        color-scheme: dark;
         /* Never allow horizontal scroll; clip, not hidden. */
         overflow-x: clip;
         -webkit-text-size-adjust: 100%;
@@ -176,13 +183,14 @@
     h3 {
         font-family: var(--font-display);
         font-style: normal;
-        font-weight: 800;
+        font-weight: 700;
         overflow-wrap: anywhere;
         min-width: 0;
     }
-    /* Focus is instant and unmissable — a hard ink ring on the light paper. */
+    /* Focus is instant and unmissable — a phosphor ring on the dark canvas. Never
+       transitioned: keyboard users need it visible the instant focus lands. */
     :focus-visible {
-        outline: 3px solid var(--ring);
+        outline: 2px solid var(--ring);
         outline-offset: 2px;
     }
     ::selection {
@@ -191,13 +199,13 @@
     }
 }
 
-/* Highlighter marker — the single accent pop rendered as a solid brand block behind
-   the text (a poster highlight, not a hairline). Ink text keeps full contrast over the
-   yellow. Roman, never italic. */
+/* Highlighter marker — the single accent pop, a small phosphor chip behind the text.
+   Dark text keeps full contrast over the bright green. Roman, never italic. */
 .mark {
     background: var(--brand);
     color: var(--brand-ink);
     padding: 0.02em 0.18em;
+    border-radius: var(--radius-sm);
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
 }

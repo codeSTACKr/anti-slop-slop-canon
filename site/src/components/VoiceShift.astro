@@ -6,11 +6,12 @@
  *   2. The same neutral sentence rendered in the default voice and in the
  *      personalized voice, so the tone shift is visible.
  *
- * Canon system: warm-paper cards, hairline rules, ink-blue accent on the
- * personalized result only. Pure HTML + CSS, no raster, no network asset, no
- * web font, no JavaScript, legible with JS off. The connector between the two
- * sentences is a CSS-drawn chevron (rotated border corner), so there is no
- * image. It points down when stacked and right when the pair sits in a row.
+ * Terminal system: dark slate panels one lightness step above the page,
+ * hairline rules, phosphor-green accent on the personalized result only. Pure
+ * HTML + CSS, no raster, no network asset, no web font, no JavaScript, legible
+ * with JS off. The connector between the two sentences is a CSS-drawn chevron
+ * (rotated border corner), so there is no image. It points down when stacked
+ * and right when the pair sits in a row.
  */
 interface Lane {
   h: string;
@@ -76,17 +77,17 @@ const lanes: Lane[] = [
 
 <style>
   .vs {
-    border: var(--rule-thick) solid var(--color-ink);
-    background: var(--color-paper);
-    box-shadow: var(--shadow-hard);
+    border: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-md);
     overflow: clip;
   }
   .vs__step {
     padding: 1.4rem 1.3rem;
   }
   .vs__step + .vs__step {
-    border-top: var(--rule-thick) solid var(--color-ink);
-    background: var(--color-paper-2);
+    border-top: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-3);
   }
   .vs__cap {
     margin: 0 0 1rem;
@@ -110,12 +111,13 @@ const lanes: Lane[] = [
     }
   }
   .vlane {
-    border: var(--rule-mid) solid var(--color-ink);
-    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-sm);
     padding: 0.9rem 0.95rem;
   }
   .vlane--kept {
-    box-shadow: var(--shadow-hard);
+    border-color: var(--color-brand);
   }
   .vlane__h {
     margin: 0 0 0.6rem;
@@ -130,7 +132,7 @@ const lanes: Lane[] = [
     display: inline-block;
     background: var(--color-brand);
     color: var(--color-brand-ink);
-    border: var(--rule-thin) solid var(--color-ink);
+    border-radius: var(--radius-sm);
     padding: 0.15rem 0.4rem;
   }
   .vlane__list {
@@ -168,12 +170,13 @@ const lanes: Lane[] = [
   .vab {
     flex: 1 1 0;
     min-width: 0;
-    border: var(--rule-mid) solid var(--color-ink);
-    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-sm);
     padding: 1rem 1.05rem;
   }
   .vab--you {
-    box-shadow: var(--shadow-hard);
+    border-color: var(--color-brand);
   }
   .vab__label {
     margin: 0 0 0.5rem;
@@ -188,7 +191,7 @@ const lanes: Lane[] = [
     display: inline-block;
     background: var(--color-brand);
     color: var(--color-brand-ink);
-    border: var(--rule-thin) solid var(--color-ink);
+    border-radius: var(--radius-sm);
     padding: 0.15rem 0.4rem;
   }
   .vab__text {
@@ -215,8 +218,8 @@ const lanes: Lane[] = [
     display: block;
     width: 0.55rem;
     height: 0.55rem;
-    border-top: 3px solid var(--color-ink);
-    border-right: 3px solid var(--color-ink);
+    border-top: 2px solid var(--color-ink-2);
+    border-right: 2px solid var(--color-ink-2);
     transform: rotate(135deg);
   }
 

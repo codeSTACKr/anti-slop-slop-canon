@@ -56,42 +56,32 @@ const states = [
 
 <Layout
   title="anti-slop-slop-canon · sound like yourself"
-  description="An open-source Agent Skill that removes AI-writing habits, then learns your voice. Every example on this page is real output from the project's own rules."
+  description="An open-source Agent Skill that removes AI-writing habits, then learns your voice. Every example on this page is real output from the project’s own rules."
 >
   <a class="skip" href="#main">Skip to content</a>
 
-  <header class="mast">
-    <div class="wrap mast__inner">
-      <a class="mast__word" href="#main">anti-slop-slop-canon</a>
-      <nav class="mast__nav" aria-label="Primary">
-        <a class="mast__link" href="#install">Install</a>
+  <header class="nav-term">
+    <div class="wrap nav-term__row">
+      <a class="nav-term__brand" href="#main"
+        ><span class="nav-term__prompt" aria-hidden="true">&gt;</span> anti-slop-slop-canon</a
+      >
+      <nav class="nav-term__flags" aria-label="Primary">
+        <a class="nav-term__flag" href="#install">--install</a>
         <a
-          class="mast__star"
+          class="nav-term__flag"
           href={`https://github.com/${REPO}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <svg
-            class="mast__star-glyph"
-            viewBox="0 0 24 24"
-            width="15"
-            height="15"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path
-              fill="currentColor"
-              d="M12 2.2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6-5.9-3.2-5.9 3.2 1.2-6.6L2.5 9.2l6.6-.9z"
-            ></path>
-          </svg>
-          Star on GitHub
+          --source
         </a>
+        <span class="nav-term__caret" aria-hidden="true">▮</span>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <!-- HERO — poster -->
+    <!-- HERO -->
     <section class="hero wrap">
       <p class="hero__kicker">
         <span class="hero__kicker-tag">Open source</span>
@@ -104,7 +94,7 @@ const states = [
         profile for written and spoken content.
       </p>
       <p class="hero__sub">
-        Every example below is <mark class="mark">real output</mark> from the project's
+        Every example below is <mark class="mark">real output</mark> from the project’s
         own rules.
       </p>
 
@@ -113,11 +103,11 @@ const states = [
       </div>
     </section>
 
-    <!-- PROOF — default cleanup, interactive diff -->
-    <section id="proof" class="section wrap">
+    <!-- PROOF — default cleanup, interactive diff. Widens past the standard text
+         column: the two live diff panels get the extra room, a deliberate width
+         break from the rest of the page. -->
+    <section id="proof" class="section section--wide wrap">
       <header class="shead">
-        <span class="shead__num" aria-hidden="true">01</span>
-        <span class="shead__label">The floor</span>
         <h2 class="shead__title">Default cleanup, before you do anything</h2>
       </header>
       <p class="lead typeset">
@@ -146,8 +136,6 @@ const states = [
     <!-- GUARDRAILS -->
     <section id="states" class="section wrap">
       <header class="shead">
-        <span class="shead__num" aria-hidden="true">02</span>
-        <span class="shead__label">Guardrails</span>
         <h2 class="shead__title">From a raw draft to your own voice</h2>
       </header>
       <p class="lead typeset">
@@ -161,8 +149,6 @@ const states = [
     <!-- WRITTEN & SPOKEN -->
     <section id="voice" class="section wrap">
       <header class="shead">
-        <span class="shead__num" aria-hidden="true">03</span>
-        <span class="shead__label">One profile, two modes</span>
         <h2 class="shead__title">Written and spoken</h2>
       </header>
       <p class="lead typeset">
@@ -179,8 +165,8 @@ const states = [
           </div>
           <div class="card__body">
             <p class="ex__caption">Before</p>
-            <p class="ex__before">This isn't a redesign. It's a reset.</p>
-            <p class="ex__caption">After</p>
+            <p class="ex__before">This isn’t a redesign. It’s a reset.</p>
+            <p class="ex__caption ex__caption--after">After</p>
             <p class="ex__after">
               This redesign changes the navigation and search model.
             </p>
@@ -212,7 +198,7 @@ const states = [
                 Restart the workers.
               </li>
             </ul>
-            <p class="ex__caption">After</p>
+            <p class="ex__caption ex__caption--after">After</p>
             <p class="ex__after">
               Deploying takes three steps. First, pull the latest main. Then run the
               database migration. Last, restart the workers.
@@ -226,11 +212,10 @@ const states = [
       </div>
     </section>
 
-    <!-- ONBOARDING -->
-    <section id="onboarding" class="section wrap">
+    <!-- ONBOARDING — the deepest padding on the page: this is where the tool learns
+         your voice, and the extra air marks it as the page's centre of gravity. -->
+    <section id="onboarding" class="section section--roomy wrap">
       <header class="shead">
-        <span class="shead__num" aria-hidden="true">04</span>
-        <span class="shead__label">How it learns your voice</span>
         <h2 class="shead__title">It builds a profile from your own writing</h2>
       </header>
       <p class="lead typeset">
@@ -274,11 +259,10 @@ const states = [
       </div>
     </section>
 
-    <!-- PROFILE -->
+    <!-- PROFILE — the file card bleeds past the section's own text column, a
+         deliberate grid-break rather than another same-width card. -->
     <section id="profile" class="section wrap">
       <header class="shead">
-        <span class="shead__num" aria-hidden="true">05</span>
-        <span class="shead__label">Nothing hidden</span>
         <h2 class="shead__title">A transparent, editable profile</h2>
       </header>
       <p class="lead typeset">
@@ -301,14 +285,12 @@ const states = [
     <!-- REALTIME -->
     <section id="realtime" class="section wrap">
       <header class="shead">
-        <span class="shead__num" aria-hidden="true">06</span>
-        <span class="shead__label">For voice agents</span>
         <h2 class="shead__title">A realtime voice prompt</h2>
       </header>
       <p class="lead typeset">
         Ask for the realtime prompt and the skill returns a compact, style-only module
-        for a voice agent's system prompt. It shapes delivery only, so it sits beside
-        your agent's own instructions rather than replacing them.
+        for a voice agent’s system prompt. It shapes delivery only, so it sits beside
+        your agent’s own instructions rather than replacing them.
       </p>
 
       <article class="doc">
@@ -326,8 +308,6 @@ const states = [
     <!-- INSTALL -->
     <section id="install" class="section wrap">
       <header class="shead">
-        <span class="shead__num" aria-hidden="true">07</span>
-        <span class="shead__label">Getting started</span>
         <h2 class="shead__title">Install</h2>
       </header>
       <p class="lead typeset">
@@ -374,45 +354,46 @@ const states = [
     </section>
   </main>
 
-  <footer class="colophon">
-    <div class="wrap colophon__inner">
-      <span class="colophon__accent" aria-hidden="true"></span>
-      <p class="colophon__statement">Sound like yourself.</p>
-      <div class="colophon__grid">
-        <div class="colophon__brand">
-          <span class="colophon__word">anti-slop-slop-canon</span>
-          <span class="colophon__tag">Removes the habits. Learns your voice.</span>
+  <footer class="foot-dense">
+    <div class="wrap foot-dense__inner">
+      <p class="foot-dense__brand">
+        <span class="foot-dense__prompt" aria-hidden="true">$</span> anti-slop-slop-canon
+        <span class="foot-dense__tag">— sound like yourself.</span>
+      </p>
+      <dl class="foot-dense__rows">
+        <div class="foot-dense__row">
+          <dt>repository</dt>
+          <dd class="foot-dense__links">
+            <a href={`https://github.com/${REPO}`}>source</a>
+            <span aria-hidden="true">·</span>
+            <a href={`https://github.com/${REPO}/tree/main/skills`}>the skill</a>
+            <span aria-hidden="true">·</span>
+            <a href={`https://github.com/${REPO}/tree/main/docs`}>docs</a>
+            <span aria-hidden="true">·</span>
+            <a href={`https://github.com/${REPO}/tree/main/evals`}>evals</a>
+          </dd>
         </div>
-        <div class="colophon__cols">
-          <div>
-            <h2 class="colophon__h">Repository</h2>
-            <ul>
-              <li><a href={`https://github.com/${REPO}`}>Source</a></li>
-              <li>
-                <a href={`https://github.com/${REPO}/tree/main/skills`}>The skill</a>
-              </li>
-              <li><a href={`https://github.com/${REPO}/tree/main/docs`}>Docs</a></li>
-              <li><a href={`https://github.com/${REPO}/tree/main/evals`}>Evals</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="colophon__h">On this page</h2>
-            <ul>
-              <li><a href="#proof">Default cleanup</a></li>
-              <li><a href="#states">Guardrail levels</a></li>
-              <li><a href="#voice">Written &amp; spoken</a></li>
-              <li><a href="#realtime">Realtime prompt</a></li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="colophon__h">License</h2>
-            <ul>
-              <li>MIT licensed</li>
-              <li><a href={`https://github.com/${REPO}`}>Open source</a></li>
-            </ul>
-          </div>
+        <div class="foot-dense__row">
+          <dt>on this page</dt>
+          <dd class="foot-dense__links">
+            <a href="#proof">default cleanup</a>
+            <span aria-hidden="true">·</span>
+            <a href="#states">guardrail levels</a>
+            <span aria-hidden="true">·</span>
+            <a href="#voice">written &amp; spoken</a>
+            <span aria-hidden="true">·</span>
+            <a href="#realtime">realtime prompt</a>
+          </dd>
         </div>
-      </div>
+        <div class="foot-dense__row">
+          <dt>license</dt>
+          <dd class="foot-dense__links">
+            <span>MIT</span>
+            <span aria-hidden="true">·</span>
+            <a href={`https://github.com/${REPO}`}>open source</a>
+          </dd>
+        </div>
+      </dl>
     </div>
   </footer>
 
@@ -421,112 +402,106 @@ const states = [
       position: absolute;
       left: -9999px;
       top: 0;
-      background: var(--color-ink);
-      color: var(--color-paper);
+      background: var(--color-brand);
+      color: var(--color-brand-ink);
       padding: 0.6rem 1rem;
       z-index: 50;
+      font-family: var(--font-code);
       font-weight: 700;
+      border-radius: var(--radius-sm);
     }
     .skip:focus {
-      left: 0;
+      left: 1rem;
+      top: 0.75rem;
     }
 
     .wrap {
       width: 100%;
-      max-width: 64rem;
+      max-width: 60rem;
       margin-inline: auto;
       padding-inline: 1.25rem;
     }
 
-    /* Masthead — N7 brutal slab: heavy wordmark, thick bottom rule, hard-edged
-       Star button. */
-    .mast {
-      border-bottom: var(--rule-heavy) solid var(--color-ink);
+    /* Nav — N8 terminal command: the "links" are command flags on a CLI prompt
+       line. The blinking caret signals "you'd type next" and appears only here. */
+    .nav-term {
+      border-bottom: var(--rule-thin) solid var(--color-rule);
       background: var(--color-paper);
     }
-    .mast__inner {
+    .nav-term__row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 0.6rem 1.5rem;
-      padding-block: 0.9rem;
+      gap: 0.5rem 1.5rem;
+      padding-block: 0.85rem;
     }
-    .mast__word {
-      font-family: var(--font-code);
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: var(--color-ink);
-      text-decoration: none;
-    }
-    .mast__word:hover {
-      background: var(--color-brand);
-      color: var(--color-brand-ink);
-    }
-    .mast__nav {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.5rem 0.9rem;
-    }
-    .mast__link {
-      font-family: var(--font-code);
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-ink);
-      text-decoration: none;
-      line-height: 1;
-      padding: 0.55rem 0.4rem;
-    }
-    .mast__link:hover {
-      text-decoration: underline;
-      text-decoration-thickness: 0.14em;
-      text-underline-offset: 0.2em;
-      text-decoration-color: var(--color-brand);
-    }
-    /* Star-on-GitHub — a hard-edged slab button, no count and no fetch. */
-    .mast__star {
+    .nav-term__brand {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.5rem 0.85rem;
-      border: var(--rule-mid) solid var(--color-ink);
-      background: var(--color-paper);
-      box-shadow: var(--shadow-hard);
       font-family: var(--font-code);
-      font-size: 0.8rem;
+      font-size: 0.92rem;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      line-height: 1;
       color: var(--color-ink);
       text-decoration: none;
       white-space: nowrap;
+      padding-block: 0.65rem;
+      min-height: 44px;
+    }
+    .nav-term__prompt {
+      color: var(--color-brand);
+    }
+    .nav-term__brand:hover {
+      color: var(--color-brand);
+    }
+    .nav-term__flags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.2rem 0.3rem;
+    }
+    .nav-term__flag {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-code);
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--color-ink-2);
+      text-decoration: none;
+      padding: 0.65rem 0.6rem;
+      min-height: 44px;
+      border-radius: var(--radius-sm);
       transition:
-        transform 120ms var(--ease-out),
-        box-shadow 120ms var(--ease-out),
+        color 120ms var(--ease-out),
         background-color 120ms var(--ease-out);
     }
-    .mast__star:hover {
-      background: var(--color-brand);
-      transform: translate(-1px, -1px);
-      box-shadow: var(--shadow-hard-lg);
-    }
-    .mast__star:active {
-      transform: translate(2px, 2px);
-      box-shadow: 1px 1px 0 0 var(--color-ink);
-    }
-    .mast__star-glyph {
-      flex: 0 0 auto;
+    .nav-term__flag:hover {
       color: var(--color-ink);
+      background: var(--color-paper-2);
+    }
+    .nav-term__caret {
+      display: inline-block;
+      width: 1ch;
+      margin-left: 0.2rem;
+      color: var(--color-brand);
+      animation: nav-blink 1.05s steps(2) infinite;
+    }
+    @keyframes nav-blink {
+      50% {
+        opacity: 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-term__caret {
+        animation: none;
+      }
     }
 
-    /* Hero — poster scale. Heavier bottom padding pulls it into the next section. */
+    /* Hero — left-biased, generous top and bottom air. The canvas is the design;
+       type sits directly on the dark paper, no bloom needed for restraint. */
     .hero {
-      padding-block: 3rem 4.5rem;
+      padding-block: 3rem 4.25rem;
     }
     .hero__kicker {
       display: flex;
@@ -535,119 +510,92 @@ const states = [
       gap: 0.65rem;
       margin: 0 0 1.6rem;
       font-family: var(--font-code);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       line-height: 1;
     }
     .hero__kicker-tag {
-      background: var(--color-brand);
-      color: var(--color-brand-ink);
+      background: transparent;
+      color: var(--color-brand);
       padding: 0.4rem 0.55rem;
-      border: var(--rule-mid) solid var(--color-ink);
+      border: var(--rule-thin) solid var(--color-rule);
+      border-radius: var(--radius-sm);
     }
     .hero__kicker-text {
       color: var(--color-ink-2);
     }
     .hero__title {
       margin: 0;
-      font-size: clamp(3.1rem, 13vw, 8.5rem);
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: -0.035em;
-      text-transform: uppercase;
+      font-size: clamp(2.75rem, 8vw, 5rem);
+      line-height: 1.04;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
     .hero__lede {
-      margin: 1.9rem 0 0;
-      font-size: clamp(1.15rem, 2.3vw, 1.5rem);
-      line-height: 1.5;
-      font-weight: 500;
+      margin: 1.6rem 0 0;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      line-height: 1.6;
+      font-weight: 400;
       max-width: 46ch;
+      color: var(--color-ink-2);
     }
     .hero__sub {
-      margin: 1.5rem 0 0;
+      margin: 1.35rem 0 0;
       font-family: var(--font-code);
-      font-size: 0.95rem;
-      font-weight: 600;
+      font-size: 0.86rem;
+      font-weight: 500;
       line-height: 1.6;
       color: var(--color-ink);
       max-width: 60ch;
     }
     .hero__flow {
-      margin-top: 3rem;
+      margin-top: 2.75rem;
     }
 
-    /* Sections — thick top rule between blocks */
+    /* Sections — hairline rule between blocks, varied padding per section. */
     .section {
-      padding-block: 4.25rem;
+      padding-block: 3.75rem;
+      border-top: var(--rule-thin) solid var(--color-rule);
     }
-    /* A heavier rule opens the first section under the hero. */
-    #proof {
-      border-top: var(--rule-heavy) solid var(--color-ink);
+    .section--wide {
+      max-width: 70rem;
     }
-    #states,
-    #voice,
-    #onboarding,
-    #profile,
-    #realtime,
-    #install {
-      border-top: var(--rule-thick) solid var(--color-ink);
+    .section--roomy {
+      padding-block: 5.5rem;
     }
 
-    /* Section head — oversized numeral, mono label, heavy uppercase title.
-       Single-column vertical stack (never tag-left / heading-right). */
+    /* Section head — single-column vertical stack, zero eyebrows. */
     .shead {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin: 0 0 1.5rem;
-    }
-    .shead__num {
-      font-family: var(--font-display);
-      font-size: clamp(3.5rem, 11vw, 7rem);
-      font-weight: 800;
-      line-height: 0.82;
-      letter-spacing: -0.04em;
-      color: var(--color-ink);
-      -webkit-text-stroke: 2px var(--color-ink);
-      color: transparent;
-      margin-bottom: 0.35rem;
-    }
-    .shead__label {
-      font-family: var(--font-code);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--color-ink-2);
+      margin: 0 0 1.35rem;
     }
     .shead__title {
       margin: 0;
-      font-size: clamp(1.85rem, 5.5vw, 3.4rem);
-      line-height: 1.02;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
+      font-size: clamp(1.5rem, 3.6vw, 2.35rem);
+      line-height: 1.12;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
     .lead {
-      margin: 0 0 2.25rem;
-      font-size: 1.14rem;
-      font-weight: 500;
+      margin: 0 0 2rem;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--color-ink-2);
       max-width: 60ch;
     }
     .body {
-      margin-top: 1.9rem;
-      font-weight: 500;
+      margin-top: 1.75rem;
+      color: var(--color-ink-2);
     }
     .fineprint {
       margin: 1.1rem 0 0;
       font-family: var(--font-code);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       line-height: 1.55;
       color: var(--color-ink-2);
     }
-    /* Inline code — a hard-edged mono chip. */
+    /* Inline code — a small elevated mono chip. */
     .fineprint code,
     .lead code,
     .body code,
@@ -655,52 +603,56 @@ const states = [
       font-family: var(--font-code);
       font-size: 0.86em;
       background: var(--color-paper-2);
-      padding: 0.08em 0.34em;
-      border: var(--rule-thin) solid var(--color-ink);
-      font-weight: 600;
+      padding: 0.08em 0.4em;
+      border-radius: var(--radius-sm);
+      border: var(--rule-thin) solid var(--color-rule);
+      font-weight: 500;
+      color: var(--color-ink);
     }
 
     .stack {
       display: flex;
       flex-direction: column;
-      gap: 1.75rem;
+      gap: 1.5rem;
     }
 
-    /* Brutalist card — hard border + offset shadow. Used for Written / Spoken. */
+    /* Card — hairline border, one lightness step above the page. No shadow. */
     .card {
-      border: var(--rule-thick) solid var(--color-ink);
-      background: var(--color-paper);
-      box-shadow: var(--shadow-hard);
+      border: var(--rule-thin) solid var(--color-rule);
+      background: var(--color-paper-2);
+      border-radius: var(--radius-md);
+      overflow: clip;
     }
     .card__head {
-      padding: 1.1rem 1.25rem;
-      border-bottom: var(--rule-thick) solid var(--color-ink);
-      background: var(--color-paper-2);
+      padding: 1.05rem 1.25rem;
+      border-bottom: var(--rule-thin) solid var(--color-rule);
     }
     .card__title {
       margin: 0;
-      font-size: 1.25rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
+      font-size: 1.1rem;
+      font-weight: 700;
     }
     .card__desc {
       margin: 0.35rem 0 0;
       font-family: var(--font-code);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--color-ink-2);
     }
     .card__body {
       padding: 1.25rem;
     }
 
-    /* File-styled profile panel — hard-edged, filename bar, no fake window chrome. */
+    /* File-styled profile panel. Bleeds past the 60ch text measure on purpose —
+       the one deliberate grid-break on the page. No fake window chrome: a
+       labelled filename bar, one lightness step up, over real prose. */
     .filecard {
       margin: 0;
-      max-width: 46rem;
-      border: var(--rule-thick) solid var(--color-ink);
-      background: var(--color-paper);
-      box-shadow: var(--shadow-hard-lg);
+      max-width: 48rem;
+      width: calc(100% + 2rem);
+      margin-inline: -1rem;
+      border: var(--rule-thin) solid var(--color-rule);
+      background: var(--color-paper-2);
+      border-radius: var(--radius-lg);
       overflow: clip;
     }
     .filecard__bar {
@@ -708,31 +660,33 @@ const states = [
       align-items: center;
       gap: 0.6rem;
       padding: 0.7rem 1.1rem;
-      border-bottom: var(--rule-thick) solid var(--color-ink);
-      background: var(--color-ink);
+      border-bottom: var(--rule-thin) solid var(--color-rule);
+      background: var(--color-paper-3);
     }
     .filecard__marker {
-      width: 0.7rem;
-      height: 0.7rem;
+      width: 0.5rem;
+      height: 0.5rem;
       flex: 0 0 auto;
       background: var(--color-brand);
+      border-radius: 999px;
     }
     .filecard__name {
       font-family: var(--font-code);
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 700;
-      color: var(--color-paper);
+      color: var(--color-ink);
     }
     .filecard__tag {
       margin-left: auto;
       font-family: var(--font-code);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--color-ink);
+      color: var(--color-brand-ink);
       background: var(--color-brand);
-      padding: 0.15rem 0.4rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: var(--radius-sm);
     }
     .filecard__body {
       padding: 1.5rem 1.7rem 1.8rem;
@@ -741,14 +695,13 @@ const states = [
       margin-top: 0;
     }
 
-    /* Realtime module — a LIGHT card with a dark title bar (allowed sparingly), so
-       the voice module reads as a distinct, considered block. Not fake terminal
-       chrome: a labelled panel with prose inside. */
+    /* Realtime module — a labelled panel, one lightness step up. Not fake
+       terminal chrome: a title row and prose beneath, nothing more. */
     .doc {
       max-width: 46rem;
-      border: var(--rule-thick) solid var(--color-ink);
-      background: var(--color-paper);
-      box-shadow: var(--shadow-hard);
+      border: var(--rule-thin) solid var(--color-rule);
+      background: var(--color-paper-2);
+      border-radius: var(--radius-md);
       overflow: clip;
     }
     .doc__head {
@@ -758,32 +711,18 @@ const states = [
       justify-content: space-between;
       gap: 0.35rem 1rem;
       padding: 0.9rem 1.4rem;
-      border-bottom: var(--rule-thick) solid var(--color-ink);
-      background: var(--color-ink);
+      border-bottom: var(--rule-thin) solid var(--color-rule);
+      background: var(--color-paper-3);
     }
     .doc__title {
       margin: 0;
-      font-size: 1.15rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: var(--color-paper);
-    }
-    .doc__desc {
-      margin: 0;
-      font-family: var(--font-code);
-      font-size: 0.78rem;
-      color: var(--color-paper-2);
-    }
-    .doc__desc code {
-      font-family: var(--font-code);
-      color: var(--color-brand);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-ink);
     }
     .doc__body {
       padding: 1.75rem 1.7rem 1.9rem;
     }
-    /* Considered typographic treatment: a comfortable measure, roomy leading, and a
-       hairline rule between each paragraph of the module, so the block reads as a set
-       of distinct instructions rather than a paragraph wall. */
     .doc__prose {
       --typeset-measure: 64ch;
       --typeset-leading: 1.72;
@@ -792,7 +731,7 @@ const states = [
     .doc__body :global(.doc__prose > p + p) {
       margin-top: 1.5em;
       padding-top: 1.5em;
-      border-top: var(--rule-thin) solid var(--color-ink);
+      border-top: var(--rule-thin) solid var(--color-rule);
     }
 
     .grid2 {
@@ -810,7 +749,7 @@ const states = [
     .ex__caption {
       margin: 1rem 0 0.35rem;
       font-family: var(--font-code);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -819,6 +758,11 @@ const states = [
     .ex__caption:first-child {
       margin-top: 0;
     }
+    /* The After label carries the accent — the same "cleaned output" signal the
+       diff explorer uses for added text. */
+    .ex__caption--after {
+      color: var(--color-brand);
+    }
     .ex__before {
       margin: 0;
       font-size: 1rem;
@@ -826,14 +770,20 @@ const states = [
       color: var(--color-ink-2);
       text-decoration: line-through;
       text-decoration-thickness: 0.09em;
-      text-decoration-color: var(--color-ink);
+      text-decoration-color: var(--color-ink-2);
     }
+    /* The After sits one lightness step up (elevation, not glow), so before and
+       after separate physically: flat struck text vs. a raised result panel. */
     .ex__after {
       margin: 0;
       font-size: 1rem;
       line-height: 1.55;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--color-ink);
+      background: var(--color-paper-3);
+      border: var(--rule-thin) solid var(--color-rule);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 0.95rem;
     }
     .ex__lead-line {
       margin: 0;
@@ -841,9 +791,6 @@ const states = [
       line-height: 1.55;
       color: var(--color-ink);
     }
-    /* Spoken "before" — the written numbered list, with the numbers struck to
-       signal the list structure dropped for speech (parallel to the Written card's
-       struck before). The step words stay; only the markers are removed. */
     .ex__strucklist {
       margin: 0.4rem 0 0;
       padding-left: 0;
@@ -862,7 +809,7 @@ const states = [
       color: var(--color-ink-2);
       text-decoration: line-through;
       text-decoration-thickness: 0.12em;
-      text-decoration-color: var(--color-ink);
+      text-decoration-color: var(--color-ink-2);
       margin-right: 0.15rem;
     }
     .sr-only {
@@ -879,12 +826,12 @@ const states = [
     .ex__src {
       margin: 1.1rem 0 0;
       font-family: var(--font-code);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       line-height: 1.5;
       color: var(--color-ink-2);
     }
 
-    /* Onboarding choices — hard-edged tiles with a big brand numeral. */
+    /* Onboarding choices — quiet tiles, one lightness step up. */
     .choices {
       display: grid;
       grid-template-columns: 1fr;
@@ -899,72 +846,66 @@ const states = [
       display: flex;
       gap: 0.85rem;
       padding: 1.15rem;
-      border: var(--rule-mid) solid var(--color-ink);
-      background: var(--color-paper);
+      border: var(--rule-thin) solid var(--color-rule);
+      background: var(--color-paper-2);
+      border-radius: var(--radius-md);
     }
     .choice__n {
       flex: 0 0 auto;
-      font-family: var(--font-display);
-      font-size: 1.9rem;
-      font-weight: 800;
-      line-height: 0.9;
-      color: var(--color-ink);
+      font-family: var(--font-code);
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--color-brand-ink);
       background: var(--color-brand);
-      border: var(--rule-mid) solid var(--color-ink);
-      width: 2.4rem;
-      height: 2.4rem;
+      border-radius: var(--radius-sm);
+      width: 2rem;
+      height: 2rem;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .choice__h {
       margin: 0 0 0.35rem;
-      font-size: 1.05rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
+      font-size: 1rem;
+      font-weight: 700;
     }
     .choice__p {
       margin: 0;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.5;
       color: var(--color-ink-2);
     }
 
     .firstrun {
-      margin-top: 2rem;
-      padding-top: 1.75rem;
-      border-top: var(--rule-thick) solid var(--color-ink);
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: var(--rule-thin) solid var(--color-rule);
     }
     .firstrun__h {
       margin: 0 0 1.1rem;
       font-family: var(--font-code);
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
       color: var(--color-ink);
     }
 
-    /* Install — ONE card holding both scopes, each as a labeled row (name, scope
-       note, command) separated by a hard rule. */
+    /* Install — one panel holding both scopes, each a labelled row. */
     .install-card {
-      border: var(--rule-thick) solid var(--color-ink);
-      background: var(--color-paper);
-      box-shadow: var(--shadow-hard);
+      border: var(--rule-thin) solid var(--color-rule);
+      background: var(--color-paper-2);
+      border-radius: var(--radius-md);
     }
     .install-row {
       padding: 1.4rem;
     }
     .install-row + .install-row {
-      border-top: var(--rule-thick) solid var(--color-ink);
+      border-top: var(--rule-thin) solid var(--color-rule);
     }
     .install-row__name {
       margin: 0;
-      font-size: 1.25rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
+      font-size: 1.1rem;
+      font-weight: 700;
     }
     .install-row__note {
       margin: 0.4rem 0 0;
@@ -975,19 +916,19 @@ const states = [
     .install-row__cmd {
       margin-top: 1.1rem;
     }
-    /* Let the command wrap at spaces so the whole command stays visible without a
-       horizontal scroll. Scoped to install only. */
     .install-row__cmd :global(.cmd__code) {
       white-space: pre-wrap;
       overflow-wrap: anywhere;
       overflow-x: visible;
     }
 
-    /* Brutalist buttons */
+    /* Buttons — the accent fills the primary CTA (a small, confident pill),
+       never a full section. */
     .cta {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.85rem;
+      align-items: center;
+      gap: 0.75rem;
       margin-top: 2rem;
     }
     .btn {
@@ -995,130 +936,115 @@ const states = [
       align-items: center;
       justify-content: center;
       line-height: 1;
-      padding: 0.85rem 1.35rem;
+      min-height: 44px;
+      padding: 0.8rem 1.3rem;
       font-family: var(--font-code);
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
       white-space: nowrap;
       text-decoration: none;
-      border: var(--rule-mid) solid var(--color-ink);
-      background: var(--color-ink);
-      color: var(--color-paper);
-      box-shadow: var(--shadow-hard);
+      border: var(--rule-thin) solid transparent;
+      border-radius: var(--radius-sm);
+      background: var(--color-brand);
+      color: var(--color-brand-ink);
       transition:
-        transform 120ms var(--ease-out),
-        box-shadow 120ms var(--ease-out),
         background-color 120ms var(--ease-out),
+        border-color 120ms var(--ease-out),
         color 120ms var(--ease-out);
     }
     .btn:hover {
-      background: var(--color-brand);
-      color: var(--color-brand-ink);
-      transform: translate(-1px, -1px);
-      box-shadow: var(--shadow-hard-lg);
+      background: var(--color-brand-hover);
     }
     .btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 1px 1px 0 0 var(--color-ink);
+      background: var(--color-brand);
     }
     .btn--ghost {
-      background: var(--color-paper);
+      background: transparent;
+      border-color: var(--color-rule);
       color: var(--color-ink);
+    }
+    .btn--ghost:hover {
+      background: var(--color-paper-2);
+      border-color: var(--color-ink-2);
+    }
+    .btn--ghost:active {
+      background: var(--color-paper-3);
     }
 
-    /* Colophon — Ft7 brutal statement on a LIGHT body, with a heavy top rule and one
-       small brand accent bar. */
-    .colophon {
-      border-top: var(--rule-heavy) solid var(--color-ink);
+    /* Footer — Ft4 dense colophon: one dense monospace block, log-style rows,
+       hairline rule above. Content unchanged, just denser and quieter. */
+    .foot-dense {
+      border-top: var(--rule-thin) solid var(--color-rule);
       background: var(--color-paper);
-      padding-block: 3rem 3.25rem;
+      padding-block: 2.5rem 3rem;
     }
-    .colophon__accent {
-      display: block;
-      width: 3.5rem;
-      height: 0.5rem;
-      margin-bottom: 1.25rem;
-      background: var(--color-brand);
-      border: var(--rule-mid) solid var(--color-ink);
-    }
-    .colophon__statement {
-      margin: 0 0 2.25rem;
-      font-family: var(--font-display);
-      font-size: clamp(2.4rem, 10vw, 6rem);
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      text-transform: uppercase;
-      color: var(--color-ink);
-      overflow-wrap: anywhere;
-      min-width: 0;
-    }
-    .colophon__grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    @media (min-width: 46rem) {
-      .colophon__grid {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-        align-items: start;
-      }
-    }
-    .colophon__word {
-      display: block;
+    .foot-dense__brand {
+      margin: 0 0 1.5rem;
       font-family: var(--font-code);
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       font-weight: 700;
       color: var(--color-ink);
     }
-    .colophon__tag {
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--color-ink-2);
-      max-width: 24ch;
+    .foot-dense__prompt {
+      color: var(--color-brand);
     }
-    .colophon__cols {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-      gap: 1.75rem;
-    }
-    .colophon__h {
-      margin: 0 0 0.7rem;
-      font-family: var(--font-code);
-      font-size: 0.74rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+    .foot-dense__tag {
+      font-weight: 400;
       color: var(--color-ink-2);
     }
-    .colophon__cols ul {
-      list-style: none;
+    .foot-dense__rows {
       margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.65rem;
     }
-    .colophon__cols li {
-      font-size: 0.9rem;
+    .foot-dense__row {
+      display: grid;
+      grid-template-columns: 8rem 1fr;
+      gap: 0.25rem 1rem;
+      align-items: center;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+    }
+    @media (max-width: 34rem) {
+      .foot-dense__row {
+        grid-template-columns: 1fr;
+        gap: 0.1rem;
+      }
+    }
+    .foot-dense__row dt {
+      color: var(--color-ink-2);
+      text-transform: lowercase;
+    }
+    .foot-dense__row dd {
+      margin: 0;
       color: var(--color-ink-2);
     }
-    .colophon__cols a {
+    .foot-dense__links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.1rem 0.5rem;
+    }
+    .foot-dense__links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding-inline: 0.35rem;
       color: var(--color-ink);
       text-decoration: underline;
-      text-decoration-thickness: 0.1em;
+      text-decoration-thickness: 0.08em;
       text-underline-offset: 0.15em;
-      text-decoration-color: var(--color-brand);
-      font-weight: 600;
+      text-decoration-color: var(--color-rule);
+      white-space: nowrap;
+      transition: color 120ms var(--ease-out), text-decoration-color 120ms var(--ease-out);
     }
-    .colophon__cols a:hover {
-      background: var(--color-brand);
-      color: var(--color-brand-ink);
-      text-decoration-color: transparent;
+    .foot-dense__links a:hover {
+      color: var(--color-brand);
+      text-decoration-color: var(--color-brand);
+    }
+    .foot-dense__links span {
+      color: var(--color-ink-2);
     }
   </style>
 </Layout>

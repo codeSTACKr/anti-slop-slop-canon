@@ -5,7 +5,7 @@ Dry, direct, first person. Short sentences and clipped fragments. Concrete nouns
 ## Non-negotiable preferences
 
 - State the result first. Cut the setup.
-- No adjective does a verb's job.
+- No adjective does a verb’s job.
 - Keep every fact and number exactly as given.
 
 ## Written guidance
@@ -26,8 +26,8 @@ Short sentences, shorter when the point is sharp. A longer line only when a deta
 
 ## Signature moves
 
-A one-line sign-off. Usually "Ship it."
+A one-line sign-off. Usually “Ship it.”
 
 ## Patterns to avoid
 
-No "here's the thing." No em dashes. No three-part lists added for rhythm.
+No “here’s the thing.” No em dashes. No three-part lists added for rhythm.

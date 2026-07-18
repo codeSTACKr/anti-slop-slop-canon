@@ -51,38 +51,43 @@ const { command, label } = Astro.props;
     font-size: 0.88rem;
     line-height: 1.5;
     padding: 0.7rem 0.85rem;
-    background: var(--color-ink);
-    color: var(--color-paper);
-    border: var(--rule-mid) solid var(--color-ink);
+    background: var(--color-paper-3);
+    color: var(--color-ink);
+    border: var(--rule-thin) solid var(--color-rule);
+    border-radius: var(--radius-sm);
     overflow-x: auto;
     white-space: pre;
   }
   .cmd__btn {
     flex: 0 0 auto;
+    min-height: 44px;
     font-family: var(--font-code);
     font-size: 0.78rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.03em;
     padding: 0 0.9rem;
-    border: var(--rule-mid) solid var(--color-ink);
-    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    background: var(--color-paper-2);
     color: var(--color-ink);
     cursor: pointer;
     transition:
       background-color 120ms var(--ease-out),
-      transform 100ms var(--ease-out);
+      color 120ms var(--ease-out);
   }
   .cmd__btn:hover {
     background: var(--color-brand);
     color: var(--color-brand-ink);
+    border-color: var(--color-brand);
   }
   .cmd__btn:active {
-    transform: translateY(2px);
+    background: var(--color-paper-3);
   }
   .cmd__btn[data-copied] {
     background: var(--color-brand);
     color: var(--color-brand-ink);
+    border-color: var(--color-brand);
   }
 </style>
 

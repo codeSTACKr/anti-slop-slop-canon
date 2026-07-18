@@ -59,11 +59,12 @@ const name = `state-${id}`;
 </div>
 
 <style>
-  /* Light paper card with a hard ink offset shadow, matching the other explorers. */
+  /* Elevated panel — one lightness step above the page, no shadow, matching the
+     other explorers. */
   .states {
-    border: var(--rule-thick) solid var(--color-ink);
-    background: var(--color-paper);
-    box-shadow: var(--shadow-hard);
+    border: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-md);
     overflow: clip;
   }
   .states__radio {
@@ -82,8 +83,8 @@ const name = `state-${id}`;
     flex-wrap: wrap;
     gap: 0.4rem;
     padding: 0.75rem;
-    border-bottom: var(--rule-mid) solid var(--color-ink);
-    background: var(--color-paper-2);
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-3);
   }
   .states__tab {
     font-family: var(--font-code);
@@ -93,18 +94,22 @@ const name = `state-${id}`;
     letter-spacing: 0.03em;
     line-height: 1;
     white-space: nowrap;
-    padding: 0.5rem 0.8rem;
-    border: var(--rule-mid) solid var(--color-ink);
-    background: var(--color-paper);
-    color: var(--color-ink);
+    padding: 0.6rem 0.85rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border: var(--rule-thin) solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    background: var(--color-paper-2);
+    color: var(--color-ink-2);
     cursor: pointer;
     transition:
       background-color 120ms var(--ease-out),
       color 120ms var(--ease-out);
   }
   .states__tab:hover {
-    background: var(--color-brand);
-    color: var(--color-brand-ink);
+    background: var(--color-paper);
+    color: var(--color-ink);
   }
   .states__stage {
     padding: 1.4rem 1.3rem;
@@ -136,7 +141,7 @@ const name = `state-${id}`;
     font-size: 0.78rem;
     line-height: 1.5;
     color: var(--color-ink-2);
-    border-top: var(--rule-thin) solid var(--color-ink);
+    border-top: var(--rule-thin) solid var(--color-rule);
     padding-top: 0.8rem;
   }
 
@@ -144,13 +149,14 @@ const name = `state-${id}`;
   .states__radio--0:checked ~ .states__tabs .states__tab:nth-child(1),
   .states__radio--1:checked ~ .states__tabs .states__tab:nth-child(2),
   .states__radio--2:checked ~ .states__tabs .states__tab:nth-child(3) {
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-brand);
+    color: var(--color-brand-ink);
+    border-color: var(--color-brand);
   }
   .states__radio--0:focus-visible ~ .states__tabs .states__tab:nth-child(1),
   .states__radio--1:focus-visible ~ .states__tabs .states__tab:nth-child(2),
   .states__radio--2:focus-visible ~ .states__tabs .states__tab:nth-child(3) {
-    outline: 3px solid var(--color-ink);
+    outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
   .states__radio--0:checked ~ .states__stage .states__panel--0,

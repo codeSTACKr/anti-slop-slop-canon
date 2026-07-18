@@ -132,9 +132,9 @@ const name = `diff-${id}`;
 <style>
   .diff {
     margin: 0;
-    border: var(--rule-thick) solid var(--color-ink);
-    background: var(--color-paper);
-    box-shadow: var(--shadow-hard);
+    border: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-md);
     overflow: clip;
   }
   .diff__cap {
@@ -144,8 +144,8 @@ const name = `diff-${id}`;
     justify-content: space-between;
     gap: 0.5rem 1rem;
     padding: 0.75rem 1rem;
-    border-bottom: var(--rule-mid) solid var(--color-ink);
-    background: var(--color-paper-2);
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+    background: var(--color-paper-3);
   }
   .diff__label {
     font-family: var(--font-code);
@@ -186,18 +186,22 @@ const name = `diff-${id}`;
     letter-spacing: 0.03em;
     line-height: 1;
     white-space: nowrap;
-    padding: 0.5rem 0.75rem;
-    border: var(--rule-mid) solid var(--color-ink);
-    background: var(--color-paper);
-    color: var(--color-ink);
+    padding: 0.6rem 0.85rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border: var(--rule-thin) solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    background: var(--color-paper-3);
+    color: var(--color-ink-2);
     cursor: pointer;
     transition:
       background-color 120ms var(--ease-out),
       color 120ms var(--ease-out);
   }
   .diff__tab:hover {
-    background: var(--color-brand);
-    color: var(--color-brand-ink);
+    background: var(--color-paper);
+    color: var(--color-ink);
   }
   .diff__viewport {
     padding: 1.15rem 1rem 1rem;
@@ -220,13 +224,14 @@ const name = `diff-${id}`;
   .diff__radio--changes:checked ~ .diff__controls .diff__tab:nth-child(1),
   .diff__radio--before:checked ~ .diff__controls .diff__tab:nth-child(2),
   .diff__radio--after:checked ~ .diff__controls .diff__tab:nth-child(3) {
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-brand);
+    color: var(--color-brand-ink);
+    border-color: var(--color-brand);
   }
   .diff__radio--changes:focus-visible ~ .diff__controls .diff__tab:nth-child(1),
   .diff__radio--before:focus-visible ~ .diff__controls .diff__tab:nth-child(2),
   .diff__radio--after:focus-visible ~ .diff__controls .diff__tab:nth-child(3) {
-    outline: 3px solid var(--color-ink);
+    outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
 
@@ -251,15 +256,17 @@ const name = `diff-${id}`;
     color: var(--color-del-foreground);
     text-decoration: line-through;
     text-decoration-thickness: 0.1em;
-    text-decoration-color: var(--color-ink);
+    text-decoration-color: var(--color-ink-2);
+    border-radius: var(--radius-sm);
     padding: 0 0.08em;
   }
-  /* Cleaned text — sits on the one loud accent block. */
+  /* Cleaned text — sits on the one accent block, the single loud moment. */
   .diff__add {
     background: var(--color-add-surface);
     color: var(--color-add-foreground);
     text-decoration: none;
     font-weight: 600;
+    border-radius: var(--radius-sm);
     padding: 0 0.1em;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
@@ -271,6 +278,6 @@ const name = `diff-${id}`;
     font-size: 0.78rem;
     line-height: 1.55;
     color: var(--color-ink-2);
-    border-top: var(--rule-thin) solid var(--color-ink);
+    border-top: var(--rule-thin) solid var(--color-rule);
   }
 </style>

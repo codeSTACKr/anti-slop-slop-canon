@@ -5,6 +5,11 @@
  * Inline SVG only: no raster image, no network asset, no web font (text uses the
  * system UI stack via a token). Decorative but labeled, so screen readers get the
  * meaning and the page stays legible with JavaScript off.
+ *
+ * Theme-consistent with the Terminal system: dark slate boxes, hairline strokes,
+ * phosphor-green source node. The rect corner radius (6) matches the page's
+ * --radius-sm token — the same small uniform radius used on every other box on
+ * the page, so the inline SVG doesn't drift from the system.
  */
 ---
 
@@ -37,22 +42,25 @@
   }
   .modes__line {
     fill: none;
-    stroke: var(--color-ink);
-    stroke-width: 2.5;
+    stroke: var(--color-rule);
+    stroke-width: 2;
   }
   .modes__box {
-    fill: var(--color-paper);
-    stroke: var(--color-ink);
-    stroke-width: 2.5;
+    fill: var(--color-paper-2);
+    stroke: var(--color-rule);
+    stroke-width: 2;
   }
   .modes__box--source {
     fill: var(--color-brand);
-    stroke: var(--color-ink);
+    stroke: var(--color-brand);
   }
   .modes__t {
     font-family: var(--font-ui);
     font-size: 13px;
     font-weight: 700;
     fill: var(--color-ink);
+  }
+  .modes__box--source + .modes__t {
+    fill: var(--color-brand-ink);
   }
 </style>

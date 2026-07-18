@@ -1,6 +1,35 @@
 # Showcase design notes
 
-## Site-3 redesign — Neo-brutalist editorial poster ("Broadsheet")
+## ADOPTED — dark atmospheric terminal ("Terminal"), 2026-07-18
+
+This is the shipped design, chosen from three parallel Hallmark redesign lanes
+(quiet literary editorial serif / dark atmospheric terminal / Swiss-grid
+modern-minimal). It supersedes the Broadsheet poster documented below; the
+sections beneath this one are kept as history. Full lane details, contrast
+math, and the changed-file list are in `REDESIGN-REPORT.md`.
+
+- **Genre** atmospheric · **macrostructure** Component Playground · **theme**
+  Terminal (catalog, atmospheric cluster) · **nav** N8 terminal command ·
+  **footer** Ft4 dense colophon.
+- Cool slate paper `oklch(15% 0.014 235)` (tinted, never pure black), three
+  lightness steps for elevation (no glow, no offset shadows), near-white ink,
+  one phosphor-green accent `oklch(78% 0.16 152)`. A monospace stack leads
+  (headings, labels, nav, buttons); a system sans carries body prose. System
+  font stacks only — no web fonts, the page stays fully offline.
+- All nine fixes from the Broadsheet audit are applied: zero section eyebrows,
+  only real font weights (max 700), varied section rhythm, curly apostrophes,
+  ≥ 44px touch targets, uniform 6px corner language including the TwoModes SVG,
+  `theme-color` matched to the paper token, unused shadcn ui components
+  deleted, stale component comments rewritten.
+- Owner feedback applied after selection: the Written / Spoken before-after
+  pairs now separate visually. The After copy sits on a raised `paper-3` panel
+  and its caption carries the phosphor accent — the same "cleaned output"
+  signal the diff explorer uses — while the Before stays flat, dimmed, and
+  struck through.
+- Contrast script-verified (all body pairs ≥ 6.6:1) · slop test 58/58 ·
+  `pnpm build` passes.
+
+## Superseded — Site-3 redesign — Neo-brutalist editorial poster ("Broadsheet")
 
 Site-3 is one of three parallel redesigns of the showcase. Its assigned lane is a
 neo-brutalist editorial poster: massive display type at poster scale, stark ink-on-paper
