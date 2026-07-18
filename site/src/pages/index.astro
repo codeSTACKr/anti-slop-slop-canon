@@ -392,51 +392,31 @@ const navLinks = [
         global one.
       </p>
 
-      <div class="steps">
-        <div class="step">
-          <div class="step__mark">
-            <span class="step__num">I</span>
-            <span class="step__label">Run</span>
-          </div>
-          <div class="step__body">
-            <div class="install">
-              <CopyCommand label="Global scope" command={`npx skills add ${REPO} -g`} />
-              <CopyCommand label="Project scope" command={`npx skills add ${REPO}`} />
-            </div>
+      <div class="installs">
+        <div class="install-block">
+          <h3 class="install-block__name">Global</h3>
+          <p class="install-block__note">
+            Activates the skill in every project on the machine.
+          </p>
+          <div class="install-block__cmd">
+            <CopyCommand command={`npx skills add ${REPO} -g`} />
           </div>
         </div>
-
-        <div class="step">
-          <div class="step__mark">
-            <span class="step__num">II</span>
-            <span class="step__label">In</span>
-          </div>
-          <div class="step__body">
-            <ul class="hosts">
-              <li class="host">Claude Code</li>
-              <li class="host">Cursor</li>
-              <li class="host">Codex</li>
-            </ul>
-            <p class="step__note">
-              Works with coding agents that read Agent Skills. One canonical skill,
-              installed the same way for each. It writes no per-tool rule files.
-            </p>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step__mark">
-            <span class="step__num">III</span>
-            <span class="step__label">Then</span>
-          </div>
-          <div class="step__body">
-            <p class="step__then">
-              The skill activates on writing you compose or revise. Ask for an audit, a
-              rewrite, or onboarding whenever you want.
-            </p>
+        <div class="install-block">
+          <h3 class="install-block__name">Project</h3>
+          <p class="install-block__note">
+            Scoped to one repository, with its own isolated state.
+          </p>
+          <div class="install-block__cmd">
+            <CopyCommand command={`npx skills add ${REPO}`} />
           </div>
         </div>
       </div>
+
+      <p class="fineprint">
+        It works with coding agents that read Agent Skills, including Claude Code,
+        Cursor, and Codex.
+      </p>
 
       <div class="cta">
         <a
@@ -769,12 +749,11 @@ const navLinks = [
       text-align: left;
     }
 
-    /* Realtime prompt card (§06). The card shrinks to its reading measure so its
-       border hugs the text instead of leaving a dead band on the right. Left-aligned
-       to the content column like every other section. */
+    /* Realtime prompt card (§06). A comfortable reading measure for the prose,
+       left-aligned to the content column like the profile panel. Not shrink-to-fit,
+       not full-width. */
     :global(.doc) {
-      width: fit-content;
-      max-width: 100%;
+      max-width: 44rem;
     }
 
     .grid2 {
@@ -920,97 +899,55 @@ const navLinks = [
       font-size: 0.84rem;
     }
 
-    /* Install — stepped card. One bordered card, a left gutter of roman-numeral
-       steps with small-caps labels, content on the right. Rows split by hairlines. */
-    .steps {
+    /* Install — two labeled command blocks, one per scope. Each is a bordered
+       Canon card: a serif scope name, a one-line note, and the copyable command
+       seated at the foot so both commands align across the pair. */
+    .installs {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 46rem) {
+      .installs {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+    }
+    .install-block {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
       border: 1px solid var(--color-rule);
       border-radius: var(--radius-lg);
       background: var(--color-card);
-      overflow: hidden;
     }
-    .step {
-      display: grid;
-      grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
-      gap: 1.5rem;
-      padding: 1.6rem 1.5rem;
-    }
-    .step + .step {
-      border-top: 1px solid var(--color-rule);
-    }
-    .step__mark {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-    .step__num {
-      font-family: var(--font-display);
-      font-size: 1.7rem;
+    .install-block__name {
+      margin: 0;
+      font-size: 1.3rem;
       font-weight: 600;
-      line-height: 1;
-      color: var(--color-primary);
+      letter-spacing: -0.01em;
     }
-    .step__label {
+    .install-block__note {
+      margin: 0.45rem 0 0;
       font-family: var(--font-ui);
-      font-size: 0.74rem;
-      font-weight: 600;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: var(--color-muted-foreground);
-    }
-    .step__body {
-      min-width: 0;
-    }
-    .step__note {
-      margin: 1rem 0 0;
-      font-family: var(--font-ui);
-      font-size: 0.86rem;
+      font-size: 0.9rem;
       line-height: 1.55;
       color: var(--color-muted-foreground);
     }
-    .step__then {
-      margin: 0;
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: var(--color-foreground);
+    .install-block__cmd {
+      margin-top: 1.5rem;
     }
-    .hosts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .host {
-      font-family: var(--font-ui);
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 0.32rem 0.72rem;
-      border: 1px solid var(--color-rule);
-      border-radius: 999px;
-      background: var(--color-secondary);
-      color: var(--color-foreground);
-    }
-    @media (max-width: 34rem) {
-      .step {
-        grid-template-columns: 1fr;
-        gap: 0.85rem;
-      }
-      .step__mark {
-        flex-direction: row;
-        align-items: baseline;
-        gap: 0.55rem;
-      }
-      .step__num {
-        font-size: 1.3rem;
+    @media (min-width: 46rem) {
+      .install-block__cmd {
+        margin-top: auto;
+        padding-top: 1.5rem;
       }
     }
-
-    .install {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
+    /* Let the command wrap at spaces inside the narrower block so the whole
+       command stays visible without a horizontal scroll. Scoped to install only. */
+    .install-block__cmd :global(.cmd__code) {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      overflow-x: visible;
     }
     .cta {
       display: flex;
