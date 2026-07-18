@@ -63,14 +63,6 @@ const states = [
   },
 ];
 
-const navLinks = [
-  { href: "#proof", label: "Proof" },
-  { href: "#states", label: "Guardrail levels" },
-  { href: "#voice", label: "Written & spoken" },
-  { href: "#onboarding", label: "Onboarding" },
-  { href: "#profile", label: "Profile" },
-  { href: "#install", label: "Install" },
-];
 ---
 
 <Layout
@@ -83,6 +75,9 @@ const navLinks = [
     <div class="wrap mast__inner">
       <div class="mast__brand">
         <a class="mast__word" href="#main">anti-slop-slop-canon</a>
+      </div>
+      <nav class="mast__nav" aria-label="Primary">
+        <a class="mast__install" href="#install">Install</a>
         <a
           class="mast__star"
           href={`https://github.com/${REPO}`}
@@ -104,9 +99,6 @@ const navLinks = [
           </svg>
           Star on GitHub
         </a>
-      </div>
-      <nav class="mast__nav" aria-label="Sections">
-        {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
       </nav>
     </div>
     <div class="mast__rule" role="presentation"></div>
@@ -122,9 +114,8 @@ const navLinks = [
       <h1 class="hero__title">Sound like yourself.</h1>
       <p class="hero__lede typeset">
         <code>anti-slop-slop-canon</code> removes the habits that make writing sound
-        machine-made, then learns a transparent, editable profile of your actual
-        voice. One profile governs both what you write and what you say aloud. It runs
-        on the model your agent already has.
+        machine-made, then learns a transparent, editable profile of your voice. One
+        profile for what you write and what you say aloud.
       </p>
       <p class="hero__sub">
         Every example below is <mark class="mark">real output</mark> from the project's
@@ -147,9 +138,8 @@ const navLinks = [
       </p>
       <h2 class="h2">Default cleanup, before you do anything</h2>
       <p class="lead typeset">
-        Out of the box the skill strips hype, canned framing, and ornamental
-        punctuation without inventing a claim the source never made. Toggle between the
-        original, the cleaned result, and the exact changes.
+        Out of the box it strips hype, canned framing, and ornamental punctuation
+        without inventing a claim the source never made.
       </p>
 
       <div class="stack">
@@ -158,7 +148,7 @@ const navLinks = [
           label="Product update · rewrite"
           before={heroBefore}
           after={heroAfter}
-          note="Same feature, same date, same number. Removed the unsupported hype, a manufactured contrast, and an exclamation point."
+          note="Same facts. Removed the hype, a manufactured contrast, and an exclamation point."
         />
         <DiffExplorer
           id="punct"
@@ -182,14 +172,11 @@ const navLinks = [
       <h2 class="h2">The same release, three levels of guardrail</h2>
       <p class="lead typeset">
         Every panel is output for the same v2.4 release. What changes is how much
-        guidance the agent had. First no guardrails, then the shared defaults, then a
-        personal profile.
+        guidance the agent had.
       </p>
       <StateExplorer id="release" states={states} />
       <p class="fineprint">
-        The first panel is a deliberate before, written the way an assistant sounds with
-        no help. The middle panel applies the bundled rules. The last panel illustrates
-        one sample profile and is not a claim about any real person's output.
+        The last panel illustrates one sample profile, not any real person's output.
       </p>
     </section>
 
@@ -204,8 +191,7 @@ const navLinks = [
       </p>
       <h2 class="h2">Written and spoken</h2>
       <p class="lead typeset">
-        The same profile covers what people read and what they hear. The skill applies
-        spoken guidance when text is meant for the ear and written guidance otherwise.
+        The same profile covers what people read and what they hear.
       </p>
 
       <TwoModes />
@@ -248,8 +234,8 @@ const navLinks = [
               database migration. Last, restart the workers.
             </p>
             <p class="ex__src">
-              Read aloud, the list numbers are dropped so a listener never hears them
-              counted out. The steps and their order stay the same.
+              The list numbers drop out, so they are never read aloud. The order stays
+              the same.
             </p>
           </CardContent>
         </Card>
@@ -267,9 +253,8 @@ const navLinks = [
       </p>
       <h2 class="h2">It builds a profile from your own writing</h2>
       <p class="lead typeset">
-        You give it a few samples. It separates the traits that are your voice from the
-        subject you happened to write about and any one-off quirks, compiles a profile
-        you preview and approve, and shifts your output toward the way you write.
+        You give it a few samples. It finds the traits that are your voice, compiles a
+        profile you approve, and writes in your voice from then on.
       </p>
 
       <VoiceShift />
@@ -282,8 +267,7 @@ const navLinks = [
             <div>
               <h4 class="choice__h">Personalize now</h4>
               <p class="choice__p">
-                A short, adaptive interview. One question at a time, samples collected
-                early, targeted follow-ups only where the evidence is thin.
+                A short, adaptive interview. One question at a time.
               </p>
             </div>
           </div>
@@ -292,8 +276,7 @@ const navLinks = [
             <div>
               <h4 class="choice__h">Use the defaults</h4>
               <p class="choice__p">
-                Skip straight to the bundled defaults and resume your task right away. No
-                setup, no profile written.
+                Skip setup and use the bundled defaults right away.
               </p>
             </div>
           </div>
@@ -302,8 +285,7 @@ const navLinks = [
             <div>
               <h4 class="choice__h">Defer</h4>
               <p class="choice__p">
-                Not now. The skill uses the defaults for this task and asks again later,
-                on your schedule.
+                Not now. Use the defaults and ask again later.
               </p>
             </div>
           </div>
@@ -322,9 +304,8 @@ const navLinks = [
       </p>
       <h2 class="h2">A transparent, editable profile</h2>
       <p class="lead typeset">
-        The compiled profile is a plain Markdown file that lives in your project, not
-        inside the installed skill. Open it and edit any rule directly. The skill treats
-        a direct edit as your intent and will not silently regenerate the file.
+        The compiled profile is a plain Markdown file in your project, not inside the
+        installed skill. Open it and edit any rule. The skill leaves your edits alone.
       </p>
 
       <figure class="filecard">
@@ -337,9 +318,6 @@ const navLinks = [
           <SampleProfile />
         </div>
       </figure>
-      <p class="fineprint filecard__note">
-        One plain file in your project. Open it and edit any line.
-      </p>
     </section>
 
     <Separator />
@@ -354,10 +332,8 @@ const navLinks = [
       <h2 class="h2">A realtime voice prompt</h2>
       <p class="lead typeset">
         Ask for the realtime prompt and the skill returns a compact, style-only module
-        to paste into a voice agent's system prompt. It covers delivery only: word
-        choice, sentence shape, pacing, first-listen clarity. It defines no tools,
-        facts, safety policy, or conversation flow, so it sits beside your agent's own
-        instructions rather than replacing them.
+        for a voice agent's system prompt. It shapes delivery only, so it sits beside
+        your agent's own instructions rather than replacing them.
       </p>
 
       <Card className="doc">
@@ -386,10 +362,8 @@ const navLinks = [
       </p>
       <h2 class="h2">Install</h2>
       <p class="lead typeset">
-        Installation uses <code>npx skills</code>. Global scope activates the skill in
-        every project on the machine. Omit the flag to scope it to one repository. A
-        project copy reads and writes only its own state and never falls back to the
-        global one.
+        Installation uses <code>npx skills</code>. A project copy keeps its own state
+        and never falls back to the global one.
       </p>
 
       <div class="installs">
@@ -504,7 +478,7 @@ const navLinks = [
     .mast__inner {
       display: flex;
       flex-wrap: wrap;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
       gap: 0.75rem 1.5rem;
       padding-bottom: 1rem;
@@ -554,7 +528,8 @@ const navLinks = [
     .mast__nav {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem 1.1rem;
+      align-items: center;
+      gap: 0.5rem 1rem;
     }
     .mast__nav a {
       font-family: var(--font-ui);
@@ -625,7 +600,7 @@ const navLinks = [
 
     /* Sections */
     .section {
-      padding-block: 4rem;
+      padding-block: 5.25rem;
     }
 
     /* Numbered spec-sheet eyebrow — number (mono, accent) · short rule · label. */
