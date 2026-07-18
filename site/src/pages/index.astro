@@ -18,9 +18,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 // Curated Markdown, compiled at build time (no client-side Markdown parser).
-import { Content as ProfileExcerpt } from "../content/profile-excerpt.md";
+import { Content as SampleProfile } from "../content/voice-profile.sample.md";
 import { Content as RealtimePrompt } from "../content/realtime-prompt.md";
-import { Content as RulesExcerpt } from "../content/rules-excerpt.md";
 
 const REPO = "codeSTACKr/anti-slop-slop-canon";
 
@@ -273,7 +272,7 @@ const navLinks = [
 
     <Separator />
 
-    <!-- PROFILE + RULES -->
+    <!-- PROFILE -->
     <section id="profile" class="section">
       <p class="eyebrow">Nothing hidden</p>
       <h2 class="h2">A transparent, editable profile</h2>
@@ -283,35 +282,19 @@ const navLinks = [
         a direct edit as your intent and will not silently regenerate the file.
       </p>
 
-      <div class="grid2">
-        <Card className="doc">
-          <CardHeader>
-            <CardTitle>Profile schema</CardTitle>
-            <CardDescription>
-              From <code>assets/voice-profile.template.md</code>
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div class="typeset" data-density="compact">
-              <ProfileExcerpt />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="doc">
-          <CardHeader>
-            <CardTitle>A slice of the default rules</CardTitle>
-            <CardDescription>
-              From the bundled <code>defaults.md</code>
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div class="typeset" data-density="compact">
-              <RulesExcerpt />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <figure class="filecard">
+        <figcaption class="filecard__bar">
+          <span class="filecard__dot" aria-hidden="true"></span>
+          <span class="filecard__name">voice-profile.md</span>
+          <span class="filecard__tag">example</span>
+        </figcaption>
+        <div class="filecard__body typeset" data-density="compact">
+          <SampleProfile />
+        </div>
+      </figure>
+      <p class="fineprint filecard__note">
+        One plain file in your project. Open it and edit any line.
+      </p>
     </section>
 
     <Separator />
@@ -577,6 +560,57 @@ const navLinks = [
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+    }
+
+    /* File-styled profile panel */
+    .filecard {
+      margin: 0 auto;
+      max-width: 44rem;
+      border: 1px solid var(--color-rule);
+      border-radius: var(--radius-lg);
+      background: var(--color-card);
+      overflow: hidden;
+    }
+    .filecard__bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1.1rem;
+      border-bottom: 1px solid var(--color-rule);
+      background: var(--color-secondary);
+    }
+    .filecard__dot {
+      width: 0.6rem;
+      height: 0.6rem;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-primary);
+    }
+    .filecard__name {
+      font-family: var(--font-code);
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--color-foreground);
+    }
+    .filecard__tag {
+      margin-left: auto;
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--color-muted-foreground);
+    }
+    .filecard__body {
+      padding: 1.4rem 1.7rem 1.7rem;
+    }
+    .filecard__body :global(> :first-child) {
+      margin-top: 0;
+    }
+    .filecard__note {
+      max-width: 44rem;
+      margin-inline: auto;
+      text-align: center;
     }
 
     .grid2 {
