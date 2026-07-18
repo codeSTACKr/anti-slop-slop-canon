@@ -77,26 +77,26 @@ const lanes: Lane[] = [
 
 <style>
   .vs {
-    border: 1px solid var(--color-rule);
-    border-radius: var(--radius-lg);
-    background: var(--color-card);
+    border: var(--rule-thick) solid var(--color-ink);
+    background: var(--color-paper);
+    box-shadow: var(--shadow-hard);
     overflow: clip;
   }
   .vs__step {
-    padding: 1.25rem 1.15rem;
+    padding: 1.4rem 1.3rem;
   }
   .vs__step + .vs__step {
-    border-top: 1px solid var(--color-rule);
-    background: var(--color-secondary);
+    border-top: var(--rule-thick) solid var(--color-ink);
+    background: var(--color-paper-2);
   }
   .vs__cap {
-    margin: 0 0 0.9rem;
-    font-family: var(--font-ui);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    margin: 0 0 1rem;
+    font-family: var(--font-code);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--color-muted-foreground);
+    color: var(--color-ink-2);
   }
 
   /* Step 1 — trait lanes */
@@ -111,43 +111,52 @@ const lanes: Lane[] = [
     }
   }
   .vlane {
-    border: 1px solid var(--color-rule);
-    border-radius: var(--radius-md);
-    background: var(--color-card);
-    padding: 0.85rem 0.9rem;
+    border: var(--rule-mid) solid var(--color-ink);
+    background: var(--color-paper);
+    padding: 0.9rem 0.95rem;
   }
   .vlane--kept {
-    border-color: var(--color-primary);
+    box-shadow: var(--shadow-hard);
   }
   .vlane__h {
-    margin: 0 0 0.55rem;
-    font-family: var(--font-ui);
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--color-foreground);
+    margin: 0 0 0.6rem;
+    font-family: var(--font-code);
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
   }
   .vlane--kept .vlane__h {
-    color: var(--color-primary);
+    display: inline-block;
+    background: var(--color-brand);
+    color: var(--color-brand-ink);
+    border: var(--rule-thin) solid var(--color-ink);
+    padding: 0.15rem 0.4rem;
   }
   .vlane__list {
     margin: 0;
     padding-left: 1.05rem;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.4rem;
+    list-style: square outside;
   }
   .vlane__list li {
     font-family: var(--font-ui);
     font-size: 0.86rem;
     line-height: 1.45;
-    color: var(--color-muted-foreground);
+    color: var(--color-ink-2);
+  }
+  .vlane__list li::marker {
+    color: var(--color-ink);
   }
   .vs__fine {
-    margin: 0.9rem 0 0;
-    font-family: var(--font-ui);
-    font-size: 0.76rem;
+    margin: 1rem 0 0;
+    font-family: var(--font-code);
+    font-size: 0.74rem;
     line-height: 1.5;
-    color: var(--color-muted-foreground);
+    color: var(--color-ink-2);
   }
 
   /* Step 2 — before / after sentence */
@@ -160,33 +169,39 @@ const lanes: Lane[] = [
   .vab {
     flex: 1 1 0;
     min-width: 0;
-    border: 1px solid var(--color-rule);
-    border-radius: var(--radius-md);
-    background: var(--color-card);
-    padding: 0.9rem 1rem;
+    border: var(--rule-mid) solid var(--color-ink);
+    background: var(--color-paper);
+    padding: 1rem 1.05rem;
   }
   .vab--you {
-    border-color: var(--color-primary);
+    box-shadow: var(--shadow-hard);
   }
   .vab__label {
-    margin: 0 0 0.4rem;
-    font-family: var(--font-ui);
+    margin: 0 0 0.5rem;
+    font-family: var(--font-code);
     font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--color-muted-foreground);
+    color: var(--color-ink-2);
   }
   .vab--you .vab__label {
-    color: var(--color-primary);
+    display: inline-block;
+    background: var(--color-brand);
+    color: var(--color-brand-ink);
+    border: var(--rule-thin) solid var(--color-ink);
+    padding: 0.15rem 0.4rem;
   }
   .vab__text {
     margin: 0;
-    font-family: var(--font-display);
+    font-family: var(--font-ui);
     font-size: 1.05rem;
-    line-height: 1.6;
-    color: var(--color-foreground);
+    line-height: 1.55;
+    color: var(--color-ink);
     text-wrap: pretty;
+  }
+  .vab--you .vab__text {
+    font-weight: 600;
   }
 
   /* CSS-drawn chevron between the two sentences. */
@@ -195,14 +210,14 @@ const lanes: Lane[] = [
     align-items: center;
     justify-content: center;
     align-self: center;
-    height: 0.9rem;
+    height: 1rem;
   }
   .vab__link i {
     display: block;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-top: 2px solid var(--color-primary);
-    border-right: 2px solid var(--color-primary);
+    width: 0.55rem;
+    height: 0.55rem;
+    border-top: 3px solid var(--color-ink);
+    border-right: 3px solid var(--color-ink);
     transform: rotate(135deg);
   }
 

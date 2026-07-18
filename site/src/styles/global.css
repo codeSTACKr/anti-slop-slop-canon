@@ -1,13 +1,16 @@
-/* Hallmark · genre: editorial · macrostructure: Long Document · theme: Canon
- * enrichment: E5 hand-built (hero specimen mark) · nav: N6 masthead-lite · footer: Ft4 colophon
- * pre-emit critique: P5 H5 E5 S5 R5 V5
- * Canon axes: paper light (warm off-white) · display roman-serif · accent cool ink-blue
- * Design pass (Hallmark elevation): numbered spec-sheet eyebrows, wider typographic
- * scale + vertical rhythm, and ONE selective warm highlight pop (hue ~80) that harmonizes
- * with the warm paper and plays warm-against-cool with the ink-blue accent. Ink-blue stays
- * the primary structural accent; the warm marker is used on two phrases only.
- * Palette re-skins the shadcn radix-nova preset. Fonts are system stacks only:
+/* Hallmark · genre: editorial (brutalist register) · macrostructure: Poster/Manifesto
+ * theme: custom "Broadsheet" · nav: N7 brutal slab · footer: Ft7 brutal statement
+ * pre-emit critique: P5 H5 E5 S5 R4 V5
+ * Broadsheet axes: paper light (near-white) · display heavy-grotesque roman · accent LOUD acid-yellow
+ * Redesign direction (site-3): neo-brutalist editorial poster. Massive display type at
+ * poster scale, stark ink-on-paper contrast, thick 3px hard rules and hard-edged borders
+ * (radius 0), hard OFFSET shadows (no blur), oversized numerals, ONE saturated acid-yellow
+ * accent used with confidence. Content bodies sit on LIGHT surfaces for readability; dark
+ * ink is used only on small card headers / title bars, sparingly. No blue or purple hue
+ * anywhere — every neutral is tinted warm (~95). System fonts only (heavy grotesque + mono),
  * no external or bundled font request, so font transfer is zero and the page is offline.
+ * Every colour and font references a named token; no raw values are inlined in component
+ * styles. contrast: pass (40-41) · tokens: pass (48) · chrome: pass (47).
  */
 @import "tailwindcss";
 @import "shadcn/tailwind.css";
@@ -39,6 +42,15 @@
     --color-foreground: var(--foreground);
     --color-background: var(--background);
 
+    /* Brutalist brand + surface tokens. */
+    --color-ink: var(--ink);
+    --color-ink-2: var(--ink-2);
+    --color-paper: var(--paper);
+    --color-paper-2: var(--paper-2);
+    --color-brand: var(--brand);
+    --color-brand-ink: var(--brand-ink);
+    --color-rule: var(--rule);
+
     /* Product-specific semantic colors for the diff / before-after presentation. */
     --color-add: var(--add);
     --color-add-foreground: var(--add-foreground);
@@ -46,68 +58,81 @@
     --color-del: var(--del);
     --color-del-foreground: var(--del-foreground);
     --color-del-surface: var(--del-surface);
-    --color-rule: var(--rule);
-    --color-highlight: var(--highlight);
-    --color-highlight-strong: var(--highlight-strong);
 
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+    /* Radius is 0 everywhere — brutalist hard edges. */
+    --radius-sm: 0px;
+    --radius-md: 0px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
+    --radius-2xl: 0px;
+    --radius-3xl: 0px;
+    --radius-4xl: 0px;
 }
 
 :root {
-    /* Font stacks — system only, no network fetch. */
-    --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
-        Palatino, "Hoefler Text", Georgia, Cambria, "Times New Roman", serif;
-    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-        Arial, sans-serif;
+    /* Font stacks — system only, no network fetch. A heavy grotesque for display
+       and body (one family, weighted for poster impact) plus a mono for labels,
+       numerals captions, and code. Two families total. */
+    --font-display: "Helvetica Neue", Helvetica, Arial, "Liberation Sans",
+        "Segoe UI", Roboto, sans-serif;
+    --font-ui: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", "Segoe UI",
+        Roboto, sans-serif;
     --font-code: ui-monospace, "SF Mono", "SFMono-Regular", "Cascadia Code",
         "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-    /* Canon palette — warm off-white paper, warm ink, cool ink-blue accent. */
-    --background: oklch(0.988 0.004 85);
-    --foreground: oklch(0.238 0.012 65);
-    --card: oklch(0.996 0.003 85);
-    --card-foreground: oklch(0.238 0.012 65);
-    --popover: oklch(0.996 0.003 85);
-    --popover-foreground: oklch(0.238 0.012 65);
-    --primary: oklch(0.40 0.096 256);
-    --primary-foreground: oklch(0.985 0.004 85);
-    --secondary: oklch(0.955 0.008 85);
-    --secondary-foreground: oklch(0.30 0.02 260);
-    --muted: oklch(0.955 0.008 85);
-    --muted-foreground: oklch(0.468 0.014 70);
-    --accent: oklch(0.93 0.02 255);
-    --accent-foreground: oklch(0.34 0.06 258);
-    --destructive: oklch(0.505 0.16 25);
-    --border: oklch(0.892 0.008 80);
-    --input: oklch(0.86 0.01 80);
-    --ring: oklch(0.40 0.096 256);
-    --radius: 0.375rem;
+    /* Broadsheet palette — near-white paper, near-black ink, one loud acid-yellow.
+       Every neutral is tinted toward the warm anchor hue (~95, in the paper/accent
+       family). No blue or purple hue anywhere on the page. */
+    --paper: oklch(0.973 0.006 100);
+    --paper-2: oklch(0.928 0.008 100);
+    --ink: oklch(0.185 0.009 95);
+    --ink-2: oklch(0.415 0.011 95);
+    --brand: oklch(0.875 0.195 103);
+    --brand-ink: oklch(0.185 0.009 95);
+    --rule: oklch(0.185 0.009 95);
 
-    /* Diff semantics. Text carries most of the meaning; surfaces stay quiet. */
-    --add: oklch(0.46 0.11 150);
-    --add-foreground: oklch(0.34 0.10 150);
-    --add-surface: oklch(0.95 0.045 150);
-    --del: oklch(0.505 0.16 25);
-    --del-foreground: oklch(0.44 0.15 25);
-    --del-surface: oklch(0.955 0.035 30);
-    --rule: oklch(0.892 0.008 80);
+    /* shadcn semantic mapping. Primary is INK (brutalist black buttons); the loud
+       accent lives in --brand and is applied deliberately, not as the primary fill. */
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: var(--paper);
+    --card-foreground: var(--ink);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink);
+    --primary: var(--ink);
+    --primary-foreground: var(--paper);
+    --secondary: var(--paper-2);
+    --secondary-foreground: var(--ink);
+    --muted: var(--paper-2);
+    --muted-foreground: var(--ink-2);
+    --accent: var(--brand);
+    --accent-foreground: var(--brand-ink);
+    --destructive: oklch(0.52 0.2 27);
+    --border: var(--ink);
+    --input: var(--ink);
+    --ring: var(--ink);
+    --radius: 0px;
 
-    /* Signature warm highlight — the one vivid accent pop. A honey/amber marker
-       at hue ~80 that harmonizes with the warm paper and reads warm against the
-       cool ink-blue. Light enough (L 0.87) that foreground ink stays legible over
-       it, so it never lowers text contrast. Used on two phrases across the page. */
-    --highlight: oklch(0.83 0.125 63);
-    --highlight-strong: oklch(0.76 0.14 62);
+    /* Diff semantics — monochrome + the brand block. Removed text carries a real
+       strikethrough (signal is not colour alone); cleaned text sits on the yellow
+       brand block. No competing colours, so the accent stays singular. */
+    --add: var(--ink);
+    --add-foreground: var(--ink);
+    --add-surface: var(--brand);
+    --del: var(--ink);
+    --del-foreground: var(--ink-2);
+    --del-surface: var(--paper-2);
 
-    /* Quiet elevation for the signature hero mark — hairline seat + a soft
-       cool-ink drop, so the mark reads as a designed object, not a plain note. */
-    --shadow-mark: 0 1px 0 var(--rule), 0 18px 40px -34px oklch(0.30 0.03 260 / 0.5);
+    /* Hard offset shadows — the brutalist signature. No blur, no spread, pure offset
+       in ink. Two depths: a card seat and a lifted focal object. */
+    --shadow-hard: 4px 4px 0 0 var(--ink);
+    --shadow-hard-lg: 7px 7px 0 0 var(--ink);
+
+    /* Rule weights — thick by default, this is a poster. */
+    --rule-thin: 1px;
+    --rule-mid: 2px;
+    --rule-thick: 3px;
+    --rule-heavy: 5px;
 
     /* Motion — three named easings, never the browser default. */
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -117,7 +142,7 @@
 
 @layer base {
     * {
-        @apply border-border outline-ring/50;
+        @apply border-border;
     }
     html {
         font-family: var(--font-ui);
@@ -151,30 +176,28 @@
     h3 {
         font-family: var(--font-display);
         font-style: normal;
+        font-weight: 800;
         overflow-wrap: anywhere;
         min-width: 0;
     }
+    /* Focus is instant and unmissable — a hard ink ring on the light paper. */
     :focus-visible {
-        outline: 2px solid var(--ring);
+        outline: 3px solid var(--ring);
         outline-offset: 2px;
     }
     ::selection {
-        background: oklch(0.88 0.05 256);
-        color: var(--foreground);
+        background: var(--brand);
+        color: var(--brand-ink);
     }
 }
 
-/* Highlighter marker — the single warm accent pop. Drawn as a hand-run band that
-   sits low behind the text (like a highlighter pen), so the ink keeps full contrast
-   over the paper. Roman, never italic. Used on two phrases only across the page. */
+/* Highlighter marker — the single accent pop rendered as a solid brand block behind
+   the text (a poster highlight, not a hairline). Ink text keeps full contrast over the
+   yellow. Roman, never italic. */
 .mark {
-    background-image: linear-gradient(
-        var(--highlight),
-        var(--highlight)
-    );
-    background-repeat: no-repeat;
-    background-size: 100% 0.42em;
-    background-position: 0 92%;
-    padding-inline: 0.06em;
-    color: var(--foreground);
+    background: var(--brand);
+    color: var(--brand-ink);
+    padding: 0.02em 0.18em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
 }

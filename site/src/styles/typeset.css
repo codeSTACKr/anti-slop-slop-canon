@@ -1,29 +1,28 @@
-/* typeset.css — owned shadcn/typeset stylesheet.
+/* typeset.css — owned shadcn/typeset stylesheet, reskinned for the Broadsheet
+ * (neo-brutalist) redesign.
  *
  * The single place that styles build-time-rendered Markdown and rich HTML on the
  * showcase (profile excerpt, rules excerpt, realtime prompt, fixture prose). It is
  * NOT a dependency pulled at runtime; it is a project-owned file, edited by hand.
  *
  * Every rule scopes under `.typeset`. Context-specific size, leading, and flow are
- * exposed as custom properties so a caller can tune density per placement, e.g.
- *   <div class="typeset" style="--typeset-size: 0.9375rem; --typeset-leading: 1.7">
+ * exposed as custom properties so a caller can tune density per placement.
  */
 
 .typeset {
     --typeset-size: 1rem;
-    --typeset-leading: 1.72;
+    --typeset-leading: 1.62;
     --typeset-measure: 68ch;
-    --typeset-flow: 1.15em; /* vertical rhythm between blocks */
-    --typeset-heading-flow: 1.9em;
-    --typeset-rule: var(--color-rule, oklch(0.892 0.008 80));
+    --typeset-flow: 1.05em; /* vertical rhythm between blocks */
+    --typeset-heading-flow: 1.8em;
+    --typeset-rule: var(--color-ink);
 
-    font-family: var(--font-display);
+    font-family: var(--font-ui);
     font-size: var(--typeset-size);
     line-height: var(--typeset-leading);
     color: var(--foreground);
     max-width: var(--typeset-measure);
     text-wrap: pretty;
-    hanging-punctuation: first;
 }
 
 /* Vertical flow via the lobotomized-owl selector keeps rhythm without margins
@@ -37,11 +36,13 @@
 .typeset > h3,
 .typeset > h4 {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 800;
     font-style: normal;
-    line-height: 1.22;
-    letter-spacing: -0.005em;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
     overflow-wrap: anywhere;
+    color: var(--foreground);
 }
 .typeset > * + h1,
 .typeset > * + h2,
@@ -50,22 +51,23 @@
     margin-top: var(--typeset-heading-flow);
 }
 
-.typeset > h1 { font-size: 1.6em; }
-.typeset > h2 { font-size: 1.28em; }
+.typeset > h1 { font-size: 1.7em; }
+.typeset > h2 { font-size: 1.32em; }
 .typeset > h3 {
-    font-size: 1.05em;
-    font-family: var(--font-ui);
+    font-size: 0.82em;
+    font-family: var(--font-code);
     font-weight: 600;
-    letter-spacing: 0.01em;
-    color: var(--muted-foreground);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink-2);
 }
 .typeset > h4 {
-    font-size: 0.82em;
-    font-family: var(--font-ui);
+    font-size: 0.78em;
+    font-family: var(--font-code);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted-foreground);
+    letter-spacing: 0.06em;
+    color: var(--ink-2);
 }
 
 .typeset p {
@@ -73,19 +75,22 @@
 }
 
 .typeset a {
-    color: var(--primary);
+    color: var(--foreground);
     text-decoration: underline;
-    text-underline-offset: 0.15em;
-    text-decoration-thickness: 0.06em;
-    text-decoration-color: color-mix(in oklch, var(--primary) 45%, transparent);
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.16em;
+    text-decoration-color: var(--brand);
+    font-weight: 600;
 }
 .typeset a:hover {
-    text-decoration-color: var(--primary);
+    background: var(--brand);
+    color: var(--brand-ink);
+    text-decoration-color: transparent;
 }
 
 .typeset strong {
-    font-weight: 640;
-    color: color-mix(in oklch, var(--foreground) 92%, var(--primary));
+    font-weight: 800;
+    color: var(--foreground);
 }
 .typeset em {
     font-style: italic; /* body-copy emphasis only; headings stay roman */
@@ -93,8 +98,8 @@
 
 .typeset ul {
     margin: 0;
-    padding-left: 1.35em;
-    list-style: disc outside;
+    padding-left: 1.3em;
+    list-style: square outside;
 }
 .typeset ol {
     margin: 0;
@@ -105,43 +110,43 @@
     padding-left: 0.15em;
 }
 .typeset li + li {
-    margin-top: 0.5em;
+    margin-top: 0.45em;
 }
 .typeset li::marker {
-    color: var(--muted-foreground);
+    color: var(--ink);
+    font-weight: 700;
 }
 
 .typeset blockquote {
     margin: 0;
-    padding: 0.1em 0 0.1em 1.1em;
-    border-left: 2px solid var(--primary);
-    color: var(--muted-foreground);
+    padding: 0.2em 0 0.2em 1em;
+    border-left: var(--rule-thick) solid var(--brand);
+    color: var(--ink-2);
     font-style: normal;
 }
 
 .typeset hr {
     border: 0;
-    border-top: 1px solid var(--typeset-rule);
-    margin-block: 1.6em;
+    border-top: var(--rule-thick) solid var(--typeset-rule);
+    margin-block: 1.5em;
 }
 
-/* Inline code and small fenced blocks use the mono stack and a quiet surface. */
+/* Inline code and small fenced blocks use the mono stack and a hard-edged surface. */
 .typeset code {
     font-family: var(--font-code);
     font-size: 0.86em;
-    background: var(--muted);
+    background: var(--paper-2);
     padding: 0.12em 0.34em;
-    border-radius: var(--radius-sm, 0.22rem);
-    border: 1px solid var(--border);
+    border: var(--rule-thin) solid var(--ink);
     word-break: break-word;
 }
 .typeset pre {
     font-family: var(--font-code);
     font-size: 0.84em;
     line-height: 1.6;
-    background: var(--muted);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md, 0.3rem);
+    background: var(--ink);
+    color: var(--paper);
+    border: var(--rule-mid) solid var(--ink);
     padding: 0.9em 1em;
     overflow-x: auto;
 }
@@ -150,6 +155,7 @@
     border: 0;
     padding: 0;
     font-size: 1em;
+    color: inherit;
 }
 
 .typeset table {
@@ -164,18 +170,21 @@
 .typeset td {
     text-align: left;
     padding: 0.5em 0.75em;
-    border-bottom: 1px solid var(--typeset-rule);
+    border-bottom: var(--rule-thin) solid var(--typeset-rule);
     vertical-align: top;
 }
 .typeset th {
-    font-weight: 600;
-    color: var(--muted-foreground);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.86em;
+    letter-spacing: 0.03em;
+    color: var(--ink);
 }
 
 /* Compact variant for dense excerpts embedded inside cards. */
 .typeset[data-density="compact"] {
     --typeset-size: 0.9375rem;
-    --typeset-leading: 1.62;
-    --typeset-flow: 0.85em;
-    --typeset-heading-flow: 1.4em;
+    --typeset-leading: 1.55;
+    --typeset-flow: 0.8em;
+    --typeset-heading-flow: 1.3em;
 }

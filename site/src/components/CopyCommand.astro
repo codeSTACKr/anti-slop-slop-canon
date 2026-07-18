@@ -31,11 +31,12 @@ const { command, label } = Astro.props;
     gap: 0.4rem;
   }
   .cmd__label {
-    font-family: var(--font-ui);
+    font-family: var(--font-code);
     font-size: 0.78rem;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 0.03em;
-    color: var(--color-muted-foreground);
+    color: var(--color-ink-2);
   }
   .cmd__row {
     display: flex;
@@ -50,36 +51,38 @@ const { command, label } = Astro.props;
     font-size: 0.88rem;
     line-height: 1.5;
     padding: 0.7rem 0.85rem;
-    background: var(--color-foreground);
-    color: var(--color-background);
-    border-radius: var(--radius-md);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    border: var(--rule-mid) solid var(--color-ink);
     overflow-x: auto;
     white-space: pre;
   }
   .cmd__btn {
     flex: 0 0 auto;
-    font-family: var(--font-ui);
-    font-size: 0.82rem;
-    font-weight: 600;
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
     padding: 0 0.9rem;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-input);
-    background: var(--color-secondary);
-    color: var(--color-foreground);
+    border: var(--rule-mid) solid var(--color-ink);
+    background: var(--color-paper);
+    color: var(--color-ink);
     cursor: pointer;
     transition:
-      background-color 150ms var(--ease-out),
+      background-color 120ms var(--ease-out),
       transform 100ms var(--ease-out);
   }
   .cmd__btn:hover {
-    background: var(--color-muted);
+    background: var(--color-brand);
+    color: var(--color-brand-ink);
   }
   .cmd__btn:active {
-    transform: translateY(1px);
+    transform: translateY(2px);
   }
   .cmd__btn[data-copied] {
-    color: var(--color-add-foreground);
-    border-color: var(--color-add);
+    background: var(--color-brand);
+    color: var(--color-brand-ink);
   }
 </style>
 

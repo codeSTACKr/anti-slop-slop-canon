@@ -1,5 +1,103 @@
 # Showcase design notes
 
+## Site-3 redesign — Neo-brutalist editorial poster ("Broadsheet")
+
+Site-3 is one of three parallel redesigns of the showcase. Its assigned lane is a
+neo-brutalist editorial poster: massive display type at poster scale, stark ink-on-paper
+contrast, thick hard rules, hard-edged borders, hard offset shadows, inverted dark blocks,
+oversized numerals, and one loud saturated accent used with confidence. It is meant to look
+clearly different from the current warm-paper editorial site and from the other two lanes
+(Swiss-grid minimalism and a monospace terminal). All content, messaging, and every section
+from the current site are preserved verbatim; only the visual and interaction layer changed.
+
+### Style direction
+
+- **Theme "Broadsheet" (custom, brutalist register).** Near-white paper
+  `oklch(0.973 0.006 100)` and near-black ink `oklch(0.185 0.009 95)` (neither pure white nor
+  pure black, both faintly tinted, so the neutrals never read flat). Every neutral is tinted
+  toward the warm anchor hue (~95, in the paper/accent family): there is no blue or purple
+  hue anywhere on the page. ONE loud accent, an acid-yellow `oklch(0.875 0.195 103)` at hue
+  ~103 that shares nothing with the current site's ink-blue and amber. The accent is used
+  with confidence but disciplined: it appears only as a background block with ink text
+  (highlights, tags, chips, active-tab fills, the footer accent bar) or as text on ink
+  surfaces. It is never yellow text on paper (1.33:1, unreadable), so accent footprint stays
+  well under 5% of any viewport.
+- **Hard edges everywhere.** `--radius` and all derived radii are `0`. Borders are 2-3px
+  solid ink; section dividers are 3-5px. The brutalist signature is the hard OFFSET shadow
+  (`4-7px 4-7px 0 0` ink, no blur, no spread) on cards, buttons, and the hero mark.
+- **Type at poster scale.** System fonts only, no web fonts: a heavy grotesque
+  (Helvetica Neue / Helvetica / Arial) for display AND body at weight 800, uppercase with
+  tight tracking on headlines, plus a mono stack for labels, numerals captions, and code.
+  Two families total. The hero headline runs `clamp(3.1rem, 13vw, 8.5rem)`; the footer
+  restates "Sound like yourself." as a giant statement. All-caps display heads sit at
+  `line-height >= 1.0` to avoid cap-collision on wrap.
+- **Oversized outlined numerals.** Each section (01-07) opens with a huge outlined numeral
+  (`-webkit-text-stroke`, transparent fill), a mono section label, and a heavy uppercase
+  title, stacked in a single column (never the banned tag-left / heading-right pattern).
+- **Light bodies, dark bars only.** Content bodies sit on light paper for readability. Dark
+  ink is used only on small card HEADERS / title bars, sparingly: the voice-profile file bar,
+  the realtime-module title bar, plus the command chips and the ink buttons/active-tab fills
+  (code and control affordances). There are no full-bleed dark content slabs. (An earlier
+  cut used an inverted guardrail section and a dark footer and realtime body; those were
+  converted to light bodies per owner feedback.)
+- **Nav N7 (brutal slab):** heavy wordmark, thick 5px bottom rule, hard-edged "Star on
+  GitHub" slab button with an offset shadow (no invented star count, no network fetch).
+  **Footer Ft7 (brutal statement)** on a light body, with a heavy top rule and one small
+  brand accent bar.
+
+### What was reskinned, not rebuilt
+
+The interaction model and honesty guarantees are unchanged from the current site. Every
+component (DiffExplorer, StateExplorer, CopyCommand, TellsRemoved, TwoModes, VoiceShift)
+keeps its markup, its build-time word-diff, and its native-radio `:checked` CSS mechanism
+(zero shipped framework JS); only their visual styling moved to the brutalist system. The
+shadcn Card / Separator / Button usages in the page were replaced with hard-edged native
+markup so the aesthetic is fully controlled; the Tailwind + shadcn base imports remain for
+the token plumbing. Every colour and font references a named token; the only raw values live
+in the `:root` token block of `global.css`.
+
+### Owner feedback round (applied)
+
+1. Hero lede now ends "One profile for written and spoken content."
+2. The habits-removed panel lists 10 tells (added "in conclusion", a canned closer from
+   the bundled defaults). The count label reads 10.
+3. Removed all purple/blue hue: neutrals retinted from hue 264 to the warm ~95 family.
+   Card and panel bodies are light. Dark ink is limited to small card headers / title bars
+   (voice-profile bar, realtime title bar) plus code and control affordances. The inverted
+   guardrail section, the dark realtime card body, and the dark footer were converted to
+   light bodies.
+4. The Spoken card is now a Before / After pair parallel to the Written card: the "before"
+   is the written numbered list with the number markers struck through (real strikethrough,
+   with a visually hidden "removed:" prefix for assistive tech), and the "after" is the
+   flowing read-aloud sentence. Order preserved, numbers dropped for speech.
+5. The guardrails section was reframed to be about the skill, not a mechanical narration of
+   three panels: eyebrow "Guardrails", heading "From a raw draft to your own voice", and a
+   lead that describes what the defaults and a profile do. The three panels and their tab
+   labels are unchanged.
+6. The realtime voice module now reads as a considered block: a light body with a comfortable
+   measure, roomy leading, and a hairline rule between each instruction (no longer a dense
+   paragraph wall).
+7. The two install cards were combined into one card holding both scopes, each as a labeled
+   row (Global / Project) with its scope note and copy button. The supported-hosts note and
+   the detector-evasion boundary line are retained.
+
+### Constraints held
+
+Self-contained: system fonts only, inline SVG/CSS only, no raster, no external or network
+asset, static Astro output. Shipped JS to the browser is only the tiny inline clipboard
+handler (the page is fully usable with JS off). Contrast verified (all body pairs >= 7.3:1;
+gates 40-41 pass). No fabricated metrics, no invented GitHub star count. Slop test: the
+58-gate sweep passed after fixing hero fold padding, the hero measure, two all-caps
+line-heights, and lifting two stray inline colours into named tokens.
+
+---
+
+## Original build notes (current warm-editorial "Canon" design)
+
+The notes below document the ORIGINAL showcase build and are kept for reference. The
+site-3 redesign above supersedes the visual direction; the content and engineering
+decisions still describe the shared substrate.
+
 This file records the design and engineering decisions made autonomously while
 building the `anti-slop-slop-canon` public showcase (build-plan Phase 8). Wherever
 Hallmark or a CLI would normally ask a human, a default was chosen here and recorded

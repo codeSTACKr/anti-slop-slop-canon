@@ -6,16 +6,6 @@ import CopyCommand from "../components/CopyCommand.astro";
 import TellsRemoved from "../components/TellsRemoved.astro";
 import TwoModes from "../components/TwoModes.astro";
 import VoiceShift from "../components/VoiceShift.astro";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 // Curated Markdown, compiled at build time (no client-side Markdown parser).
 import { Content as SampleProfile } from "../content/voice-profile.sample.md";
@@ -35,8 +25,8 @@ const punctBefore =
   "The result is clear: keep both routes—one is faster; one is safer!";
 const punctAfter = "Keep both routes. One is faster. The other is safer.";
 
-// One release, three levels of guardrail. Every panel is OUTPUT for the same
-// v2.4 facts. Panel 1 is a deliberate before: what an assistant writes with no
+// The same v2.4 release with and without the skill's guardrails. Every panel is
+// OUTPUT for the same v2.4 facts. Panel 1 is a deliberate before: what an assistant writes with no
 // help, so the AI tells belong there. Panel 2 cleans it strictly per the bundled
 // rules. Panel 3 restates it in one illustrative sample voice.
 const states = [
@@ -62,7 +52,6 @@ const states = [
     meta: "Illustrative of one sample profile: clipped first person, dry understatement, a fixed sign-off. It uses only the facts above. Your onboarded output would sound like you.",
   },
 ];
-
 ---
 
 <Layout
@@ -73,11 +62,9 @@ const states = [
 
   <header class="mast">
     <div class="wrap mast__inner">
-      <div class="mast__brand">
-        <a class="mast__word" href="#main">anti-slop-slop-canon</a>
-      </div>
+      <a class="mast__word" href="#main">anti-slop-slop-canon</a>
       <nav class="mast__nav" aria-label="Primary">
-        <a class="mast__install" href="#install">Install</a>
+        <a class="mast__link" href="#install">Install</a>
         <a
           class="mast__star"
           href={`https://github.com/${REPO}`}
@@ -87,8 +74,8 @@ const states = [
           <svg
             class="mast__star-glyph"
             viewBox="0 0 24 24"
-            width="14"
-            height="14"
+            width="15"
+            height="15"
             aria-hidden="true"
             focusable="false"
           >
@@ -101,21 +88,20 @@ const states = [
         </a>
       </nav>
     </div>
-    <div class="mast__rule" role="presentation"></div>
   </header>
 
-  <main id="main" class="wrap">
-    <!-- HERO — typographic, Long Document lede -->
-    <section class="hero">
+  <main id="main">
+    <!-- HERO — poster -->
+    <section class="hero wrap">
       <p class="hero__kicker">
-        <span class="hero__kicker-rule" aria-hidden="true"></span>
-        An open-source Agent Skill
+        <span class="hero__kicker-tag">Open source</span>
+        <span class="hero__kicker-text">An Agent Skill</span>
       </p>
       <h1 class="hero__title">Sound like yourself.</h1>
       <p class="hero__lede typeset">
         <code>anti-slop-slop-canon</code> removes the habits that make writing sound
         machine-made, then learns a transparent, editable profile of your voice. One
-        profile for what you write and what you say aloud.
+        profile for written and spoken content.
       </p>
       <p class="hero__sub">
         Every example below is <mark class="mark">real output</mark> from the project's
@@ -127,16 +113,13 @@ const states = [
       </div>
     </section>
 
-    <Separator />
-
     <!-- PROOF — default cleanup, interactive diff -->
-    <section id="proof" class="section">
-      <p class="eyebrow">
-        <span class="eyebrow__num">01</span>
-        <span class="eyebrow__rule" aria-hidden="true"></span>
-        <span class="eyebrow__text">The floor</span>
-      </p>
-      <h2 class="h2">Default cleanup, before you do anything</h2>
+    <section id="proof" class="section wrap">
+      <header class="shead">
+        <span class="shead__num" aria-hidden="true">01</span>
+        <span class="shead__label">The floor</span>
+        <h2 class="shead__title">Default cleanup, before you do anything</h2>
+      </header>
       <p class="lead typeset">
         Out of the box it strips hype, canned framing, and ornamental punctuation
         without inventing a claim the source never made.
@@ -160,19 +143,17 @@ const states = [
       </div>
     </section>
 
-    <Separator />
-
-    <!-- THREE STATES -->
-    <section id="states" class="section">
-      <p class="eyebrow">
-        <span class="eyebrow__num">02</span>
-        <span class="eyebrow__rule" aria-hidden="true"></span>
-        <span class="eyebrow__text">Three levels of guardrail</span>
-      </p>
-      <h2 class="h2">The same release, three levels of guardrail</h2>
+    <!-- GUARDRAILS -->
+    <section id="states" class="section wrap">
+      <header class="shead">
+        <span class="shead__num" aria-hidden="true">02</span>
+        <span class="shead__label">Guardrails</span>
+        <h2 class="shead__title">From a raw draft to your own voice</h2>
+      </header>
       <p class="lead typeset">
-        Every panel is output for the same v2.4 release. What changes is how much
-        guidance the agent had.
+        Without the skill, an assistant leans on hype and ornamental punctuation. The
+        bundled defaults remove those habits from any draft. Add your profile and the
+        same facts come out sounding like you.
       </p>
       <StateExplorer id="release" states={states} />
       <p class="fineprint">
@@ -180,16 +161,13 @@ const states = [
       </p>
     </section>
 
-    <Separator />
-
     <!-- WRITTEN & SPOKEN -->
-    <section id="voice" class="section">
-      <p class="eyebrow">
-        <span class="eyebrow__num">03</span>
-        <span class="eyebrow__rule" aria-hidden="true"></span>
-        <span class="eyebrow__text">One profile, two modes</span>
-      </p>
-      <h2 class="h2">Written and spoken</h2>
+    <section id="voice" class="section wrap">
+      <header class="shead">
+        <span class="shead__num" aria-hidden="true">03</span>
+        <span class="shead__label">One profile, two modes</span>
+        <h2 class="shead__title">Written and spoken</h2>
+      </header>
       <p class="lead typeset">
         The same profile covers what people read and what they hear.
       </p>
@@ -197,12 +175,12 @@ const states = [
       <TwoModes />
 
       <div class="grid2">
-        <Card className="ex">
-          <CardHeader>
-            <CardTitle>Written</CardTitle>
-            <CardDescription>Blog posts, docs, and social posts</CardDescription>
-          </CardHeader>
-          <CardContent>
+        <article class="card">
+          <div class="card__head">
+            <h3 class="card__title">Written</h3>
+            <p class="card__desc">Blog posts, docs, and social posts</p>
+          </div>
+          <div class="card__body">
             <p class="ex__caption">Before</p>
             <p class="ex__before">This isn't a redesign. It's a reset.</p>
             <p class="ex__caption">After</p>
@@ -212,23 +190,32 @@ const states = [
             <p class="ex__src">
               A blog opener with the contrast framing removed, from the bundled defaults.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </article>
 
-        <Card className="ex">
-          <CardHeader>
-            <CardTitle>Spoken</CardTitle>
-            <CardDescription>Video scripts, narration, voice-agent replies</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p class="ex__caption">Written</p>
+        <article class="card">
+          <div class="card__head">
+            <h3 class="card__title">Spoken</h3>
+            <p class="card__desc">Video scripts, narration, voice-agent replies</p>
+          </div>
+          <div class="card__body">
+            <p class="ex__caption">Before</p>
             <p class="ex__lead-line">Deploying takes three steps:</p>
-            <ol class="ex__list">
-              <li>Pull the latest main.</li>
-              <li>Run the database migration.</li>
-              <li>Restart the workers.</li>
-            </ol>
-            <p class="ex__caption">Read aloud</p>
+            <ul class="ex__strucklist">
+              <li>
+                <del class="ex__strucknum"><span class="sr-only">removed: </span>1.</del>
+                Pull the latest main.
+              </li>
+              <li>
+                <del class="ex__strucknum"><span class="sr-only">removed: </span>2.</del>
+                Run the database migration.
+              </li>
+              <li>
+                <del class="ex__strucknum"><span class="sr-only">removed: </span>3.</del>
+                Restart the workers.
+              </li>
+            </ul>
+            <p class="ex__caption">After</p>
             <p class="ex__after">
               Deploying takes three steps. First, pull the latest main. Then run the
               database migration. Last, restart the workers.
@@ -237,21 +224,18 @@ const states = [
               The list numbers drop out, so they are never read aloud. The order stays
               the same.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </article>
       </div>
     </section>
 
-    <Separator />
-
     <!-- ONBOARDING -->
-    <section id="onboarding" class="section">
-      <p class="eyebrow">
-        <span class="eyebrow__num">04</span>
-        <span class="eyebrow__rule" aria-hidden="true"></span>
-        <span class="eyebrow__text">How it learns your voice</span>
-      </p>
-      <h2 class="h2">It builds a profile from your own writing</h2>
+    <section id="onboarding" class="section wrap">
+      <header class="shead">
+        <span class="shead__num" aria-hidden="true">04</span>
+        <span class="shead__label">How it learns your voice</span>
+        <h2 class="shead__title">It builds a profile from your own writing</h2>
+      </header>
       <p class="lead typeset">
         You give it a few samples. It finds the traits that are your voice, compiles a
         profile you approve, and writes in your voice from then on.
@@ -261,7 +245,7 @@ const states = [
 
       <div class="firstrun">
         <h3 class="firstrun__h">The first time, it offers three ways to start</h3>
-        <div class="choices choices--compact">
+        <div class="choices">
           <div class="choice">
             <span class="choice__n">1</span>
             <div>
@@ -293,16 +277,13 @@ const states = [
       </div>
     </section>
 
-    <Separator />
-
     <!-- PROFILE -->
-    <section id="profile" class="section">
-      <p class="eyebrow">
-        <span class="eyebrow__num">05</span>
-        <span class="eyebrow__rule" aria-hidden="true"></span>
-        <span class="eyebrow__text">Nothing hidden</span>
-      </p>
-      <h2 class="h2">A transparent, editable profile</h2>
+    <section id="profile" class="section wrap">
+      <header class="shead">
+        <span class="shead__num" aria-hidden="true">05</span>
+        <span class="shead__label">Nothing hidden</span>
+        <h2 class="shead__title">A transparent, editable profile</h2>
+      </header>
       <p class="lead typeset">
         The compiled profile is a plain Markdown file in your project, not inside the
         installed skill. Open it and edit any rule. The skill leaves your edits alone.
@@ -310,7 +291,7 @@ const states = [
 
       <figure class="filecard">
         <figcaption class="filecard__bar">
-          <span class="filecard__dot" aria-hidden="true"></span>
+          <span class="filecard__marker" aria-hidden="true"></span>
           <span class="filecard__name">voice-profile.md</span>
           <span class="filecard__tag">example</span>
         </figcaption>
@@ -320,68 +301,62 @@ const states = [
       </figure>
     </section>
 
-    <Separator />
-
     <!-- REALTIME -->
-    <section id="realtime" class="section">
-      <p class="eyebrow">
-        <span class="eyebrow__num">06</span>
-        <span class="eyebrow__rule" aria-hidden="true"></span>
-        <span class="eyebrow__text">For voice agents</span>
-      </p>
-      <h2 class="h2">A realtime voice prompt</h2>
+    <section id="realtime" class="section wrap">
+      <header class="shead">
+        <span class="shead__num" aria-hidden="true">06</span>
+        <span class="shead__label">For voice agents</span>
+        <h2 class="shead__title">A realtime voice prompt</h2>
+      </header>
       <p class="lead typeset">
         Ask for the realtime prompt and the skill returns a compact, style-only module
         for a voice agent's system prompt. It shapes delivery only, so it sits beside
         your agent's own instructions rather than replacing them.
       </p>
 
-      <Card className="doc">
-        <CardHeader>
-          <CardTitle>Bundled default module</CardTitle>
-          <CardDescription>
+      <article class="doc">
+        <div class="doc__head">
+          <h3 class="doc__title">Bundled default module</h3>
+          <p class="doc__desc">
             Verbatim from <code>assets/realtime-voice-prompt.md</code>
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div class="typeset" data-density="compact">
+          </p>
+        </div>
+        <div class="doc__body">
+          <div class="typeset doc__prose">
             <RealtimePrompt />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </article>
     </section>
 
-    <Separator />
-
     <!-- INSTALL -->
-    <section id="install" class="section">
-      <p class="eyebrow">
-        <span class="eyebrow__num">07</span>
-        <span class="eyebrow__rule" aria-hidden="true"></span>
-        <span class="eyebrow__text">Getting started</span>
-      </p>
-      <h2 class="h2">Install</h2>
+    <section id="install" class="section wrap">
+      <header class="shead">
+        <span class="shead__num" aria-hidden="true">07</span>
+        <span class="shead__label">Getting started</span>
+        <h2 class="shead__title">Install</h2>
+      </header>
       <p class="lead typeset">
         Installation uses <code>npx skills</code>. A project copy keeps its own state
         and never falls back to the global one.
       </p>
 
-      <div class="installs">
-        <div class="install-block">
-          <h3 class="install-block__name">Global</h3>
-          <p class="install-block__note">
+      <div class="install-card">
+        <div class="install-row">
+          <h3 class="install-row__name">Global</h3>
+          <p class="install-row__note">
             Activates the skill in every project on the machine.
           </p>
-          <div class="install-block__cmd">
+          <div class="install-row__cmd">
             <CopyCommand command={`npx skills add ${REPO} -g`} />
           </div>
         </div>
-        <div class="install-block">
-          <h3 class="install-block__name">Project</h3>
-          <p class="install-block__note">
+        <div class="install-row">
+          <h3 class="install-row__name">Project</h3>
+          <p class="install-row__note">
             Scoped to one repository, with its own isolated state.
           </p>
-          <div class="install-block__cmd">
+          <div class="install-row__cmd">
             <CopyCommand command={`npx skills add ${REPO}`} />
           </div>
         </div>
@@ -393,14 +368,8 @@ const states = [
       </p>
 
       <div class="cta">
-        <a
-          class={cn(buttonVariants({ variant: "default" }), "h-11 px-5 text-[0.95rem]")}
-          href={`https://github.com/${REPO}`}>View the repository</a
-        >
-        <a
-          class={cn(buttonVariants({ variant: "outline" }), "h-11 px-5 text-[0.95rem]")}
-          href="#proof">Back to the examples</a
-        >
+        <a class="btn" href={`https://github.com/${REPO}`}>View the repository</a>
+        <a class="btn btn--ghost" href="#proof">Back to the examples</a>
       </div>
 
       <p class="body typeset">
@@ -413,37 +382,41 @@ const states = [
 
   <footer class="colophon">
     <div class="wrap colophon__inner">
-      <div class="colophon__brand">
-        <span class="colophon__word">anti-slop-slop-canon</span>
-        <span class="colophon__tag">Sound like yourself.</span>
-      </div>
-      <div class="colophon__cols">
-        <div>
-          <h2 class="colophon__h">Repository</h2>
-          <ul>
-            <li><a href={`https://github.com/${REPO}`}>Source</a></li>
-            <li>
-              <a href={`https://github.com/${REPO}/tree/main/skills`}>The skill</a>
-            </li>
-            <li><a href={`https://github.com/${REPO}/tree/main/docs`}>Docs</a></li>
-            <li><a href={`https://github.com/${REPO}/tree/main/evals`}>Evals</a></li>
-          </ul>
+      <span class="colophon__accent" aria-hidden="true"></span>
+      <p class="colophon__statement">Sound like yourself.</p>
+      <div class="colophon__grid">
+        <div class="colophon__brand">
+          <span class="colophon__word">anti-slop-slop-canon</span>
+          <span class="colophon__tag">Removes the habits. Learns your voice.</span>
         </div>
-        <div>
-          <h2 class="colophon__h">On this page</h2>
-          <ul>
-            <li><a href="#proof">Default cleanup</a></li>
-            <li><a href="#states">Guardrail levels</a></li>
-            <li><a href="#voice">Written &amp; spoken</a></li>
-            <li><a href="#realtime">Realtime prompt</a></li>
-          </ul>
-        </div>
-        <div>
-          <h2 class="colophon__h">License</h2>
-          <ul>
-            <li>MIT licensed</li>
-            <li><a href={`https://github.com/${REPO}`}>Open source</a></li>
-          </ul>
+        <div class="colophon__cols">
+          <div>
+            <h2 class="colophon__h">Repository</h2>
+            <ul>
+              <li><a href={`https://github.com/${REPO}`}>Source</a></li>
+              <li>
+                <a href={`https://github.com/${REPO}/tree/main/skills`}>The skill</a>
+              </li>
+              <li><a href={`https://github.com/${REPO}/tree/main/docs`}>Docs</a></li>
+              <li><a href={`https://github.com/${REPO}/tree/main/evals`}>Evals</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="colophon__h">On this page</h2>
+            <ul>
+              <li><a href="#proof">Default cleanup</a></li>
+              <li><a href="#states">Guardrail levels</a></li>
+              <li><a href="#voice">Written &amp; spoken</a></li>
+              <li><a href="#realtime">Realtime prompt</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="colophon__h">License</h2>
+            <ul>
+              <li>MIT licensed</li>
+              <li><a href={`https://github.com/${REPO}`}>Open source</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -454,11 +427,11 @@ const states = [
       position: absolute;
       left: -9999px;
       top: 0;
-      background: var(--color-foreground);
-      color: var(--color-background);
+      background: var(--color-ink);
+      color: var(--color-paper);
       padding: 0.6rem 1rem;
       z-index: 50;
-      border-radius: 0 0 var(--radius-md) 0;
+      font-weight: 700;
     }
     .skip:focus {
       left: 0;
@@ -466,269 +439,366 @@ const states = [
 
     .wrap {
       width: 100%;
-      max-width: 60rem;
+      max-width: 64rem;
       margin-inline: auto;
       padding-inline: 1.25rem;
     }
 
-    /* Masthead */
+    /* Masthead — N7 brutal slab: heavy wordmark, thick bottom rule, hard-edged
+       Star button. */
     .mast {
-      padding-top: 1.4rem;
+      border-bottom: var(--rule-heavy) solid var(--color-ink);
+      background: var(--color-paper);
     }
     .mast__inner {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 0.75rem 1.5rem;
-      padding-bottom: 1rem;
-    }
-    .mast__brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
+      gap: 0.6rem 1.5rem;
+      padding-block: 0.9rem;
     }
     .mast__word {
       font-family: var(--font-code);
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: -0.01em;
-      color: var(--color-foreground);
+      color: var(--color-ink);
       text-decoration: none;
     }
-    /* Star-on-GitHub pill — a plain call to action, no count and no fetch.
-       The star glyph carries the signature amber; text keeps full ink contrast. */
-    .mast__star {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.28rem 0.7rem;
-      border: 1px solid var(--color-rule);
-      border-radius: 999px;
-      background: var(--color-card);
-      font-family: var(--font-ui);
-      font-size: 0.78rem;
-      font-weight: 600;
-      line-height: 1;
-      color: var(--color-foreground);
-      text-decoration: none;
-      white-space: nowrap;
-      transition:
-        background-color 150ms var(--ease-out),
-        border-color 150ms var(--ease-out);
-    }
-    .mast__star:hover {
-      background: var(--color-secondary);
-      border-color: var(--color-input);
-    }
-    .mast__star-glyph {
-      flex: 0 0 auto;
-      color: var(--color-highlight-strong);
+    .mast__word:hover {
+      background: var(--color-brand);
+      color: var(--color-brand-ink);
     }
     .mast__nav {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.5rem 1rem;
+      gap: 0.5rem 0.9rem;
     }
-    .mast__nav a {
-      font-family: var(--font-ui);
-      font-size: 0.86rem;
-      color: var(--color-muted-foreground);
+    .mast__link {
+      font-family: var(--font-code);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-ink);
+      text-decoration: none;
+      line-height: 1;
+      padding: 0.55rem 0.4rem;
+    }
+    .mast__link:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 0.14em;
+      text-underline-offset: 0.2em;
+      text-decoration-color: var(--color-brand);
+    }
+    /* Star-on-GitHub — a hard-edged slab button, no count and no fetch. */
+    .mast__star {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.85rem;
+      border: var(--rule-mid) solid var(--color-ink);
+      background: var(--color-paper);
+      box-shadow: var(--shadow-hard);
+      font-family: var(--font-code);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      color: var(--color-ink);
       text-decoration: none;
       white-space: nowrap;
+      transition:
+        transform 120ms var(--ease-out),
+        box-shadow 120ms var(--ease-out),
+        background-color 120ms var(--ease-out);
     }
-    .mast__nav a:hover {
-      color: var(--color-foreground);
-      text-decoration: underline;
-      text-underline-offset: 0.2em;
+    .mast__star:hover {
+      background: var(--color-brand);
+      transform: translate(-1px, -1px);
+      box-shadow: var(--shadow-hard-lg);
     }
-    .mast__rule {
-      height: 0;
-      border-top: 2px solid var(--color-foreground);
-      border-bottom: 1px solid var(--color-foreground);
-      padding-bottom: 3px;
+    .mast__star:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 0 var(--color-ink);
+    }
+    .mast__star-glyph {
+      flex: 0 0 auto;
+      color: var(--color-ink);
     }
 
-    /* Hero */
+    /* Hero — poster scale. Heavier bottom padding pulls it into the next section. */
     .hero {
-      padding-block: 4.5rem 3.5rem;
+      padding-block: 3rem 4.5rem;
     }
     .hero__kicker {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 0.7rem;
-      margin: 0 0 1.4rem;
-      font-family: var(--font-ui);
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      gap: 0.65rem;
+      margin: 0 0 1.6rem;
+      font-family: var(--font-code);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--color-primary);
+      line-height: 1;
     }
-    .hero__kicker-rule {
-      display: block;
-      width: 2rem;
-      height: 2px;
-      flex: 0 0 auto;
-      background: var(--color-primary);
+    .hero__kicker-tag {
+      background: var(--color-brand);
+      color: var(--color-brand-ink);
+      padding: 0.4rem 0.55rem;
+      border: var(--rule-mid) solid var(--color-ink);
+    }
+    .hero__kicker-text {
+      color: var(--color-ink-2);
     }
     .hero__title {
       margin: 0;
-      font-size: clamp(3rem, 9.5vw, 6rem);
-      line-height: 0.98;
-      font-weight: 600;
-      letter-spacing: -0.028em;
+      font-size: clamp(3.1rem, 13vw, 8.5rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
     }
     .hero__lede {
-      margin: 1.75rem 0 0;
-      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-      line-height: 1.55;
-      max-width: 40ch;
+      margin: 1.9rem 0 0;
+      font-size: clamp(1.15rem, 2.3vw, 1.5rem);
+      line-height: 1.5;
+      font-weight: 500;
+      max-width: 46ch;
     }
     .hero__sub {
-      margin: 1.35rem 0 0;
-      font-family: var(--font-ui);
-      font-size: 1rem;
+      margin: 1.5rem 0 0;
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      font-weight: 600;
       line-height: 1.6;
-      color: var(--color-muted-foreground);
+      color: var(--color-ink);
       max-width: 60ch;
     }
     .hero__flow {
-      margin-top: 3.25rem;
+      margin-top: 3rem;
     }
 
-    /* Sections */
+    /* Sections — thick top rule between blocks */
     .section {
-      padding-block: 5.25rem;
+      padding-block: 4.25rem;
+    }
+    /* A heavier rule opens the first section under the hero. */
+    #proof {
+      border-top: var(--rule-heavy) solid var(--color-ink);
+    }
+    #states,
+    #voice,
+    #onboarding,
+    #profile,
+    #realtime,
+    #install {
+      border-top: var(--rule-thick) solid var(--color-ink);
     }
 
-    /* Numbered spec-sheet eyebrow — number (mono, accent) · short rule · label. */
-    .eyebrow {
+    /* Section head — oversized numeral, mono label, heavy uppercase title.
+       Single-column vertical stack (never tag-left / heading-right). */
+    .shead {
       display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      margin: 0 0 1rem;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin: 0 0 1.5rem;
     }
-    .eyebrow__num {
+    .shead__num {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 11vw, 7rem);
+      font-weight: 800;
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      color: var(--color-ink);
+      -webkit-text-stroke: 2px var(--color-ink);
+      color: transparent;
+      margin-bottom: 0.35rem;
+    }
+    .shead__label {
       font-family: var(--font-code);
-      font-size: 0.92rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      color: var(--color-primary);
-      font-variant-numeric: tabular-nums;
-    }
-    .eyebrow__rule {
-      display: block;
-      width: 1.75rem;
-      height: 1px;
-      flex: 0 0 auto;
-      background: var(--color-primary);
-      opacity: 0.55;
-    }
-    .eyebrow__text {
-      font-family: var(--font-ui);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.09em;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--color-muted-foreground);
+      color: var(--color-ink-2);
     }
-    .h2 {
+    .shead__title {
       margin: 0;
-      font-size: clamp(1.9rem, 5vw, 3rem);
-      line-height: 1.06;
-      font-weight: 600;
+      font-size: clamp(1.85rem, 5.5vw, 3.4rem);
+      line-height: 1.02;
+      font-weight: 800;
       letter-spacing: -0.02em;
+      text-transform: uppercase;
     }
     .lead {
-      margin: 1.1rem 0 2.25rem;
-      font-size: 1.12rem;
+      margin: 0 0 2.25rem;
+      font-size: 1.14rem;
+      font-weight: 500;
+      max-width: 60ch;
     }
     .body {
-      margin-top: 1.75rem;
+      margin-top: 1.9rem;
+      font-weight: 500;
     }
     .fineprint {
-      margin: 1rem 0 0;
-      font-family: var(--font-ui);
-      font-size: 0.82rem;
+      margin: 1.1rem 0 0;
+      font-family: var(--font-code);
+      font-size: 0.8rem;
       line-height: 1.55;
-      color: var(--color-muted-foreground);
+      color: var(--color-ink-2);
     }
+    /* Inline code — a hard-edged mono chip. */
     .fineprint code,
     .lead code,
     .body code,
     .hero__lede code {
       font-family: var(--font-code);
       font-size: 0.86em;
-      background: var(--color-muted);
-      padding: 0.08em 0.32em;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--color-border);
+      background: var(--color-paper-2);
+      padding: 0.08em 0.34em;
+      border: var(--rule-thin) solid var(--color-ink);
+      font-weight: 600;
     }
 
     .stack {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.75rem;
     }
 
-    /* File-styled profile panel */
+    /* Brutalist card — hard border + offset shadow. Used for Written / Spoken. */
+    .card {
+      border: var(--rule-thick) solid var(--color-ink);
+      background: var(--color-paper);
+      box-shadow: var(--shadow-hard);
+    }
+    .card__head {
+      padding: 1.1rem 1.25rem;
+      border-bottom: var(--rule-thick) solid var(--color-ink);
+      background: var(--color-paper-2);
+    }
+    .card__title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+    .card__desc {
+      margin: 0.35rem 0 0;
+      font-family: var(--font-code);
+      font-size: 0.8rem;
+      color: var(--color-ink-2);
+    }
+    .card__body {
+      padding: 1.25rem;
+    }
+
+    /* File-styled profile panel — hard-edged, filename bar, no fake window chrome. */
     .filecard {
       margin: 0;
-      max-width: 44rem;
-      border: 1px solid var(--color-rule);
-      border-radius: var(--radius-lg);
-      background: var(--color-card);
-      overflow: hidden;
+      max-width: 46rem;
+      border: var(--rule-thick) solid var(--color-ink);
+      background: var(--color-paper);
+      box-shadow: var(--shadow-hard-lg);
+      overflow: clip;
     }
     .filecard__bar {
       display: flex;
       align-items: center;
       gap: 0.6rem;
       padding: 0.7rem 1.1rem;
-      border-bottom: 1px solid var(--color-rule);
-      background: var(--color-secondary);
+      border-bottom: var(--rule-thick) solid var(--color-ink);
+      background: var(--color-ink);
     }
-    .filecard__dot {
-      width: 0.6rem;
-      height: 0.6rem;
+    .filecard__marker {
+      width: 0.7rem;
+      height: 0.7rem;
       flex: 0 0 auto;
-      border-radius: 50%;
-      border: 1.5px solid var(--color-primary);
+      background: var(--color-brand);
     }
     .filecard__name {
       font-family: var(--font-code);
       font-size: 0.86rem;
-      font-weight: 600;
-      color: var(--color-foreground);
+      font-weight: 700;
+      color: var(--color-paper);
     }
     .filecard__tag {
       margin-left: auto;
-      font-family: var(--font-ui);
+      font-family: var(--font-code);
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: var(--color-muted-foreground);
+      color: var(--color-ink);
+      background: var(--color-brand);
+      padding: 0.15rem 0.4rem;
     }
     .filecard__body {
-      padding: 1.4rem 1.7rem 1.7rem;
+      padding: 1.5rem 1.7rem 1.8rem;
     }
     .filecard__body :global(> :first-child) {
       margin-top: 0;
     }
-    .filecard__note {
-      max-width: 44rem;
-      margin-inline: 0;
-      text-align: left;
-    }
 
-    /* Realtime prompt card (§06). A comfortable reading measure for the prose,
-       left-aligned to the content column like the profile panel. Not shrink-to-fit,
-       not full-width. */
-    :global(.doc) {
-      max-width: 44rem;
+    /* Realtime module — a LIGHT card with a dark title bar (allowed sparingly), so
+       the voice module reads as a distinct, considered block. Not fake terminal
+       chrome: a labelled panel with prose inside. */
+    .doc {
+      max-width: 46rem;
+      border: var(--rule-thick) solid var(--color-ink);
+      background: var(--color-paper);
+      box-shadow: var(--shadow-hard);
+      overflow: clip;
+    }
+    .doc__head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.35rem 1rem;
+      padding: 0.9rem 1.4rem;
+      border-bottom: var(--rule-thick) solid var(--color-ink);
+      background: var(--color-ink);
+    }
+    .doc__title {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--color-paper);
+    }
+    .doc__desc {
+      margin: 0;
+      font-family: var(--font-code);
+      font-size: 0.78rem;
+      color: var(--color-paper-2);
+    }
+    .doc__desc code {
+      font-family: var(--font-code);
+      color: var(--color-brand);
+    }
+    .doc__body {
+      padding: 1.75rem 1.7rem 1.9rem;
+    }
+    /* Considered typographic treatment: a comfortable measure, roomy leading, and a
+       hairline rule between each paragraph of the module, so the block reads as a set
+       of distinct instructions rather than a paragraph wall. */
+    .doc__prose {
+      --typeset-measure: 64ch;
+      --typeset-leading: 1.72;
+      font-size: 1.02rem;
+    }
+    .doc__body :global(.doc__prose > p + p) {
+      margin-top: 1.5em;
+      padding-top: 1.5em;
+      border-top: var(--rule-thin) solid var(--color-ink);
     }
 
     .grid2 {
@@ -742,73 +812,89 @@ const states = [
       }
     }
 
-    /* Example cards */
+    /* Example text */
     .ex__caption {
-      margin: 0.9rem 0 0.3rem;
-      font-family: var(--font-ui);
-      font-size: 0.74rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
+      margin: 1rem 0 0.35rem;
+      font-family: var(--font-code);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--color-muted-foreground);
+      color: var(--color-ink-2);
     }
     .ex__caption:first-child {
       margin-top: 0;
     }
     .ex__before {
       margin: 0;
-      font-family: var(--font-display);
       font-size: 1rem;
-      line-height: 1.6;
-      color: var(--color-del-foreground);
+      line-height: 1.55;
+      color: var(--color-ink-2);
+      text-decoration: line-through;
+      text-decoration-thickness: 0.09em;
+      text-decoration-color: var(--color-ink);
     }
     .ex__after {
       margin: 0;
-      font-family: var(--font-display);
       font-size: 1rem;
-      line-height: 1.6;
-      color: var(--color-foreground);
+      line-height: 1.55;
+      font-weight: 600;
+      color: var(--color-ink);
     }
     .ex__lead-line {
       margin: 0;
-      font-family: var(--font-display);
       font-size: 1rem;
-      line-height: 1.6;
-      color: var(--color-foreground);
+      line-height: 1.55;
+      color: var(--color-ink);
     }
-    .ex__list {
-      margin: 0.35rem 0 0;
-      padding-left: 1.6rem;
-      list-style: decimal outside;
+    /* Spoken "before" — the written numbered list, with the numbers struck to
+       signal the list structure dropped for speech (parallel to the Written card's
+       struck before). The step words stay; only the markers are removed. */
+    .ex__strucklist {
+      margin: 0.4rem 0 0;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
     }
-    .ex__list li {
-      font-family: var(--font-display);
+    .ex__strucklist li {
       font-size: 1rem;
-      line-height: 1.6;
-      color: var(--color-foreground);
-      margin-top: 0.2rem;
+      line-height: 1.55;
+      color: var(--color-ink);
     }
-    .ex__list li::marker {
-      color: var(--color-muted-foreground);
+    .ex__strucknum {
+      font-weight: 700;
+      color: var(--color-ink-2);
+      text-decoration: line-through;
+      text-decoration-thickness: 0.12em;
+      text-decoration-color: var(--color-ink);
+      margin-right: 0.15rem;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
     .ex__src {
-      margin: 1rem 0 0;
-      font-family: var(--font-ui);
+      margin: 1.1rem 0 0;
+      font-family: var(--font-code);
       font-size: 0.78rem;
       line-height: 1.5;
-      color: var(--color-muted-foreground);
-    }
-    .ex__src code {
-      font-family: var(--font-code);
-      font-size: 0.92em;
+      color: var(--color-ink-2);
     }
 
-    /* Onboarding choices */
+    /* Onboarding choices — hard-edged tiles with a big brand numeral. */
     .choices {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1rem;
-      margin-bottom: 0.5rem;
     }
     @media (min-width: 46rem) {
       .choices {
@@ -818,133 +904,170 @@ const states = [
     .choice {
       display: flex;
       gap: 0.85rem;
-      padding: 1.25rem;
-      border: 1px solid var(--color-rule);
-      border-radius: var(--radius-lg);
-      background: var(--color-card);
+      padding: 1.15rem;
+      border: var(--rule-mid) solid var(--color-ink);
+      background: var(--color-paper);
     }
     .choice__n {
       flex: 0 0 auto;
       font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 600;
-      line-height: 1;
-      color: var(--color-primary);
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 0.9;
+      color: var(--color-ink);
+      background: var(--color-brand);
+      border: var(--rule-mid) solid var(--color-ink);
+      width: 2.4rem;
+      height: 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .choice__h {
-      margin: 0 0 0.4rem;
-      font-size: 1.1rem;
-      font-weight: 600;
+      margin: 0 0 0.35rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
     }
     .choice__p {
       margin: 0;
-      font-family: var(--font-ui);
       font-size: 0.9rem;
-      line-height: 1.55;
-      color: var(--color-muted-foreground);
+      line-height: 1.5;
+      color: var(--color-ink-2);
     }
 
-    /* First-run choices, now a smaller secondary element under the demo. */
     .firstrun {
       margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--color-rule);
+      padding-top: 1.75rem;
+      border-top: var(--rule-thick) solid var(--color-ink);
     }
     .firstrun__h {
-      margin: 0 0 1rem;
-      font-family: var(--font-ui);
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--color-foreground);
-    }
-    .choices--compact {
-      margin-bottom: 0;
-    }
-    .choices--compact .choice {
-      padding: 0.9rem 1rem;
-    }
-    .choices--compact .choice__n {
-      font-size: 1.2rem;
-    }
-    .choices--compact .choice__h {
-      font-size: 0.98rem;
-      margin-bottom: 0.3rem;
-    }
-    .choices--compact .choice__p {
-      font-size: 0.84rem;
+      margin: 0 0 1.1rem;
+      font-family: var(--font-code);
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--color-ink);
     }
 
-    /* Install — two labeled command blocks, one per scope. Each is a bordered
-       Canon card: a serif scope name, a one-line note, and the copyable command
-       seated at the foot so both commands align across the pair. */
-    .installs {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
+    /* Install — ONE card holding both scopes, each as a labeled row (name, scope
+       note, command) separated by a hard rule. */
+    .install-card {
+      border: var(--rule-thick) solid var(--color-ink);
+      background: var(--color-paper);
+      box-shadow: var(--shadow-hard);
     }
-    @media (min-width: 46rem) {
-      .installs {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      }
+    .install-row {
+      padding: 1.4rem;
     }
-    .install-block {
-      display: flex;
-      flex-direction: column;
-      padding: 1.5rem;
-      border: 1px solid var(--color-rule);
-      border-radius: var(--radius-lg);
-      background: var(--color-card);
+    .install-row + .install-row {
+      border-top: var(--rule-thick) solid var(--color-ink);
     }
-    .install-block__name {
+    .install-row__name {
       margin: 0;
-      font-size: 1.3rem;
-      font-weight: 600;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
       letter-spacing: -0.01em;
     }
-    .install-block__note {
-      margin: 0.45rem 0 0;
-      font-family: var(--font-ui);
+    .install-row__note {
+      margin: 0.4rem 0 0;
       font-size: 0.9rem;
-      line-height: 1.55;
-      color: var(--color-muted-foreground);
+      line-height: 1.5;
+      color: var(--color-ink-2);
     }
-    .install-block__cmd {
-      margin-top: 1.5rem;
+    .install-row__cmd {
+      margin-top: 1.1rem;
     }
-    @media (min-width: 46rem) {
-      .install-block__cmd {
-        margin-top: auto;
-        padding-top: 1.5rem;
-      }
-    }
-    /* Let the command wrap at spaces inside the narrower block so the whole
-       command stays visible without a horizontal scroll. Scoped to install only. */
-    .install-block__cmd :global(.cmd__code) {
+    /* Let the command wrap at spaces so the whole command stays visible without a
+       horizontal scroll. Scoped to install only. */
+    .install-row__cmd :global(.cmd__code) {
       white-space: pre-wrap;
       overflow-wrap: anywhere;
       overflow-x: visible;
     }
+
+    /* Brutalist buttons */
     .cta {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.85rem;
       margin-top: 2rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      padding: 0.85rem 1.35rem;
+      font-family: var(--font-code);
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      text-decoration: none;
+      border: var(--rule-mid) solid var(--color-ink);
+      background: var(--color-ink);
+      color: var(--color-paper);
+      box-shadow: var(--shadow-hard);
+      transition:
+        transform 120ms var(--ease-out),
+        box-shadow 120ms var(--ease-out),
+        background-color 120ms var(--ease-out),
+        color 120ms var(--ease-out);
+    }
+    .btn:hover {
+      background: var(--color-brand);
+      color: var(--color-brand-ink);
+      transform: translate(-1px, -1px);
+      box-shadow: var(--shadow-hard-lg);
+    }
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 0 var(--color-ink);
+    }
+    .btn--ghost {
+      background: var(--color-paper);
+      color: var(--color-ink);
     }
 
-    /* Colophon */
+    /* Colophon — Ft7 brutal statement on a LIGHT body, with a heavy top rule and one
+       small brand accent bar. */
     .colophon {
-      margin-top: 2rem;
-      border-top: 2px solid var(--color-foreground);
-      background: var(--color-secondary);
-      padding-block: 2.5rem 3rem;
+      border-top: var(--rule-heavy) solid var(--color-ink);
+      background: var(--color-paper);
+      padding-block: 3rem 3.25rem;
     }
-    .colophon__inner {
+    .colophon__accent {
+      display: block;
+      width: 3.5rem;
+      height: 0.5rem;
+      margin-bottom: 1.25rem;
+      background: var(--color-brand);
+      border: var(--rule-mid) solid var(--color-ink);
+    }
+    .colophon__statement {
+      margin: 0 0 2.25rem;
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 10vw, 6rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--color-ink);
+      overflow-wrap: anywhere;
+      min-width: 0;
+    }
+    .colophon__grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
     }
     @media (min-width: 46rem) {
-      .colophon__inner {
+      .colophon__grid {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
         align-items: start;
       }
@@ -953,29 +1076,30 @@ const states = [
       display: block;
       font-family: var(--font-code);
       font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--color-foreground);
+      font-weight: 700;
+      color: var(--color-ink);
     }
     .colophon__tag {
       display: block;
-      margin-top: 0.4rem;
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: var(--color-muted-foreground);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-ink-2);
+      max-width: 24ch;
     }
     .colophon__cols {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-      gap: 1.5rem;
+      gap: 1.75rem;
     }
     .colophon__h {
-      margin: 0 0 0.6rem;
-      font-family: var(--font-ui);
+      margin: 0 0 0.7rem;
+      font-family: var(--font-code);
       font-size: 0.74rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--color-muted-foreground);
+      color: var(--color-ink-2);
     }
     .colophon__cols ul {
       list-style: none;
@@ -983,20 +1107,24 @@ const states = [
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.5rem;
     }
     .colophon__cols li {
-      font-family: var(--font-ui);
-      font-size: 0.88rem;
-      color: var(--color-muted-foreground);
+      font-size: 0.9rem;
+      color: var(--color-ink-2);
     }
     .colophon__cols a {
-      color: var(--color-foreground);
-      text-decoration: none;
+      color: var(--color-ink);
+      text-decoration: underline;
+      text-decoration-thickness: 0.1em;
+      text-underline-offset: 0.15em;
+      text-decoration-color: var(--color-brand);
+      font-weight: 600;
     }
     .colophon__cols a:hover {
-      text-decoration: underline;
-      text-underline-offset: 0.2em;
+      background: var(--color-brand);
+      color: var(--color-brand-ink);
+      text-decoration-color: transparent;
     }
   </style>
 </Layout>
