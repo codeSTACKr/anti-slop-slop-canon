@@ -83,6 +83,27 @@ const navLinks = [
     <div class="wrap mast__inner">
       <div class="mast__brand">
         <a class="mast__word" href="#main">anti-slop-slop-canon</a>
+        <a
+          class="mast__star"
+          href={`https://github.com/${REPO}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            class="mast__star-glyph"
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              fill="currentColor"
+              d="M12 2.2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6-5.9-3.2-5.9 3.2 1.2-6.6L2.5 9.2l6.6-.9z"
+            ></path>
+          </svg>
+          Star on GitHub
+        </a>
       </div>
       <nav class="mast__nav" aria-label="Sections">
         {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
@@ -366,14 +387,55 @@ const navLinks = [
       <h2 class="h2">Install</h2>
       <p class="lead typeset">
         Installation uses <code>npx skills</code>. Global scope activates the skill in
-        every project on the machine; omit the flag to scope it to one repository. A
+        every project on the machine. Omit the flag to scope it to one repository. A
         project copy reads and writes only its own state and never falls back to the
         global one.
       </p>
 
-      <div class="install">
-        <CopyCommand label="Global scope" command={`npx skills add ${REPO} -g`} />
-        <CopyCommand label="Project scope" command={`npx skills add ${REPO}`} />
+      <div class="steps">
+        <div class="step">
+          <div class="step__mark">
+            <span class="step__num">I</span>
+            <span class="step__label">Run</span>
+          </div>
+          <div class="step__body">
+            <div class="install">
+              <CopyCommand label="Global scope" command={`npx skills add ${REPO} -g`} />
+              <CopyCommand label="Project scope" command={`npx skills add ${REPO}`} />
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step__mark">
+            <span class="step__num">II</span>
+            <span class="step__label">In</span>
+          </div>
+          <div class="step__body">
+            <ul class="hosts">
+              <li class="host">Claude Code</li>
+              <li class="host">Cursor</li>
+              <li class="host">Codex</li>
+            </ul>
+            <p class="step__note">
+              Works with coding agents that read Agent Skills. One canonical skill,
+              installed the same way for each. It writes no per-tool rule files.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step__mark">
+            <span class="step__num">III</span>
+            <span class="step__label">Then</span>
+          </div>
+          <div class="step__body">
+            <p class="step__then">
+              The skill activates on writing you compose or revise. Ask for an audit, a
+              rewrite, or onboarding whenever you want.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div class="cta">
@@ -479,6 +541,35 @@ const navLinks = [
       letter-spacing: -0.01em;
       color: var(--color-foreground);
       text-decoration: none;
+    }
+    /* Star-on-GitHub pill — a plain call to action, no count and no fetch.
+       The star glyph carries the signature amber; text keeps full ink contrast. */
+    .mast__star {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.28rem 0.7rem;
+      border: 1px solid var(--color-rule);
+      border-radius: 999px;
+      background: var(--color-card);
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--color-foreground);
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        background-color 150ms var(--ease-out),
+        border-color 150ms var(--ease-out);
+    }
+    .mast__star:hover {
+      background: var(--color-secondary);
+      border-color: var(--color-input);
+    }
+    .mast__star-glyph {
+      flex: 0 0 auto;
+      color: var(--color-highlight-strong);
     }
     .mast__nav {
       display: flex;
@@ -629,7 +720,7 @@ const navLinks = [
 
     /* File-styled profile panel */
     .filecard {
-      margin: 0 auto;
+      margin: 0;
       max-width: 44rem;
       border: 1px solid var(--color-rule);
       border-radius: var(--radius-lg);
@@ -674,8 +765,16 @@ const navLinks = [
     }
     .filecard__note {
       max-width: 44rem;
-      margin-inline: auto;
-      text-align: center;
+      margin-inline: 0;
+      text-align: left;
+    }
+
+    /* Realtime prompt card (§06). The card shrinks to its reading measure so its
+       border hugs the text instead of leaving a dead band on the right. Left-aligned
+       to the content column like every other section. */
+    :global(.doc) {
+      width: fit-content;
+      max-width: 100%;
     }
 
     .grid2 {
@@ -821,7 +920,93 @@ const navLinks = [
       font-size: 0.84rem;
     }
 
-    /* Install */
+    /* Install — stepped card. One bordered card, a left gutter of roman-numeral
+       steps with small-caps labels, content on the right. Rows split by hairlines. */
+    .steps {
+      border: 1px solid var(--color-rule);
+      border-radius: var(--radius-lg);
+      background: var(--color-card);
+      overflow: hidden;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
+      gap: 1.5rem;
+      padding: 1.6rem 1.5rem;
+    }
+    .step + .step {
+      border-top: 1px solid var(--color-rule);
+    }
+    .step__mark {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .step__num {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--color-primary);
+    }
+    .step__label {
+      font-family: var(--font-ui);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--color-muted-foreground);
+    }
+    .step__body {
+      min-width: 0;
+    }
+    .step__note {
+      margin: 1rem 0 0;
+      font-family: var(--font-ui);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: var(--color-muted-foreground);
+    }
+    .step__then {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--color-foreground);
+    }
+    .hosts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .host {
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.32rem 0.72rem;
+      border: 1px solid var(--color-rule);
+      border-radius: 999px;
+      background: var(--color-secondary);
+      color: var(--color-foreground);
+    }
+    @media (max-width: 34rem) {
+      .step {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      .step__mark {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 0.55rem;
+      }
+      .step__num {
+        font-size: 1.3rem;
+      }
+    }
+
     .install {
       display: flex;
       flex-direction: column;
