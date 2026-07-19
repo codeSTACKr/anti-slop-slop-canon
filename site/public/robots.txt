@@ -1,0 +1,6 @@
+# anti-slop-slop-canon — https://useantislop.com
+# Everything here is public. Crawlers and AI agents are welcome.
+User-agent: *
+Allow: /
+
+Sitemap: https://useantislop.com/sitemap.xml

@@ -1,0 +1,36 @@
+# anti-slop-slop-canon
+
+> An open-source Agent Skill that removes the writing habits that make text sound machine-made, then learns a transparent, editable profile of your voice. One profile serves both written and spoken content. It is free, MIT-licensed, and runs entirely as a local skill — no hosted model and no text sent to any service.
+
+## What it does
+
+- **Default cleanup, before any setup.** Out of the box it strips AI "tells": hype ("thrilled to announce", "game-changer"), ornamental punctuation (em-dashes, exclamation points, semicolons used for drama), and invented claims. Output stays plain, factual, and defensible line by line.
+- **Learns your voice.** It builds a profile from a sample of your own writing, so cleaned text can be restated in your personal voice (e.g. clipped first person, dry understatement, a fixed sign-off) using only the facts present.
+- **Written and spoken.** The same profile drives prose and a realtime voice prompt module.
+- **Transparent and editable.** The voice profile is a plain, human-readable file you can inspect and edit.
+
+## Onboarding
+
+The first run offers three ways to start:
+- **Personalize now** — provide writing samples and build a voice profile immediately.
+- **Use the defaults** — get the baseline cleanup with no setup.
+- **Defer** — start with defaults and personalize later.
+
+## Install
+
+- Global (all projects): install the skill into your user-level Claude Code skills directory.
+- Project (this repo only): install the skill into the project's `.claude/skills` directory.
+
+See the site and repository for exact commands.
+
+## Links
+
+- Website: https://useantislop.com
+- Source (GitHub): https://github.com/codeSTACKr/anti-slop-slop-canon
+- License: MIT
+
+## Facts
+
+- Type: Agent Skill for Claude Code (developer tool)
+- Price: free ($0), open source
+- Privacy: runs locally; the showcase site is static pre-rendered HTML with no server runtime and sends no text to any service.

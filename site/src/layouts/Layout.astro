@@ -8,6 +8,36 @@ interface Props {
 }
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og.png", Astro.site);
+
+// Machine-readable facts for search engines and AI agents. Kept in sync with
+// the visible copy: this is an open-source, free, MIT-licensed Agent Skill.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${Astro.site}#website`,
+      url: Astro.site?.toString(),
+      name: "anti-slop-slop-canon",
+      description,
+      inLanguage: "en",
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${Astro.site}#software`,
+      name: "anti-slop-slop-canon",
+      description,
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Any",
+      url: Astro.site?.toString(),
+      codeRepository: "https://github.com/codeSTACKr/anti-slop-slop-canon",
+      license: "https://opensource.org/licenses/MIT",
+      isAccessibleForFree: true,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -23,12 +53,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="robots" content="index, follow" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="anti-slop-slop-canon" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="anti-slop-slop-canon. Sound like yourself. An open-source Agent Skill."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd)}
+    />
+    <link rel="sitemap" href="/sitemap.xml" />
 
     <link
       rel="icon"
