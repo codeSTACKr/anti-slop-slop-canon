@@ -13,6 +13,26 @@ import { Content as RealtimePrompt } from "../content/realtime-prompt.md";
 
 const REPO = "codeSTACKr/anti-slop-slop-canon";
 
+async function fetchStars(repo) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}`, {
+      headers: { Accept: "application/vnd.github+json" },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return typeof data.stargazers_count === "number" ? data.stargazers_count : null;
+  } catch {
+    return null;
+  }
+}
+function formatStars(n) {
+  if (n == null) return null;
+  if (n < 1000) return String(n);
+  return (n / 1000).toFixed(n < 10000 ? 1 : 0).replace(/\.0$/, "") + "k";
+}
+const stars = await fetchStars(REPO);
+const starsLabel = formatStars(stars);
+
 // The default-cleanup diffs use before/after pairs committed to the repository:
 // the hero pair is the golden output published in repo/README.md; the punctuation
 // pair is a verbatim example from skills/.../references/defaults.md § Short examples.
@@ -63,19 +83,23 @@ const states = [
   <header class="nav-term">
     <div class="wrap nav-term__row">
       <a class="nav-term__brand" href="#main"
-        ><span class="nav-term__prompt" aria-hidden="true">&gt;</span> anti-slop-slop-canon</a
+        ><span class="nav-term__prompt" aria-hidden="true">&gt;</span> anti-slop-slop-canon<span
+          class="nav-term__caret"
+          aria-hidden="true"></span
+        ></a
       >
       <nav class="nav-term__flags" aria-label="Primary">
-        <a class="nav-term__flag" href="#install">--install</a>
+        <a class="nav-term__flag nav-term__pill" href="#install">--install</a>
         <a
-          class="nav-term__flag"
+          class="nav-term__flag nav-term__pill nav-term__stars"
           href={`https://github.com/${REPO}`}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Star the repository on GitHub"
         >
-          --source
+          <span class="nav-term__star" aria-hidden="true">★</span>
+          <span class="nav-term__star-count" data-repo={REPO}>{starsLabel ?? "source"}</span>
         </a>
-        <span class="nav-term__caret" aria-hidden="true">▮</span>
       </nav>
     </div>
   </header>
@@ -342,7 +366,14 @@ const states = [
       </p>
 
       <div class="cta">
-        <a class="btn" href={`https://github.com/${REPO}`}>View the repository</a>
+        <a
+          class="btn"
+          href={`https://github.com/${REPO}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View the repository
+        </a>
         <a class="btn btn--ghost" href="#proof">Back to the examples</a>
       </div>
 
@@ -364,13 +395,27 @@ const states = [
         <div class="foot-dense__row">
           <dt>repository</dt>
           <dd class="foot-dense__links">
-            <a href={`https://github.com/${REPO}`}>source</a>
+            <a href={`https://github.com/${REPO}`} target="_blank" rel="noopener noreferrer"
+              >source</a
+            >
             <span aria-hidden="true">·</span>
-            <a href={`https://github.com/${REPO}/tree/main/skills`}>the skill</a>
+            <a
+              href={`https://github.com/${REPO}/tree/main/skills`}
+              target="_blank"
+              rel="noopener noreferrer">the skill</a
+            >
             <span aria-hidden="true">·</span>
-            <a href={`https://github.com/${REPO}/tree/main/docs`}>docs</a>
+            <a
+              href={`https://github.com/${REPO}/tree/main/docs`}
+              target="_blank"
+              rel="noopener noreferrer">docs</a
+            >
             <span aria-hidden="true">·</span>
-            <a href={`https://github.com/${REPO}/tree/main/evals`}>evals</a>
+            <a
+              href={`https://github.com/${REPO}/tree/main/evals`}
+              target="_blank"
+              rel="noopener noreferrer">evals</a
+            >
           </dd>
         </div>
         <div class="foot-dense__row">
@@ -390,12 +435,31 @@ const states = [
           <dd class="foot-dense__links">
             <span>MIT</span>
             <span aria-hidden="true">·</span>
-            <a href={`https://github.com/${REPO}`}>open source</a>
+            <a href={`https://github.com/${REPO}`} target="_blank" rel="noopener noreferrer"
+              >open source</a
+            >
           </dd>
         </div>
       </dl>
     </div>
   </footer>
+
+  <script>
+    const el = document.querySelector(".nav-term__star-count[data-repo]");
+    if (el && el.dataset.repo) {
+      fetch(`https://api.github.com/repos/${el.dataset.repo}`, {
+        headers: { Accept: "application/vnd.github+json" },
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          const n = d && typeof d.stargazers_count === "number" ? d.stargazers_count : null;
+          if (n == null) return;
+          el.textContent =
+            n < 1000 ? String(n) : (n / 1000).toFixed(n < 10000 ? 1 : 0).replace(/\.0$/, "") + "k";
+        })
+        .catch(() => {});
+    }
+  </script>
 
   <style>
     .skip {
@@ -480,11 +544,33 @@ const states = [
       color: var(--color-ink);
       background: var(--color-paper-2);
     }
+    .nav-term__pill {
+      border-radius: var(--radius-sm);
+      padding-inline: 0.75rem;
+      padding-block: 0.3rem;
+      min-height: auto;
+    }
+    .nav-term__stars {
+      border: var(--rule-thin) solid var(--color-rule);
+    }
+    .nav-term__star {
+      color: var(--color-brand);
+      margin-right: 0.4ch;
+      font-size: 1.5em;
+      line-height: 1;
+      position: relative;
+      top: -0.06em;
+    }
+    .nav-term__star-count {
+      font-variant-numeric: tabular-nums;
+    }
     .nav-term__caret {
       display: inline-block;
-      width: 1ch;
+      width: 0.5ch;
+      height: 0.9em;
       margin-left: 0.2rem;
-      color: var(--color-brand);
+      background: var(--color-brand);
+      vertical-align: baseline;
       animation: nav-blink 1.05s steps(2) infinite;
     }
     @keyframes nav-blink {
