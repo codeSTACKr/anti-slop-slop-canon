@@ -10,7 +10,7 @@ Every pull request that adds or changes a writing rule must include:
 - A bad example and an improved example.
 - At least one failing evaluation fixture in `evals/fixtures/`, following the format in [../evals/README.md](../evals/README.md).
 - A good-writing control fixture, with `expected_mutation: false`, showing that the change does not flatten prose that was already clean.
-- The change in context-budget cost, reported from `ruby scripts/validate.rb`.
+- The change in context-budget cost, reported from `pnpm run validate`.
 
 Fixtures describe observable behavior, such as what must be preserved and what must be removed. They are task specifications, not a second copy of the rule text and not a pre-written answer key.
 
@@ -19,7 +19,7 @@ Fixtures describe observable behavior, such as what must be preserved and what m
 Run the repository checks locally:
 
 ```sh
-ruby scripts/validate.rb
+pnpm run validate
 ```
 
 This confirms frontmatter, required schema sections, banned literal patterns, fixture format, local links, and context budgets. It does not judge whether generated output actually reads well. That judgment happens through the human rubrics in [../evals/rubrics/](../evals/rubrics/) and Jesse's own editorial review.

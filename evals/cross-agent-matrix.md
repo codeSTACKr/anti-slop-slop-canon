@@ -1,6 +1,6 @@
 # Cross-agent test matrix
 
-`scripts/validate.rb` checks the repository's source contracts. It does not run the skill. Whether `SKILL.md` and its references actually produce correct behavior depends on the host model reading and following them, and that varies by host. This matrix is how a human confirms real behavior in Claude Code, Codex, and Cursor before a release.
+`scripts/validate.ts` checks the repository's source contracts. It does not run the skill. Whether `SKILL.md` and its references actually produce correct behavior depends on the host model reading and following them, and that varies by host. This matrix is how a human confirms real behavior in Claude Code, Codex, and Cursor before a release.
 
 ## What counts as a host here
 

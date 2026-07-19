@@ -15,7 +15,7 @@ Score each generation 0 to 3.
 
 ## Pass and fail thresholds
 
-A generation passes at 2 or 3. Any 0 on a routing fixture blocks release. This maps to the "written/spoken routing... pass" clause of the Phase 6 exit criteria. Context-budget and scope-isolation portions of that same exit criterion are checked deterministically by `scripts/validate.rb` and are not re-scored here.
+A generation passes at 2 or 3. Any 0 on a routing fixture blocks release. This maps to the "written/spoken routing... pass" clause of the Phase 6 exit criteria. Context-budget and scope-isolation portions of that same exit criterion are checked deterministically by `scripts/validate.ts` and are not re-scored here.
 
 ## Fixtures that exercise this rubric
 
