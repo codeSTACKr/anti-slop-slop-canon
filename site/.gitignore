@@ -28,3 +28,5 @@ pnpm-debug.log*
 # local tooling
 .hallmark/
 .vscode/
+.vercel
+.env*
