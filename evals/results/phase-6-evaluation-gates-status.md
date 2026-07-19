@@ -2,6 +2,8 @@
 
 Date: 2026-07-17
 
+**Superseded in part.** This is a dated snapshot of gate construction. The evaluation runs it lists as open were partly performed on 2026-07-18. See [cross-agent-2026-07-18.md](cross-agent-2026-07-18.md) for the Claude Code core-matrix run, the maintainer's ratification, and the blind-grade waiver.
+
 Base commit: `fe7db99526d472f18fe6b2747467861b985a60d1` (Phase 5 lifecycle review)
 
 ## What this artifact is

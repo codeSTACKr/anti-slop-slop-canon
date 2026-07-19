@@ -10,7 +10,9 @@
 
 Record the exact host version alongside every result. Behavior can change between host releases independent of any change in this repository.
 
-## Core matrix, required for every release
+## Core matrix, required for every release on hosts the maintainer can run
+
+Claude Code is the required host. Codex and Cursor columns are best effort, filled when the maintainer has working access to those hosts, and a blank cell in them does not block a release. It still means "not yet run," never "assumed passing."
 
 Run each fixture below against each host by pasting or referencing its `Input` into a fresh session with the skill installed, then compare the response against `Expected behavior` and `Assertions`. Score applicable rubrics from `evals/rubrics/` at the same time.
 
@@ -33,11 +35,11 @@ Run each fixture below against each host by pasting or referencing its `Input` i
 
 Leave a cell blank until it has been run. Fill each cell with one of `PASS`, `FAIL`, or `BLOCKED`, the date, and the reviewer's initials, for example `PASS 2026-07-17 jh`. A blank cell means "not yet run," never "assumed passing."
 
-An asterisk marks a model-orchestrated run scored by the orchestrating model rather than a human. Evidence and per-assertion reasoning live in `evals/results/cross-agent-2026-07-18.md`. Under `evals/model-judge.md` these cells are advisory and do not satisfy the human gate until a reviewer ratifies them and replaces the asterisk with initials.
+An asterisk marks a model-orchestrated run scored by the orchestrating model rather than a human. Evidence and per-assertion reasoning live in `evals/results/cross-agent-2026-07-18.md`. Asterisked cells satisfy the human gate only once a reviewer reads that evidence and ratifies them. The maintainer ratified the Claude Code column on 2026-07-18 and kept the asterisk notation as the record, which that results file documents.
 
 ## Full matrix, required before a tagged release or a schema or defaults version bump
 
-Run every fixture in `evals/fixtures/` against every host using the same procedure. Use one dated file per run, copied from this file's table structure, named `evals/results/cross-agent-<date>.md`, so the core matrix above stays a living checklist rather than an accumulating log.
+Run every fixture in `evals/fixtures/` against every available host using the same procedure. Use one dated file per run, copied from this file's table structure, named `evals/results/cross-agent-<date>.md`, so the core matrix above stays a living checklist rather than an accumulating log.
 
 ## Recording a result
 
@@ -62,4 +64,4 @@ Do not add a limitation from a single run, a guess about host behavior, or a dif
 
 ### Confirmed host-specific limitations
 
-None recorded yet. The core matrix above has not been run against any host as part of Phase 6.
+None recorded yet. The Claude Code column was run on 2026-07-18, and its one recurring failure, the first-use gate firing unreliably on plain writing prompts in headless sessions, is tracked as an open contract concern in `evals/results/cross-agent-2026-07-18.md` rather than as a host limitation, since no second host has been run to compare against.

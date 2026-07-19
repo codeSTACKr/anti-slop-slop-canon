@@ -12,11 +12,11 @@ The blinded pass matched the expected mutation state in 10 of 11 cases. Seven ca
 
 ## Method and integrity controls
 
-Packet preparer process 235 created an anonymous packet and a separate mapping. Fresh reviewer process 236 had not seen fixture names, categories, metadata, mappings, expected mutation states, expected behavior, or assertions.
+A separate packet preparer created an anonymous packet and a separate mapping. The fresh reviewer had not seen fixture names, categories, metadata, mappings, expected mutation states, expected behavior, or assertions.
 
-Before reveal, process 236 read only the default canon and the anonymous B01 through B11 packet. It saved a complete first pass to a temporary file, verified that every label occurred exactly once, checked the file for reveal contamination, and froze it. The reviewer did not inspect repository history, fixture files, mapping data, another agent's output, or Solo comments during that pass.
+Before reveal, the fresh reviewer read only the default canon and the anonymous B01 through B11 packet. It saved a complete first pass to a temporary file, verified that every label occurred exactly once, checked the file for reveal contamination, and froze it. The reviewer did not inspect repository history, fixture files, mapping data, or another agent's output during that pass.
 
-After the user opened the reveal boundary, process 236 read the mapping and each mapped fixture in full, then compared the frozen decisions and proposed rewrites with the operation, mode, expected mutation state, expected behavior, and every assertion. The frozen file was not edited.
+After the user opened the reveal boundary, the reviewer read the mapping and each mapped fixture in full, then compared the frozen decisions and proposed rewrites with the operation, mode, expected mutation state, expected behavior, and every assertion. The frozen file was not edited.
 
 ## Scope and exclusions
 
@@ -120,4 +120,4 @@ No canon or fixture defect was confirmed, so the default content version remains
 - A fully anonymous prose-only packet cannot fairly test composition when the operation and delivery setting determine the task. Future packets should reveal those task parameters without revealing expected outcomes.
 - `Factual comparison is allowed` can be misread when support exists only in hidden context. The surrounding grounding and restraint rules resolve the issue, but future reviews should track this ambiguity.
 - The guarded count leaves 53 units below the 1,500 threshold. Any later default-canon change will need tight budget review.
-- This Phase 2 review used one fresh reviewer process. Cross-host behavior and personalized-profile preference are later release-gate work and were not inferred from this result.
+- This Phase 2 review used one fresh reviewer session. Cross-host behavior and personalized-profile preference are later release-gate work and were not inferred from this result.

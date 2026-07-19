@@ -12,7 +12,7 @@ No Phase 4 or Phase 5 behavior was added. The review commit contains only contra
 
 ## Baseline and method
 
-The review began with Solo item 450 locked to the independent reviewer. Before editing, `HEAD` was exactly `c159c7ae31558580f047c4b8e5969ae8be128027`, the worktree was clean, branch `main` had no configured remote, and history ended with the Phase 3 implementation after the Phase 2 review and canon commits.
+An independent reviewer session performed this review. Before editing, `HEAD` was exactly `c159c7ae31558580f047c4b8e5969ae8be128027`, the worktree was clean, branch `main` had no configured remote, and history ended with the Phase 3 implementation after the Phase 2 review and canon commits.
 
 The reviewer read the planning handoff, build plan, decision log, repository README, full target commit and patch, every changed file, current schema, defaults, profile template, operations, validators, tests, fixture contract, seven Phase 3 fixtures, foundational protected-content fixture, Phase 2 review artifact, and current documentation. Passing validation was treated as evidence to attack, not as the verdict.
 
@@ -23,7 +23,7 @@ The reviewer read the planning handoff, build plan, decision log, repository REA
 3. **Fallback and version behavior: pass after clarification.** A usable profile must use schema `1.0.0`, match scope, retain required sections, and contain actionable rules. Missing or unusable profiles fall back to defaults without blocking, with an invalid-file notice after the task. A `defaults_version` mismatch keeps the profile active, never loads defaults, and reports after the task. Later refresh, keep, and defer persistence is explicitly unavailable in Phase 3.
 4. **Written and spoken choice: pass.** Spoken mode requires clear listening intent. Narration, prepared remarks, text-to-speech copy, announcements, and voice-agent responses qualify. Ambiguous cases silently use written mode without a question.
 5. **Preservation invariants: pass.** Operations protect exact quotations, code in any form, structured data, and legally fixed wording byte for byte. Rewrite and second-pass instructions preserve meaning, facts, uncertainty, intent, format, protected-span position, useful formatting, and deliberate rhythm.
-6. **Operation completeness and delivery: pass.** Compose, rewrite, audit, profile, and realtime routes are defined. Ordinary creation and revision route predictably. Compose and rewrite return clean content; audit does not mutate; explanations, reasoning, rule mappings, and diffs require an explicit request. The second pass checks meaning, facts, uncertainty, intent, format, protected bytes, mode, active-bundle compliance, unsupported claims, edit restraint, and clean delivery.
+6. **Operation completeness and delivery: pass.** Compose, rewrite, audit, profile, and realtime routes are defined. Ordinary creation and revision route predictably. Compose and rewrite return clean content. Audit does not mutate. Explanations, reasoning, rule mappings, and diffs require an explicit request. The second pass checks meaning, facts, uncertainty, intent, format, protected bytes, mode, active-bundle compliance, unsupported claims, edit restraint, and clean delivery.
 7. **Later-phase boundary: pass after correction.** Phase 3 does not onboard, learn from samples, create or persist profiles, refresh profiles, save mismatch choices, compile realtime prompts, or synthesize missing realtime files. Existing active-scope realtime files may only be returned unchanged. Documentation now states these boundaries consistently.
 8. **Runtime layout and budgets: pass.** Runtime remains Markdown-first: `SKILL.md`, three Markdown resources, one Markdown asset, and generated `agents/openai.yaml`. There are no runtime scripts, packages, extractors, or duplicate rule files. Guarded counts are 590 for the complete router against `<600`, 1,447 for defaults against `<1,500`, and 138 for the profile template against `<1,500`.
 9. **Fixture and validator strength: pass after correction.** All seven Phase 3 fixtures contain concrete inputs, routing expectations, protected literals, facts, and negative assertions. Validation now checks metadata and contract text in the correct fixture sections instead of accepting words moved anywhere in a file. The foundational mixed exemption is also required and protects quote, inline code, JSON, and legal text. Mutation tests prove failure when profile scope validation, all-code-forms protection, later-phase boundaries, exact-quote byte preservation, assertion placement, required fixtures, or legal coverage regress.
@@ -53,10 +53,10 @@ Several pages still described the repository as Phase 1, deferred runtime resolu
 - `ruby scripts/test_validate.rb`: 15 runs, 45 assertions, no failures, errors, or skips.
 - `ruby -c scripts/validate.rb` and `ruby -c scripts/test_validate.rb`: syntax pass.
 - Ruby Psych fallback: parsed every YAML file and every Markdown frontmatter block.
-- Skill Creator `quick_validate.py`: could not start because `PyYAML` is absent. No dependency was installed; the documented Psych fallback passed.
+- Skill Creator `quick_validate.py`: could not start because `PyYAML` is absent. No dependency was installed. The documented Psych fallback passed.
 - `git diff --check`: pass.
 - Runtime allowlist and local-link checks: pass through repository validation.
-- Phase 2 source integrity: `defaults.md` and `profile-schema.md` are unchanged from the Phase 2/target history; the Phase 2 review artifact is unchanged. The profile template changed only its stale phase note, not schema, defaults version, or content version.
+- Phase 2 source integrity: `defaults.md` and `profile-schema.md` are unchanged from the Phase 2/target history. The Phase 2 review artifact is unchanged. The profile template changed only its stale phase note, not schema, defaults version, or content version.
 - Repository history, final worktree cleanliness, and absence of remotes are rechecked after the review commit.
 
 ## Remaining risks

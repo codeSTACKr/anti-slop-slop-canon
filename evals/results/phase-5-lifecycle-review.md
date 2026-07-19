@@ -12,9 +12,9 @@ The corrections recover an inactive `refresh` state to `shown` without another n
 
 ## Baseline and method
 
-Solo identified this reviewer as process 251 in project 10. Work item 454 was open and unblocked, then locked to this session and marked in progress. Before editing, `HEAD` was exactly the target commit, the worktree was clean on `main`, and no remote was configured.
+An independent reviewer session performed this audit. Before editing, `HEAD` was exactly the target commit, the worktree was clean on `main`, and no remote was configured.
 
-The reviewer read the Solo and Skill Creator instructions, `HANDOFF.md`, both complete planning files, work item 453 and its evidence, the complete target commit and parent patch, the current router and every bundled runtime file, all user and maintainer docs, every fixture, both validators, all mutation tests, and every prior review artifact. Green tests and the implementation summary were treated as claims to attack.
+The reviewer read the Skill Creator instructions, `HANDOFF.md`, both complete planning files, the implementation task record and its evidence, the complete target commit and parent patch, the current router and every bundled runtime file, all user and maintainer docs, every fixture, both validators, all mutation tests, and every prior review artifact. Green tests and the implementation summary were treated as claims to attack.
 
 Review work included requirement-by-requirement tracing, a manual lifecycle state machine, delayed and interrupted transition walks, section-scoped fixture review, adversarial source mutations, frozen-file hashes, context counts, runtime allowlist and link checks, YAML parsing, history checks, repository object checks, and no-remote verification. No user state, helper, dependency, remote, Phase 6 artifact, or external system was created.
 
@@ -22,19 +22,19 @@ Review work included requirement-by-requirement tracing, a manual lifecycle stat
 
 | Starting state | Event | Reads and active bundle | Persistent result |
 | --- | --- | --- | --- |
-| No profile and no settings | First natural-language task | Project or global scope only; onboarding gate before defaults | One explicit setup choice; no lifecycle keys without a profile |
+| No profile and no settings | First natural-language task | Project or global scope only. Onboarding gate before defaults | One explicit setup choice. No lifecycle keys without a profile |
 | Valid profile with matching defaults version | Ordinary task | Winning profile alone | No notice or lifecycle write |
-| Mismatch with no state for current version | Ordinary task | Router and winning-profile metadata only; profile alone for task | After task, show one notice, then record current version as `shown` |
+| Mismatch with no state for current version | Ordinary task | Router and winning-profile metadata only. Profile alone for task | After task, show one notice, then record current version as `shown` |
 | Current version is `shown` | Later ordinary task | Profile alone | Suppress another notice |
-| Current version is `keep` | Any later task | Profile alone | Suppress that version permanently; generated files unchanged |
+| Current version is `keep` | Any later task | Profile alone | Suppress that version permanently. Generated files unchanged |
 | Current version is `later`, date not due | Ordinary task | Profile alone | Suppress notice and preserve date |
 | Current version is `later`, date due or overdue | Ordinary task | Profile alone | After task, show once and set the next date 14 days after the local display date |
 | New mismatch version | Ordinary task | New router version and profile metadata only | Start one notice state for the new version after the task |
 | User chooses `refresh` | Separate lifecycle operation | Record transient choice, then load profile and current defaults only for recompilation | No generated-file replacement before preview and approval |
 | Refresh cancelled or fails | Refresh workflow | Prior pair remains active | Restore current version to `shown`, remove reminder date, and suppress a duplicate notice |
 | Refresh is interrupted | Later task with no active refresh workflow | Profile alone for task | Recover stale `refresh` to `shown` without displaying another notice |
-| Refresh approved | Refresh workflow | Complete proposed pair validated before replacement | Replace pair atomically or with rollback; clear notice keys after metadata matches |
-| Profile edited directly | Inspection or ordinary task | Edited profile alone | Treat edits as authoritative; no normalization or prompt regeneration |
+| Refresh approved | Refresh workflow | Complete proposed pair validated before replacement | Replace pair atomically or with rollback. Clear notice keys after metadata matches |
+| Profile edited directly | Inspection or ordinary task | Edited profile alone | Treat edits as authoritative. No normalization or prompt regeneration |
 | Explicit re-onboarding | Onboarding workflow | Current state remains active through preview | Replace only after approval with pair validation and rollback |
 | Explicit realtime regeneration | Realtime workflow | Active profile alone, never defaults | Preview, validate, approve, then replace only the in-scope prompt |
 
@@ -83,12 +83,12 @@ The contract now sets the next date exactly 14 days after the local date on whic
 - `ruby scripts/test_validate.rb`: 50 runs, 150 assertions, no failures, errors, or skips.
 - Ruby syntax checks: pass for both validator scripts.
 - Ruby Psych: parses every YAML document and Markdown frontmatter block.
-- Skill Creator `quick_validate.py`: cannot start because `PyYAML` is absent. No dependency was installed; the documented Psych fallback passes.
-- Context budgets: router 466 raw and 583 guarded; defaults 1,157 and 1,447; profile template 221 and 277; realtime module 239 and 299.
+- Skill Creator `quick_validate.py`: cannot start because `PyYAML` is absent. No dependency was installed. The documented Psych fallback passes.
+- Context budgets: router 466 raw and 583 guarded, defaults 1,157 and 1,447, profile template 221 and 277, realtime module 239 and 299.
 - Runtime allowlist and local links: pass through repository validation.
 - `git diff --check`, `git log --check`, and `git fsck --full`: pass. Object checking reports only the four pre-existing dangling blobs.
 - Frozen-source and prior-review hashes match target commit `f6aff73`.
-- Final history contains one focused local review commit over `f6aff73`; the worktree is clean and `git remote -v` is empty.
+- Final history contains one focused local review commit over `f6aff73`. The worktree is clean and `git remote -v` is empty.
 
 ## Residual risks
 

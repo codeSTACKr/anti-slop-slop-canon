@@ -34,8 +34,8 @@ const tells: string[] = [
 
   <ul class="tells__grid" aria-label="Writing habits the skill removes">
     {
-      tells.map((t) => (
-        <li class="tells__cell">
+      tells.map((t, i) => (
+        <li class="tells__cell" style={`--i:${i}`}>
           <del class="tells__item">
             <span class="sr-only">removed: </span>
             {t}
@@ -160,5 +160,108 @@ const tells: string[] = [
     text-transform: uppercase;
     color: var(--color-ink);
     text-wrap: pretty;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tells__item {
+      position: relative;
+      text-decoration: none;
+    }
+    /* Pseudo bar replaces line-through while animating; avoids a double strike. */
+    .tells__item::after {
+      content: "";
+      position: absolute;
+      left: 0.68rem;
+      right: 0.68rem;
+      top: 50%;
+      height: 0.12em;
+      background: var(--color-ink-2);
+      transform: scaleX(0);
+      transform-origin: left;
+      translate: 0 -50%;
+    }
+    .tells__cell {
+      opacity: 0;
+      animation: chip-rise 440ms var(--ease-out) both;
+      animation-delay: calc(var(--i) * 180ms);
+    }
+    .tells__cell .tells__item {
+      animation: chip-flash 440ms var(--ease-out) both, chip-dim 520ms var(--ease-out) both;
+      animation-delay: calc(var(--i) * 180ms), calc(var(--i) * 180ms + 240ms);
+    }
+    .tells__cell .tells__item::after {
+      animation: chip-strike 500ms var(--ease-out) both;
+      animation-delay: calc(var(--i) * 180ms + 240ms);
+    }
+    .tells__rule {
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: rule-draw 500ms var(--ease-out) both;
+      animation-delay: 2000ms;
+    }
+    .tells__left {
+      opacity: 0;
+      animation: chip-rise 600ms var(--ease-out) both;
+      animation-delay: 2500ms;
+    }
+    .tells__left .mark {
+      animation: mark-glow 600ms var(--ease-out) both;
+      animation-delay: 2500ms;
+    }
+
+    /* opacity + rise only */
+    @keyframes chip-rise {
+      0% {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* green terminal flash on the actual chip border/glow */
+    @keyframes chip-flash {
+      0% {
+        border-color: var(--color-brand);
+        box-shadow: 0 0 0.6rem oklch(0.78 0.16 152 / 0.5);
+      }
+      100% {
+        border-color: var(--color-rule);
+        box-shadow: none;
+      }
+    }
+    @keyframes chip-dim {
+      0% {
+        color: var(--color-ink);
+      }
+      100% {
+        color: var(--color-ink-2);
+      }
+    }
+    @keyframes mark-glow {
+      0% {
+        box-shadow: 0 0 0.6rem oklch(0.78 0.16 152 / 0.5);
+      }
+      100% {
+        box-shadow: none;
+      }
+    }
+    @keyframes chip-strike {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+    @keyframes rule-draw {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
   }
 </style>
