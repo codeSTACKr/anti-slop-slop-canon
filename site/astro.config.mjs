@@ -8,7 +8,7 @@ export default defineConfig({
   // Static output only. The showcase ships as pre-rendered HTML with no
   // server runtime, no hosted model, and no text sent to any service.
   output: 'static',
-  site: 'https://anti-slop-slop-canon.example',
+  site: 'https://useantislop.com',
   compressHTML: true,
   vite: {
     plugins: [tailwindcss()],

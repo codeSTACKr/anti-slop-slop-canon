@@ -79,7 +79,7 @@ This skill will not help you evade AI-detection tools, and it makes no claim tha
 - `docs/` holds this documentation.
 - `evals/` holds the public fixtures, rubrics, and the evaluation contract.
 - `scripts/validate.rb` checks schemas, routing and lifecycle fixtures, links, exact runtime contents, realtime policy boundaries, and context budgets.
-- `site/` is the static Astro showcase, a single page whose every example is real output from the bundled rules.
+- `site/` is the static Astro showcase, a single page whose every example is real output from the bundled rules, deployed at [useantislop.com](https://useantislop.com).
 
 ## Development
 
