@@ -62,9 +62,18 @@ Three fresh sessions ran against the fixed contracts from commit `d679326`, with
 
 The retest settles which layer the first-use failure lives in. The router now states the gate imperative inline, and behavior did not change, so the router is never being read for this prompt. The skill is not activating on a mundane writing task in headless Claude Code. The gate wording fix remains correct for any session where the skill does load, but the remaining lever is the frontmatter `description`, which is what the host's skill matcher sees. Tightening it to claim plain everyday writing tasks explicitly requires trading words within the 600-unit router budget.
 
+## Second retest, after the description rewrite, same date
+
+The router description was rewritten to name everyday writing tasks directly, since the first retest isolated the failure to activation. Two more fresh sessions ran `phase-4-first-use-choice` against it.
+
+- Run B: the gate fired for the first time in six attempts. The session recognized first use, offered exactly personalize, defaults, or defer before writing the update, and persisted nothing. It also showed a contingent defaults draft alongside the ask, which is marginal against the strict before-writing letter but claims no write and gates the outcome on the choice.
+- Run A: the skill activated but misrouted. It attempted to read the global `~/.config/anti-slop-slop-canon/` state from a project copy, in direct conflict with the router's isolation rule, then wrote immediately with defaults and reported the blocked global read. No gate, no state written.
+
+Net movement. Before the rewrite the skill was behaviorally absent in all four failing runs. After it, the skill engaged in both runs and the gate fired in one. The activation defect is fixed. What remains is stochastic router compliance in headless sessions, roughly a coin flip on this fixture, with run A also demonstrating a live scope-isolation violation worth its own eye during future runs. The cell stays FAIL until the gate fires reliably.
+
 ## Follow-ups this run motivates
 
-1. The `phase-4-first-use-choice` failure is activation-layer, per the retest above. Candidate next steps are a description rewrite that names everyday writing tasks such as notes and updates, and a Codex run of the same fixture to learn whether activation differs by host. Interactive Claude Code sessions may also activate more readily than headless ones, which is worth one manual check before treating this as universal.
+1. The remaining `phase-4-first-use-choice` gap is stochastic compliance, not activation, per the second retest. Options are a further router wording pass within the three spare guarded units, an interactive Claude Code check to learn whether the flake is headless-specific, and a Codex run for cross-host signal. Run A's global-state read also suggests sharpening the project-copy definition if wording is revisited.
 2. The `phase-5-mismatch-notice` settings write and the missing later option should be re-tested interactively before treating them as defects, since headless sessions may end before housekeeping writes.
 3. The exact-quote failure is narrow, outer quotation glyphs plus an unrequested explanation, and looks fixable by contract wording if it recurs.
 4. Jesse should ratify or overturn each cell above, then initial the core matrix in `evals/cross-agent-matrix.md`. Blank Codex and Cursor columns remain the next matrix work.
