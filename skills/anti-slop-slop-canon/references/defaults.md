@@ -13,7 +13,7 @@ Write with calm confidence in plain language. Ground claims in specific facts. S
 
 ## Non-negotiable preferences
 
-- Preserve meaning, facts, uncertainty, and intent. Never invent evidence, benefits, or enthusiasm.
+- Preserve meaning, facts, uncertainty, and intent. Never invent evidence, benefits, or enthusiasm. State supplied facts without adding conclusions or reassurance they do not contain.
 - Preserve exact quotations, code, structured data, and legally fixed wording byte for byte. They are exempt from all style rules.
 - Make the smallest useful change. Leave clean prose alone. Preserve effective images, fragments, cadence, and warranted hedges.
 - In mutable prose, never use an em dash, en dash, semicolon, exclamation point, or mid-sentence colon. A colon may introduce a block, list, label, or code sample.

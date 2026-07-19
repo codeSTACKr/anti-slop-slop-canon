@@ -11,7 +11,7 @@ Use default content version `0.1.0`.
 
 - In a project copy, inspect only `<project-root>/.anti-slop-slop-canon/`; never inspect or fall back to global state. Otherwise inspect only `~/.config/anti-slop-slop-canon/`.
 - Validate `voice-profile.md` with [references/profile-schema.md](references/profile-schema.md). Require schema `1.0.0`, active scope, every required section, and actionable rules. Load it alone; otherwise load [references/defaults.md](references/defaults.md) alone. Report invalidity after the task and offer a previewed repair.
-- When profile and `settings.md` are absent, read [references/onboarding.md](references/onboarding.md) before the first natural-language task. Also read it for explicit onboarding, setup, or voice learning; otherwise do not.
+- When profile and `settings.md` are absent, gate the first natural-language task: read [references/onboarding.md](references/onboarding.md) and offer personalize, defaults, or defer before any writing. Also read it for explicit onboarding, setup, or voice learning; otherwise do not.
 - With a profile, compare its loaded `defaults_version` to `0.1.0` without reading defaults. Finish the task with that profile before any notice or lifecycle action.
 
 ## Protect and route

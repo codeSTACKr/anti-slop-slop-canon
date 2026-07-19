@@ -16,22 +16,24 @@ Run each fixture below against each host by pasting or referencing its `Input` i
 
 | Fixture | Category | Claude Code | Codex | Cursor |
 | --- | --- | --- | --- | --- |
-| `phase-3-compose-routing` | ai_like | | | |
-| `phase-3-rewrite-routing` | ai_like | | | |
-| `phase-3-audit-routing` | ai_like | | | |
-| `phase-3-spoken-routing` | spoken_output | | | |
-| `phase-3-exact-quote-exemption` | exemptions | | | |
-| `phase-3-code-exemption` | exemptions | | | |
-| `phase-3-structured-data-exemption` | exemptions | | | |
-| `exempt-fixed-content` | exemptions | | | |
-| `already-good-field-note` | good_prose | | | |
-| `personalized-maker-update` | personalized_voice | | | |
-| `phase-4-first-use-choice` | onboarding | | | |
-| `phase-4-preview-before-save` | onboarding | | | |
-| `phase-5-mismatch-notice` | personalized_voice | | | |
-| `spoken-service-delay` | spoken_output | | | |
+| `phase-3-compose-routing` | ai_like | PASS* 2026-07-18 | | |
+| `phase-3-rewrite-routing` | ai_like | PASS* 2026-07-18 | | |
+| `phase-3-audit-routing` | ai_like | PASS* 2026-07-18 | | |
+| `phase-3-spoken-routing` | spoken_output | PASS* 2026-07-18 | | |
+| `phase-3-exact-quote-exemption` | exemptions | FAIL* 2026-07-18 | | |
+| `phase-3-code-exemption` | exemptions | PASS* 2026-07-18 | | |
+| `phase-3-structured-data-exemption` | exemptions | PASS* 2026-07-18 | | |
+| `exempt-fixed-content` | exemptions | PASS* 2026-07-18 | | |
+| `already-good-field-note` | good_prose | PASS* 2026-07-18 | | |
+| `personalized-maker-update` | personalized_voice | PASS* 2026-07-18 | | |
+| `phase-4-first-use-choice` | onboarding | FAIL* 2026-07-18 | | |
+| `phase-4-preview-before-save` | onboarding | PASS* 2026-07-18 | | |
+| `phase-5-mismatch-notice` | personalized_voice | FAIL* 2026-07-18 | | |
+| `spoken-service-delay` | spoken_output | PASS* 2026-07-18 | | |
 
 Leave a cell blank until it has been run. Fill each cell with one of `PASS`, `FAIL`, or `BLOCKED`, the date, and the reviewer's initials, for example `PASS 2026-07-17 jh`. A blank cell means "not yet run," never "assumed passing."
+
+An asterisk marks a model-orchestrated run scored by the orchestrating model rather than a human. Evidence and per-assertion reasoning live in `evals/results/cross-agent-2026-07-18.md`. Under `evals/model-judge.md` these cells are advisory and do not satisfy the human gate until a reviewer ratifies them and replaces the asterisk with initials.
 
 ## Full matrix, required before a tagged release or a schema or defaults version bump
 
