@@ -78,7 +78,7 @@ This skill will not help you evade AI-detection tools, and it makes no claim tha
 - `skills/anti-slop-slop-canon/` is the canonical Agent Skill, installed as-is with no per-tool variants.
 - `docs/` holds this documentation.
 - `evals/` holds the public fixtures, rubrics, and the evaluation contract.
-- `scripts/validate.rb` checks schemas, routing and lifecycle fixtures, links, exact runtime contents, realtime policy boundaries, and context budgets.
+- `scripts/validate.ts` checks schemas, routing and lifecycle fixtures, links, exact runtime contents, realtime policy boundaries, and context budgets.
 - `site/` is the static Astro showcase, a single page whose every example is real output from the bundled rules, deployed at [useantislop.com](https://useantislop.com).
 
 ## Development
@@ -86,10 +86,10 @@ This skill will not help you evade AI-detection tools, and it makes no claim tha
 Run the repository checks with:
 
 ```sh
-ruby scripts/validate.rb
+pnpm run validate
 ```
 
-The check uses Ruby's standard-library YAML parser and needs no installed packages. See [evals/README.md](evals/README.md) for the fixture format and token-count method, and [docs/contributing-rules.md](docs/contributing-rules.md) for the writing-rule pull request policy.
+The check is a TypeScript script run with `tsx` via pnpm. See [evals/README.md](evals/README.md) for the fixture format and token-count method, and [docs/contributing-rules.md](docs/contributing-rules.md) for the writing-rule pull request policy.
 
 ## License
 

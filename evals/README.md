@@ -74,7 +74,7 @@ Phase 6 adds the human and editorial half of the release gates on top of the det
 
 ## Token-count method
 
-Context budgets use a repository-stable token proxy because host agents and models tokenize Markdown differently. `scripts/validate.rb` counts each Unicode word, number, contraction, or non-whitespace punctuation mark as one lexical unit, then adds a 25 percent safety margin and rounds up.
+Context budgets use a repository-stable token proxy because host agents and models tokenize Markdown differently. `scripts/validate.ts` counts each Unicode word, number, contraction, or non-whitespace punctuation mark as one lexical unit, then adds a 25 percent safety margin and rounds up.
 
 Count the complete `SKILL.md`, including frontmatter, against a strict limit below 600 proxy tokens. Count each complete style bundle, including frontmatter, against a strict limit below 1,500 proxy tokens. Count default and personalized realtime modules within the inclusive 250 to 400 guarded-unit range. The validator prints raw lexical units and guarded counts for review.
 
@@ -85,7 +85,7 @@ This proxy is the deterministic CI gate. Before a release, maintainers should al
 Run all repository contract checks with:
 
 ```sh
-ruby scripts/validate.rb
+pnpm run validate
 ```
 
-The official Skill Creator `quick_validate.py` remains the preferred frontmatter check when its PyYAML dependency is already available. Do not install dependencies merely to run it. The repository validator uses Ruby's built-in Psych YAML parser and reproduces its naming, required-field, and frontmatter checks as the documented fallback.
+The official Skill Creator `quick_validate.py` remains the preferred frontmatter check when its PyYAML dependency is already available. Do not install dependencies merely to run it. The repository validator is a TypeScript script (run via `tsx`) and reproduces its naming, required-field, and frontmatter checks as the documented fallback.

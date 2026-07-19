@@ -1,6 +1,6 @@
 # Evaluation rubrics
 
-These five rubrics are the human scoring layer of the Phase 6 release gates. `scripts/validate.rb` checks that the repository's contracts, fixtures, and budgets are structurally sound. It cannot judge whether an actual model generation, in an actual host, is good writing. That judgment is what these rubrics standardize.
+These five rubrics are the human scoring layer of the Phase 6 release gates. `scripts/validate.ts` checks that the repository's contracts, fixtures, and budgets are structurally sound. It cannot judge whether an actual model generation, in an actual host, is good writing. That judgment is what these rubrics standardize.
 
 | Rubric | What it scores | Exit criterion it maps to |
 | --- | --- | --- |

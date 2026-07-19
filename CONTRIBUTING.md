@@ -13,7 +13,7 @@ Jesse Hall is the final editorial authority for the default canon. Community inp
 For documentation, fixtures, router behavior, or repository tooling, describe the problem and the reader-facing effect of your change in the pull request. Run the checks below before requesting review:
 
 ```sh
-ruby scripts/validate.rb
+pnpm run validate
 ```
 
 ## Product boundary
