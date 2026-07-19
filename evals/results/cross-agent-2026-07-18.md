@@ -47,9 +47,24 @@ This is a model-orchestrated run of the core matrix's Claude Code column. An orc
 
 Turn 1 asked for writing kinds, desired sound, and an optional sample in a single message, which stretches the one-question-per-turn rule even though it was framed as one composite question. Turn 2 correctly isolated the single genuinely ambiguous trait, contractions, after receiving a sample. Turn 3 produced the full preview at decision-complete without waiting for the user to ask. The realtime module's guarded-unit count was not measured in this run.
 
+## Maintainer review
+
+Jesse read this evidence file on 2026-07-18 and approved the verdicts as recorded, ratifying all 14 Claude Code cells without overturning any. He declined to add per-cell initials as unnecessary for a solo-maintainer project, so the asterisked cells in `evals/cross-agent-matrix.md` stand as the ratified record. He also waived the formal blind-comparison grade for this release. The sample pair had become open-label during review discussion, and the samples file remains as a recorded artifact. The personal-fidelity signal it was built to capture is visible directly in the quoted evidence above.
+
+Both contract fixes this run motivated, the defaults gloss rule and the router first-use gate wording, were applied in commit `d679326`. The retest of the affected fixtures is recorded below.
+
+## Retest after the contract fixes, same date
+
+Three fresh sessions ran against the fixed contracts from commit `d679326`, with the updated `SKILL.md` confirmed present in each workspace.
+
+- `phase-3-compose-routing`: PASS, and cleaner than the original run. Facts preserved, nothing invented, and no trailing chat offer this time.
+- `phase-4-first-use-choice`: FAIL in both fresh runs, identical behavior to the original pair. Immediate write, no choice offered, no state written. Four fresh-session reproductions total.
+
+The retest settles which layer the first-use failure lives in. The router now states the gate imperative inline, and behavior did not change, so the router is never being read for this prompt. The skill is not activating on a mundane writing task in headless Claude Code. The gate wording fix remains correct for any session where the skill does load, but the remaining lever is the frontmatter `description`, which is what the host's skill matcher sees. Tightening it to claim plain everyday writing tasks explicitly requires trading words within the 600-unit router budget.
+
 ## Follow-ups this run motivates
 
-1. The `phase-4-first-use-choice` failure is the serious one. It reproduced twice in fresh sessions, but the limitation protocol requires a second host before calling it host-specific rather than a contract defect. Run the same fixture in Codex or Cursor. If it fails there too, the first-use gate language in `SKILL.md` likely needs strengthening, since a mundane writing prompt may not activate the skill at all.
+1. The `phase-4-first-use-choice` failure is activation-layer, per the retest above. Candidate next steps are a description rewrite that names everyday writing tasks such as notes and updates, and a Codex run of the same fixture to learn whether activation differs by host. Interactive Claude Code sessions may also activate more readily than headless ones, which is worth one manual check before treating this as universal.
 2. The `phase-5-mismatch-notice` settings write and the missing later option should be re-tested interactively before treating them as defects, since headless sessions may end before housekeeping writes.
 3. The exact-quote failure is narrow, outer quotation glyphs plus an unrequested explanation, and looks fixable by contract wording if it recurs.
 4. Jesse should ratify or overturn each cell above, then initial the core matrix in `evals/cross-agent-matrix.md`. Blank Codex and Cursor columns remain the next matrix work.
