@@ -1,7 +1,5 @@
 # Installation
 
-**Status:** This repository is pre-release. The commands below describe the planned installer. The package is not yet published, so running them today will not find anything to install.
-
 ## Installing
 
 ```sh

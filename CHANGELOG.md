@@ -2,9 +2,7 @@
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
-
-Targets initial release `0.1.0`. The skill is not yet published. See the README status line before recommending an install command to anyone.
+## [0.1.0]
 
 ### Added
 

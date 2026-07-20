@@ -1,6 +1,6 @@
 # Contributing
 
-This project is pre-release. Issue reports and focused pull requests are welcome.
+Issue reports and focused pull requests are welcome.
 
 ## Writing-rule changes
 
