@@ -24,19 +24,11 @@ That cleanup is the floor every user gets. Once you complete onboarding, output 
 
 ## Install
 
-Global scope, active in every project on the machine:
-
-```sh
-npx skills add codeSTACKr/anti-slop-slop-canon -g
-```
-
-Project scope, active only inside the current repository:
-
 ```sh
 npx skills add codeSTACKr/anti-slop-slop-canon
 ```
 
-A project copy reads and writes only its own project state and never falls back to the global copy. See [docs/installation.md](docs/installation.md) for scope details, the manual-install fallback, and optional extraction helpers.
+The installer asks whether you want global scope, active in every project on the machine, or project scope, active only inside the current repository. A project copy reads and writes only its own project state and never falls back to the global copy. See [docs/installation.md](docs/installation.md) for scope details, the manual-install fallback, and optional extraction helpers.
 
 ## How it works
 

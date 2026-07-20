@@ -335,25 +335,14 @@ const states = [
         <h2 class="shead__title">Install</h2>
       </header>
       <p class="lead typeset">
-        Installation uses <code>npx skills</code>. A project copy keeps its own state
-        and never falls back to the global one.
+        Installation uses <code>npx skills</code>. The installer asks whether you want
+        global or project scope. A project copy keeps its own state and never falls back
+        to the global one.
       </p>
 
       <div class="install-card">
         <div class="install-row">
-          <h3 class="install-row__name">Global</h3>
-          <p class="install-row__note">
-            Activates the skill in every project on the machine.
-          </p>
-          <div class="install-row__cmd">
-            <CopyCommand command={`npx skills add ${REPO} -g`} />
-          </div>
-        </div>
-        <div class="install-row">
-          <h3 class="install-row__name">Project</h3>
-          <p class="install-row__note">
-            Scoped to one repository, with its own isolated state.
-          </p>
+          <h3 class="install-row__name">Run</h3>
           <div class="install-row__cmd">
             <CopyCommand command={`npx skills add ${REPO}`} />
           </div>

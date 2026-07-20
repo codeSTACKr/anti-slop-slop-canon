@@ -2,23 +2,23 @@
 
 **Status:** This repository is pre-release. The commands below describe the planned installer. The package is not yet published, so running them today will not find anything to install.
 
+## Installing
+
+```sh
+npx skills add codeSTACKr/anti-slop-slop-canon
+```
+
+The installer asks whether you want global or project scope. Pick the one that fits; there is no need to pass a flag.
+
 ## Global scope
 
 A global install stays active across every project on the machine unless a project-scoped copy overrides it.
-
-```sh
-npx skills add codeSTACKr/anti-slop-slop-canon -g
-```
 
 State lives at `~/.config/anti-slop-slop-canon/`, holding at most `voice-profile.md`, `realtime-voice-prompt.md`, and `settings.md`.
 
 ## Project scope
 
-A project install stays local to the current repository. Omit `-g`:
-
-```sh
-npx skills add codeSTACKr/anti-slop-slop-canon
-```
+A project install stays local to the current repository.
 
 State lives at `<project-root>/.anti-slop-slop-canon/`. A project copy reads and writes only that directory. It never falls back to global state, even if global state exists on the same machine.
 
